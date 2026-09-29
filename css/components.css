@@ -1075,3 +1075,20 @@ body, .site-header, .site-footer, .topbar, .hero, .btn, .room-card, .p-card { tr
   --gold: #b48a50; --gold-soft: #dcc190;
 }
 :root[data-theme="night"] .sale-price, :root[data-theme="navy"] .sale-price { color: #a33a26; }
+
+/* =========================================================
+   Classic Navy: the original Bliss logo and its brand colours
+   (logo navy #212A79, wave sky blue #72AACB, charcoal)
+   ========================================================= */
+:root[data-theme="classic"] {
+  --bg: #f5f7f9; --surface: #fcfdfe; --panel: #e8eef4; --line: #d8e0e9; --line-strong: #c2cdda; --tint: #f2f6fa;
+  --ink: #161d4f; --text: #30374f; --muted: #667089;
+  --dark: #212a79; --dark-2: #2c378f; --dark-rgb: 33, 42, 121; --shade-rgb: 10, 13, 40;
+  --gold: #3d85b8; --gold-soft: #8fc3e0;
+}
+:root[data-theme="classic"] .sale-price { color: #b23a2a; }
+.logo-img { display: none; height: 46px; width: auto; }
+:root[data-theme="classic"] .logo .logo-img { display: block; }
+:root[data-theme="classic"] .logo b, :root[data-theme="classic"] .logo small { display: none; }
+:root[data-theme="classic"] .f-brand .logo-img { height: 52px; }
+@media (max-width: 680px) { .logo-img { height: 32px; } :root[data-theme="classic"] .f-brand .logo-img { height: 40px; } }

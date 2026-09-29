@@ -166,7 +166,7 @@ const headerHTML = `
 </div></div>
 <header class="site-header"><div class="wrap">
   <button class="menu-toggle" aria-label="Open menu">${icon('menu')}</button>
-  <a class="logo" href="index.html" aria-label="Bliss home"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small></a>
+  <a class="logo" href="index.html" aria-label="Bliss home"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss.webp" alt="Bliss Bath &amp; Kitchen" width="596" height="123" loading="lazy" decoding="async"></a>
   <nav class="main-nav" aria-label="Main">${NAV.map(navItem).join('')}</nav>
   <div class="header-actions">
     <button aria-label="Search (press /)" data-open-search>${icon('search')}</button>
@@ -211,7 +211,7 @@ const PAGES = [
 ];
 const footerHTML = `
 <footer class="site-footer"><div class="wrap">
-  <div class="f-brand"><a class="logo" href="index.html"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small></a></div>
+  <div class="f-brand"><a class="logo" href="index.html"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss-light.webp" alt="Bliss Bath &amp; Kitchen" width="596" height="123" loading="lazy" decoding="async"></a></div>
   <div class="f-cols f-one">
     <div>${col('Bathroom Products', [L('Bathroom Faucets'), L('Bathroom Vanities'), L('Bathroom Fixtures'), L('Floor Mounted Tub Fillers'), L('Smart Toilets'), L('Freestanding Tub Fillers'), L('LED Mirrors'), L('LED Medicine Cabinets'), L('Shower Bases'), L('Shower Doors'), L('Shower Kits'), L('Thermostatic Shower Systems'), L('Sliding Shower Doors'), L('Wall Hung Toilets'), L('Towel Warmers')])}</div>
     <div>${col('Bathtubs', LINKS.bathtubs)}${col('Lighting', LINKS.lighting)}</div>
@@ -924,7 +924,7 @@ if (autoSearch !== null) openSearch(autoSearch);
 
 /* ---------- Prototype: colour theme switcher (Current / Green / Maroon) ---------- */
 (function themePicker() {
-  const THEMES = [['', 'Current', '#2b2118', '#a9834a'], ['green', 'Royal Green', '#0b4431', '#b08a4e'], ['maroon', 'Deep Maroon', '#3b0d16', '#b48a50'], ['night', 'Night Blue', '#0f1b33', '#b48a50']];
+  const THEMES = [['', 'Current', '#2b2118', '#a9834a'], ['green', 'Royal Green', '#0b4431', '#b08a4e'], ['maroon', 'Deep Maroon', '#3b0d16', '#b48a50'], ['night', 'Night Blue', '#0f1b33', '#b48a50'], ['classic', 'Classic Navy', '#212a79', '#72aacb']];
   if (document.documentElement.dataset.theme === 'navy') document.documentElement.dataset.theme = 'night';
   const cur = document.documentElement.dataset.theme || '';
   const box = document.createElement('div');
