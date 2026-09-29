@@ -1102,3 +1102,120 @@ syncAccount();
   if (saved !== 'en') { setCookie(saved); loadGoogle().then(() => applyWhenReady(saved)); }
   else if (fromUrl === 'en') setCookie('en');
 })();
+
+
+/* ---------- Chat assistant (prototype: scripted answers from the site's own policies) ----------
+   In WooCommerce replace with a real chat service (e.g. Tidio, LiveChat, Gorgias or WhatsApp Business)
+   that can hand off to the team and read order status. The conversation persists for the browser session. */
+(function chat() {
+  const KEY = 'bliss_chat';
+  const load = () => { try { return JSON.parse(sessionStorage.getItem(KEY)) || []; } catch { return []; } };
+  const save = (m) => { try { sessionStorage.setItem(KEY, JSON.stringify(m.slice(-40))); } catch {} };
+  let msgs = load();
+  let awaiting = null; // 'order' | 'handoff-email'
+
+  const QUICK = [['order', 'Track my order'], ['advice', 'Product advice'], ['ship', 'Shipping & delivery'], ['returns', 'Returns'], ['trade', 'Trade pricing'], ['showroom', 'Visit the showroom'], ['human', 'Talk to a person']];
+  const link = (href, text) => `<a href="${href}">${text}</a>`;
+  const A = {
+    greet: `Hi! 👋 I'm the Bliss Bath and Kitchen assistant. I can help with orders, shipping, returns, products and more. What can I help you with?`,
+    order: `Happy to help. What's your order number? It starts with <b>BL-</b> and is in your confirmation email.`,
+    ship: `We ship across Canada and the USA. Orders under 70 lb ship <b>free</b> by standard ground (2–5 business days after dispatch). Tubs, vanities and large appliances go by freight, curbside, and we'll confirm the freight cost before processing. Free pickup is available from our Markham warehouse. ${link('shipping.html', 'Shipping policy')}`,
+    returns: `Eligible products can be returned within <b>14 days</b> of delivery if unused, uninstalled and in original packaging. Returns need approval first (an RGA) and have a 25% restocking fee plus shipping. Damaged freight must be reported within 24 hours. ${link('returns.html#start', 'Start a return')}`,
+    trade: `Designers, builders and contractors get preferred pricing, project quotes and a dedicated specialist. ${link('trade.html#apply', 'Apply for a trade account')} or ${link('projects.html', 'send us a project list')}.`,
+    showroom: `Our showroom is at <b>5 Shields Court, Unit 104, Markham, Ontario</b>. Walk-ins are welcome, or ${link('showroom.html#book', 'book an appointment')} for one-on-one help. Call 1-855-366-1001 for today's hours.`,
+    advice: `Tell me what you're shopping for, like "freestanding tub", "brass kitchen faucet" or a brand name, and I'll suggest a few options. For finishes, sizing or a full room, a specialist can help too.`,
+    warranty: `Products carry the manufacturer's warranty (for example, many freestanding tubs have a 25-year limited warranty). We can help you register a product or make a claim.`,
+    install: `We don't install, but we recommend a licensed, qualified installer and can refer trusted pros in your area. Please inspect everything before installing.`,
+    sale: `Our current offers are here: ${link('search.html?q=sale', 'Shop the sale')}. Trade customers also get preferred pricing.`,
+    currency: `Prices are in Canadian dollars by default. Switch to USD from the <b>CAD</b> menu at the top of the page.`,
+    human: `I'll connect you with a specialist. What's the best email to reach you? You can also call <b>1-855-366-1001</b>.`,
+    fallback: `I'm not sure I understood. I can help with orders, shipping, returns, trade pricing or finding a product, or connect you with a specialist.`,
+  };
+  const INTENTS = [
+    ['order', /\b(track|order|where('?s| is) my|status|shipment)\b/i], ['returns', /\b(return|refund|exchange|rga|restock)/i],
+    ['ship', /\b(ship|deliver|freight|pickup|pick up|lead time|arrive)/i], ['trade', /\b(trade|designer|builder|contractor|project|volume)/i],
+    ['showroom', /\b(showroom|visit|address|hours|open|markham|appointment)/i], ['warranty', /warrant/i], ['install', /install/i],
+    ['sale', /\b(sale|discount|deal|promo|coupon|offer)/i], ['currency', /\b(usd|cad|currency|dollar)/i],
+    ['human', /\b(human|person|agent|someone|specialist|call|phone|talk)\b/i], ['greet', /^(hi|hello|hey|bonjour)\b/i],
+  ];
+
+  const root = document.createElement('div');
+  root.className = 'chat';
+  root.innerHTML = `
+    <button class="chat-fab" type="button" aria-label="Open chat" aria-expanded="false" aria-controls="chatPanel">
+      <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M4 5h16v11H9l-5 4Z"/><path d="M8 9.5h8M8 12.5h5"/></svg>
+      <span class="chat-online" aria-hidden="true"></span>
+      <span class="chat-fab-label">Chat with us</span>
+    </button>
+    <section class="chat-panel" id="chatPanel" role="dialog" aria-label="Chat with Bliss Bath and Kitchen" hidden>
+      <header class="chat-head">
+        <span class="chat-av" aria-hidden="true">B</span>
+        <span class="chat-title"><b>Bliss Bath and Kitchen</b><small><i class="chat-dot"></i> Online · typically replies in minutes</small></span>
+        <button class="chat-x" type="button" aria-label="Close chat">${icon('close')}</button>
+      </header>
+      <div class="chat-log" id="chatLog" aria-live="polite"></div>
+      <div class="chat-quick" id="chatQuick"></div>
+      <form class="chat-form" id="chatForm" autocomplete="off">
+        <input id="chatInput" type="text" placeholder="Type your message…" aria-label="Message" maxlength="400">
+        <button type="submit" aria-label="Send">${icon('arrow')}</button>
+      </form>
+      <p class="chat-note">Prototype assistant: answers come from our policies. For urgent help call 1-855-366-1001.</p>
+    </section>`;
+  document.body.append(root);
+  const fab = root.querySelector('.chat-fab'), panel = root.querySelector('.chat-panel');
+  const log = root.querySelector('#chatLog'), quick = root.querySelector('#chatQuick'), input = root.querySelector('#chatInput');
+
+  const bubble = (m) => `<div class="msg ${m.from}">${m.from === 'bot' ? m.html : esc(m.text)}${m.cards ? `<div class="msg-cards">${m.cards}</div>` : ''}</div>`;
+  function render() {
+    log.innerHTML = msgs.map(bubble).join('');
+    quick.innerHTML = QUICK.map(([k, t]) => `<button type="button" data-chat="${k}">${t}</button>`).join('');
+    log.scrollTop = log.scrollHeight;
+  }
+  function bot(html, cards) {
+    const typing = document.createElement('div');
+    typing.className = 'msg bot typing'; typing.innerHTML = '<i></i><i></i><i></i>';
+    log.append(typing); log.scrollTop = log.scrollHeight;
+    setTimeout(() => { typing.remove(); msgs.push({ from: 'bot', html, cards }); save(msgs); render(); }, 650);
+  }
+  function productCards(q) {
+    const found = (window.searchProducts ? searchProducts(q) : []).slice(0, 3);
+    if (!found.length) return null;
+    return found.map((p) => `<a class="msg-card" href="product.html"><img src="img/${p.img}.webp" alt=""><span><small>${esc(p.brand)}</small>${esc(p.name)}<b>${BLISS.money(p.cad)}</b></span></a>`).join('');
+  }
+  function reply(text, intentKey) {
+    if (awaiting === 'order' && !intentKey) {
+      awaiting = null;
+      const no = (text.match(/BL-?\s?(\d{4,})/i) || [])[1];
+      if (no) return bot(`Order <b>BL-${no}</b> is being processed. Freight items are waiting on a delivery quote, which we'll email within one business day. Signed-in customers can see full details in ${link('account.html?tab=orders', 'My Account → Orders')}.`);
+      return bot(`I couldn't find an order number in that. It looks like <b>BL-123456</b>. You can also check ${link('account.html?tab=orders', 'My Account → Orders')}.`);
+    }
+    if (awaiting === 'handoff-email' && !intentKey) {
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text.trim())) { awaiting = null; return bot(`Thanks! A specialist will email <b>${esc(text.trim())}</b> within one business day. Anything else I can help with?`); }
+      return bot(`That doesn't look like an email address. Could you check it? Or call us at 1-855-366-1001.`);
+    }
+    const key = intentKey || (INTENTS.find(([, re]) => re.test(text)) || [])[0];
+    if (key === 'order') awaiting = 'order';
+    if (key === 'human') awaiting = 'handoff-email';
+    if (key && A[key]) return bot(A[key]);
+    const cards = productCards(text);
+    if (cards) return bot(`Here are a few matches for “${esc(text)}”:`, cards + `<a class="msg-more" href="search.html?q=${encodeURIComponent(text)}">See all results →</a>`);
+    bot(A.fallback);
+  }
+  function send(text, intentKey) {
+    if (!text.trim()) return;
+    msgs.push({ from: 'me', text }); save(msgs); render(); reply(text, intentKey);
+  }
+  function open() {
+    panel.hidden = false; fab.setAttribute('aria-expanded', 'true'); document.body.classList.add('chat-open');
+    if (!msgs.length) { msgs.push({ from: 'bot', html: A.greet }); save(msgs); }
+    render(); setTimeout(() => input.focus(), 60);
+  }
+  function close() { panel.hidden = true; fab.setAttribute('aria-expanded', 'false'); document.body.classList.remove('chat-open'); fab.focus(); }
+  fab.addEventListener('click', () => (panel.hidden ? open() : close()));
+  root.querySelector('.chat-x').addEventListener('click', close);
+  root.querySelector('#chatForm').addEventListener('submit', (e) => { e.preventDefault(); const t = input.value; input.value = ''; send(t); });
+  quick.addEventListener('click', (e) => { const b = e.target.closest('[data-chat]'); if (b) send(b.textContent, b.dataset.chat); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) close(); });
+  window.openChat = open;
+  if (location.hash === '#chat') open();   // demo link: page.html#chat opens the assistant
+})();
