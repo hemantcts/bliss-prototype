@@ -56,7 +56,7 @@
 
     <section class="shop" id="shop">
       <aside class="filters" id="filters" aria-label="Filters">
-        <div class="f-title"><span>Filter by</span><button type="button" id="clearFilters">Clear all</button></div>
+        <div class="f-title"><span>Filter by</span><span class="f-title-act"><button type="button" id="clearFilters">Clear all</button><button type="button" class="f-close" id="filterClose" aria-label="Close filters"><i data-icon="close" class="sm"></i></button></span></div>
         <div id="filterGroups"></div>
         <div style="padding-top:14px">
           <div class="opt-label">Sort by</div>
@@ -64,18 +64,26 @@
             <option value="featured">Featured</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="rating">Top Rated</option>
           </select>
         </div>
+              <button type="button" class="btn block filter-apply" id="filterApply">Show results</button>
       </aside>
 
       <div>
-        <div class="toolbar">
-          <div style="display:flex;gap:14px;align-items:center">
-            <button class="btn ghost sm filter-open" id="filterOpen"><i data-icon="filter" class="sm"></i> Filters</button>
+        <div class="toolbar col-toolbar" id="colToolbar">
+          <div class="tb-left">
+            <button class="btn ghost sm filter-open" id="filterOpen" aria-controls="filters"><i data-icon="filter" class="sm"></i> Filters <span class="f-count" id="fCount" hidden></span></button>
             <span id="count">Showing 12 of 42 products</span>
           </div>
           <div class="tools">
-            <button class="view-btn on" data-view="4" aria-label="4 per row"><i data-icon="grid3" class="sm"></i></button>
-            <button class="view-btn" data-view="3" aria-label="3 per row"><i data-icon="grid" class="sm"></i></button>
-            <label>Show <select aria-label="Per page"><option>12</option><option>24</option><option>48</option></select> per page</label>
+            <label class="tb-sort"><span class="sr">Sort by</span><select id="sortTop" aria-label="Sort by"><option value="featured">Featured</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="rating">Top Rated</option></select></label>
+            <div class="view-toggle view-desk" role="group" aria-label="Products per row">
+              <button class="view-btn on" data-view="4" aria-label="4 per row" aria-pressed="true"><i data-icon="grid3" class="sm"></i></button>
+              <button class="view-btn" data-view="3" aria-label="3 per row" aria-pressed="false"><i data-icon="grid" class="sm"></i></button>
+            </div>
+            <div class="view-toggle view-mob" role="group" aria-label="Products per row">
+              <button class="view-btn" data-mview="1" aria-label="1 product per row" aria-pressed="false"><svg class="icon sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16"/></svg></button>
+              <button class="view-btn on" data-mview="2" aria-label="2 products per row" aria-pressed="true"><svg class="icon sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="7.5" height="16"/><rect x="13" y="4" width="7.5" height="16"/></svg></button>
+            </div>
+            <label class="per-page">Show <select aria-label="Per page"><option>12</option><option>24</option><option>48</option></select> per page</label>
           </div>
         </div>
         <div class="chips" id="chips"></div>
@@ -218,14 +226,35 @@
     document.querySelectorAll('#filters input[type=checkbox]').forEach((i) => (i.checked = false));
     render();
   });
-  document.getElementById('sortSide').addEventListener('change', (e) => { sort = e.target.value; render(); });
-  document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => {
-    document.querySelectorAll('[data-view]').forEach((x) => x.classList.toggle('on', x === b));
-    document.getElementById('grid').classList.toggle('list', b.dataset.view === '3');
+  // sort: sidebar (desktop) and sticky toolbar (phones) stay in sync
+  const sortSide = document.getElementById('sortSide'), sortTop = document.getElementById('sortTop');
+  [sortSide, sortTop].forEach((el) => el.addEventListener('change', (e) => { sort = e.target.value; sortSide.value = sortTop.value = sort; render(); }));
+  // grid density: desktop 4 / 3 per row, phones 1 / 2 per row (remembered on this device)
+  const gridEl = document.getElementById('grid');
+  const setPressed = (sel, b) => document.querySelectorAll(sel).forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
+  document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => { setPressed('[data-view]', b); gridEl.classList.toggle('list', b.dataset.view === '3'); }));
+  document.querySelectorAll('[data-mview]').forEach((b) => b.addEventListener('click', () => {
+    setPressed('[data-mview]', b); gridEl.classList.toggle('one', b.dataset.mview === '1');
+    try { localStorage.setItem('bliss_mview', b.dataset.mview); } catch {}
   }));
+  try { if (localStorage.getItem('bliss_mview') === '1') document.querySelector('[data-mview="1"]').click(); } catch {}
+  // active-filter count on the Filters button
+  const fCount = document.getElementById('fCount');
+  document.addEventListener('change', () => { const n = document.querySelectorAll('#filters input[type=checkbox]:checked').length; fCount.textContent = n; fCount.hidden = !n; });
+  document.getElementById('clearFilters').addEventListener('click', () => { fCount.hidden = true; });
+  // sticky toolbar: add a shadow once it is stuck
+  const tb = document.getElementById('colToolbar');
+  const sentinel = document.createElement('div'); tb.before(sentinel);
+  new IntersectionObserver(([en]) => tb.classList.toggle('stuck', !en.isIntersecting && en.boundingClientRect.top < 0), { rootMargin: '-90px 0px 0px 0px' }).observe(sentinel);
   const filters = document.getElementById('filters');
-  document.getElementById('filterOpen').addEventListener('click', (e) => { e.stopPropagation(); filters.classList.add('open'); });
-  document.addEventListener('click', (e) => { if (filters.classList.contains('open') && !filters.contains(e.target)) filters.classList.remove('open'); });
+  const scrim = document.createElement('div'); scrim.className = 'filters-scrim'; document.body.append(scrim);
+  const openF = (on) => { filters.classList.toggle('open', on); scrim.classList.toggle('on', on); document.body.classList.toggle('filters-open', on); };
+  document.getElementById('filterOpen').addEventListener('click', (e) => { e.stopPropagation(); openF(true); });
+  document.getElementById('filterClose').addEventListener('click', () => openF(false));
+  document.getElementById('filterApply').addEventListener('click', () => { openF(false); gridEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  scrim.addEventListener('click', () => openF(false));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && filters.classList.contains('open')) openF(false); });
+  document.addEventListener('change', () => { document.getElementById('filterApply').textContent = `Show ${document.getElementById('grid').querySelectorAll('.p-card').length} results`; });
 
   render();
 </script>
