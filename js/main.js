@@ -161,7 +161,7 @@ const currencyMenu = (id) => `
 /* Languages offered through Google Translate (codes are Google's) */
 const LANGS = [['en', 'EN', 'English'], ['ar', 'AR', 'العربية'], ['zh-CN', 'ZH-CN', '中文 (简体)'], ['nl', 'NL', 'Nederlands'], ['fr', 'FR', 'Français'],
   ['de', 'DE', 'Deutsch'], ['it', 'IT', 'Italiano'], ['pt', 'PT', 'Português'], ['ru', 'RU', 'Русский'], ['es', 'ES', 'Español']];
-const curLang = () => (location.hostname.endsWith('.translate.goog') && new URLSearchParams(location.search).get('_x_tr_tl')) || 'en';
+const curLang = () => { try { return localStorage.getItem('bliss_lang') || 'en'; } catch { return 'en'; } };
 const langMenu = (id) => `
 <div class="cur lang notranslate" data-cur translate="no">
   <button class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="${id}" aria-label="Language">
@@ -1033,40 +1033,68 @@ window.syncAccount = syncAccount;
 syncAccount();
 
 
-/* ---------- Language switcher (Google Translate) ----------
-   Google's old in-page "Website Translator" widget no longer translates, so a language choice opens the
-   same page through Google Translate's website proxy (<host>.translate.goog). English returns to the
-   original address. The proxy needs a public URL, so on localhost we explain instead of switching. */
+/* ---------- Language switcher (Google Translate website widget) ----------
+   The Google script is only loaded after a visitor picks a language (and on later visits
+   while a non-English choice is saved), so English visitors get no third-party download. */
 (function languages() {
-  const PROXY = '.translate.goog';
-  const onProxy = location.hostname.endsWith(PROXY);
-  const isLocal = /^(localhost|127\.|\[::1\]|0\.0\.0\.0)/.test(location.hostname) || location.protocol === 'file:';
-  const toProxyHost = (h) => h.replace(/-/g, '--').replace(/\./g, '-') + PROXY;
-  const fromProxyHost = (h) => h.slice(0, -PROXY.length).replace(/--/g, '\u0000').replace(/-/g, '.').replace(/\u0000/g, '-');
-  function cleanParams() {
-    const q = new URLSearchParams(location.search);
-    [...q.keys()].forEach((k) => { if (k.startsWith('_x_tr_') || k === 'lang') q.delete(k); });
-    return q;
+  const INCLUDED = LANGS.map((l) => l[0]).join(',');
+  const cookieDomains = () => { const h = location.hostname; return ['', h, '.' + h.split('.').slice(-2).join('.')]; };
+  function setCookie(code) {
+    cookieDomains().forEach((d) => {
+      const dom = d ? `;domain=${d}` : '';
+      document.cookie = code === 'en'
+        ? `googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/${dom}`
+        : `googtrans=/en/${code};path=/${dom}`;
+    });
   }
-  function urlFor(code) {
-    const q = cleanParams();
-    const host = onProxy ? fromProxyHost(location.hostname) : location.hostname;
-    if (code === 'en') return `https://${host}${location.pathname}${q.toString() ? '?' + q : ''}${location.hash}`;
-    q.set('_x_tr_sl', 'en'); q.set('_x_tr_tl', code); q.set('_x_tr_hl', code); q.set('_x_tr_pto', 'wapp');
-    return `https://${toProxyHost(host)}${location.pathname}?${q}${location.hash}`;
+  let loading = null;
+  function loadGoogle() {
+    if (loading) return loading;
+    loading = new Promise((resolve) => {
+      const holder = document.createElement('div');
+      holder.id = 'gt_el'; holder.hidden = true;
+      document.body.append(holder);
+      window.googleTranslateElementInit = () => {
+        new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: INCLUDED, autoDisplay: false }, 'gt_el');
+        resolve();
+      };
+      const sc = document.createElement('script');
+      sc.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      sc.async = true;
+      sc.onerror = () => { toast('Translation is unavailable right now. Please try again later'); resolve(); };
+      document.head.append(sc);
+    });
+    return loading;
+  }
+  function applyWhenReady(code, tries = 0) {
+    const combo = document.querySelector('.goog-te-combo');
+    if (combo) { combo.value = code; combo.dispatchEvent(new Event('change')); return; }
+    if (tries < 40) setTimeout(() => applyWhenReady(code, tries + 1), 150);
+  }
+  function mark(code) {
+    const l = LANGS.find((x) => x[0] === code) || LANGS[0];
+    document.querySelectorAll('[data-lang-label]').forEach((el) => (el.textContent = l[1]));
+    document.querySelectorAll('[data-set-lang]').forEach((li) => li.setAttribute('aria-selected', li.dataset.setLang === code));
+    document.documentElement.lang = code === 'en' ? 'en' : code;
   }
   function choose(code) {
-    if (code === curLang()) return;
-    if (isLocal) { toast('Translation works on the published site (hemantcts.github.io), not on localhost'); return; }
-    location.href = urlFor(code);
+    try { localStorage.setItem('bliss_lang', code); } catch {}
+    mark(code);
+    setCookie(code);
+    if (code === 'en') { location.reload(); return; }   // cleanest way back to the original English
+    loadGoogle().then(() => applyWhenReady(code));
   }
   document.addEventListener('click', (e) => {
     const li = e.target.closest('[data-set-lang]');
     if (!li) return;
     li.closest('[data-cur]')?.classList.remove('open');
-    choose(li.dataset.setLang);
+    if (li.dataset.setLang !== curLang()) choose(li.dataset.setLang);
   });
-  // ?lang=fr links: jump straight into that language (handy for sharing)
+  // ?lang=fr style links open the page in that language (handy for sharing); otherwise re-apply a saved choice
   const fromUrl = new URLSearchParams(location.search).get('lang');
-  if (fromUrl && fromUrl !== 'en' && !onProxy && !isLocal && LANGS.some((l) => l[0] === fromUrl)) location.replace(urlFor(fromUrl));
+  if (fromUrl && LANGS.some((l) => l[0] === fromUrl)) { try { localStorage.setItem('bliss_lang', fromUrl); } catch {} }
+  const saved = curLang();
+  mark(saved);
+  if (saved !== 'en') { setCookie(saved); loadGoogle().then(() => applyWhenReady(saved)); }
+  else if (fromUrl === 'en') setCookie('en');
 })();
