@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2b2118">
+<title>Brand | Bliss Bath and Kitchen</title>
+<meta name="description" content="Shop this brand at Bliss Bath and Kitchen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script>(function(){try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="brand">
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero plain brand-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="brands.html">Brands</a><span class="sep">›</span><span class="cur" id="crumb"></span></nav>
+      <div class="brand-hero-grid">
+        <div class="brand-logo-tile" id="brandLogo"></div>
+        <div>
+          <span class="eyebrow" id="brandCats"></span>
+          <h1 id="brandName"></h1>
+          <p id="brandIntro"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap" style="padding-top:34px;padding-bottom:70px">
+    <div class="toolbar"><span id="count"></span>
+      <div class="tools"><label>Sort <select id="sort" aria-label="Sort"><option value="rel">Featured</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option></select></label></div>
+    </div>
+    <div class="p-grid" id="grid"></div>
+    <div class="empty-state" id="empty" hidden>
+      <h2>Coming soon online</h2>
+      <p id="emptyText"></p>
+      <div class="hero-cta" style="justify-content:center;margin-top:20px"><a class="btn" id="askBrand" href="contact.html?topic=product">Ask a Specialist</a><a class="btn ghost" href="brands.html">All Brands</a></div>
+    </div>
+  </div>
+
+  <section class="band-dark">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap">
+      <div style="max-width:640px"><span class="eyebrow">Can't see what you need?</span><h2 style="font-size:34px;margin-bottom:10px" id="bandTitle">We can source the full range</h2><p style="margin:0">Our specialists can quote any model, finish or size from this manufacturer, including special orders.</p></div>
+      <div class="hero-cta"><a class="btn light" href="contact.html?topic=product">Request a Quote <i data-icon="arrow" class="sm"></i></a><a class="btn light" href="showroom.html">Visit the Showroom</a></div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // WooCommerce: product brand archive, keep the live URL /brands/<slug>/
+  const slug = new URLSearchParams(location.search).get('b') || 'victoria-albert';
+  const brand = BLISS.brands.find((b) => b.slug === slug) || BLISS.brands.find((b) => b.slug === 'victoria-albert');
+  const products = BLISS.products.filter((p) => p.brand === brand.name);
+  document.title = `${brand.name} | Bliss Bath and Kitchen`;
+  document.querySelector('meta[name=description]').content = `Shop ${brand.name} at Bliss Bath and Kitchen: ${brand.cats.join(', ').toLowerCase()} products with delivery across Canada and the USA.`;
+  document.getElementById('crumb').textContent = brand.name;
+  document.getElementById('brandName').textContent = brand.name;
+  document.getElementById('brandCats').textContent = `${brand.cats.join(' · ')} · Authorized retailer`;
+  document.getElementById('brandLogo').innerHTML = `<span class="brand-mark big">${esc(brand.name).replace(' + ', ' <em>+</em> ')}</span>`;
+  document.getElementById('brandIntro').textContent = `${brand.featured ? brand.featured + '. ' : ''}Bliss Bath and Kitchen is an authorized retailer of ${brand.name}. Browse the collection below, or ask our specialists about any model, size or finish in the ${brand.name} range.`;
+  document.getElementById('bandTitle').textContent = `We can source the full ${brand.name} range`;
+  let sort = 'rel';
+  function render() {
+    let list = products;
+    if (sort === 'low') list = [...list].sort((a, b) => a.cad - b.cad);
+    if (sort === 'high') list = [...list].sort((a, b) => b.cad - a.cad);
+    document.getElementById('count').textContent = `${list.length} product${list.length === 1 ? '' : 's'}`;
+    document.getElementById('grid').innerHTML = list.map(productCard).join('');
+    document.getElementById('empty').hidden = list.length > 0;
+    document.getElementById('emptyText').textContent = `We carry the full ${brand.name} range. Our online selection for this brand is being added. Contact us for pricing and availability on any ${brand.name} product.`;
+  }
+  document.getElementById('sort').addEventListener('change', (e) => { sort = e.target.value; render(); });
+  render();
+</script>
+</body>
+</html>

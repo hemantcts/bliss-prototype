@@ -46,19 +46,26 @@
       </div>
 
       <div class="buy">
-        <span class="eyebrow">Victoria + Albert</span>
+        <a class="brand-chip" href="brand.html?b=victoria-albert" aria-label="View all Victoria + Albert products">
+          <span class="brand-mark">VICTORIA <em>+</em> ALBERT</span>
+          <span class="brand-chip-txt">Victoria + Albert<small>Shop the brand <i data-icon="arrow" class="sm"></i></small></span>
+        </a>
         <h1>Victoria and Albert Barcelona 2 Freestanding Bathtub</h1>
-        <div class="stars">★★★★★<em>4.8 (12 Reviews)</em></div>
-        <p class="lead">The Barcelona 2 is a modern interpretation of a classic shape, offering a refined and sophisticated look that complements a variety of bathroom styles. Crafted with the finest materials, it delivers both beauty and lasting performance.</p>
-        <div class="price"><span class="sale-price" data-price="6490"></span> <del class="was-price" aria-label="Regular price" data-price="7190"></del> <small data-currency-suffix>CAD</small> <span class="badge sale inline">Sale −10%</span></div>
-
-        <div class="opt-label">Colour: <b id="colourName">Black / White (interior / exterior)</b></div>
-        <div class="colour-pick" id="colours">
-          <button class="on" style="background:#1f1c1a" data-name="Black / White (interior / exterior)" aria-label="Black / White"></button>
-          <button style="background:#fbfaf7" data-name="Gloss White" aria-label="Gloss White"></button>
-          <button style="background:#d9d1c4" data-name="Matte Stone" aria-label="Matte Stone"></button>
-          <button style="background:#cbbfae" data-name="Warm Greige" aria-label="Warm Greige"></button>
+        <div class="pdp-sub">
+          <a href="#reviews" class="stars" data-open-reviews>★★★★★<em>4.8 (12 reviews · 6 with photos)</em></a>
+          <span class="sku">SKU: <b id="sku">VA-BAR2</b></span>
         </div>
+        <p class="lead">The Barcelona 2 is a modern interpretation of a classic shape, offering a refined and sophisticated look that complements a variety of bathroom styles. Crafted with the finest materials, it delivers both beauty and lasting performance.</p>
+        <div class="price notranslate" id="pdpPrice" translate="no"></div>
+
+        <form class="variations" id="variations" novalidate aria-label="Product options">
+          <div class="var-grid" id="varGrid"></div>
+          <div class="var-foot">
+            <button type="button" class="var-clear" id="varClear" hidden>Clear selections</button>
+            <span class="var-hint" id="varHint"><span class="req">*</span> Required options</span>
+          </div>
+          <div class="var-summary" id="varSummary" hidden></div>
+        </form>
 
         <div class="buy-row">
           <div class="qty">
@@ -66,7 +73,7 @@
             <input type="text" value="1" inputmode="numeric" aria-label="Quantity">
             <button type="button" data-q="1" aria-label="Increase quantity">+</button>
           </div>
-          <button class="btn" data-add="pdp" data-id="va-barcelona-2">Add to Cart <i data-icon="bag" class="sm"></i></button>
+          <button class="btn" data-add="pdp" data-id="va-barcelona-2" id="pdpAdd" aria-disabled="true">Add to Cart <i data-icon="bag" class="sm"></i></button>
           <button class="wish-btn" data-wish="va-barcelona-2" aria-label="Add to wishlist" aria-pressed="false"><i data-icon="heart"></i></button>
         </div>
         <button class="btn ghost block inquire-btn" data-inquire="va-barcelona-2"><i data-icon="mail" class="sm"></i> Make an Inquiry</button>
@@ -77,6 +84,12 @@
           <div><i data-icon="store" class="sm"></i>Free pickup available from our Markham warehouse</div>
           <div><i data-icon="return" class="sm"></i>14-day returns on eligible items · <a href="returns.html" style="text-decoration:underline">policy</a></div>
         </div>
+        <dl class="product-meta">
+          <div><dt>SKU:</dt><dd id="skuMeta">VA-BAR2</dd></div>
+          <div><dt>Categories:</dt><dd><a href="search.html?q=Cast%20Iron%20Bathtubs" rel="tag">Cast Iron Bathtubs</a>, <a href="search.html?q=Clawfoot%20Bathtubs" rel="tag">Clawfoot Bathtubs</a>, <a href="collection.html" rel="tag">Freestanding Bathtubs</a></dd></div>
+          <div><dt>Brand:</dt><dd><a href="brand.html?b=victoria-albert">Victoria + Albert</a></dd></div>
+          <div><dt>Tags:</dt><dd><a href="search.html?q=black" rel="tag">Matte black</a>, <a href="search.html?q=stone%20resin" rel="tag">Cast stone</a>, <a href="search.html?q=bathtub" rel="tag">Soaking tub</a></dd></div>
+        </dl>
       </div>
     </section>
   </div>
@@ -101,7 +114,7 @@
             <h2>A Modern Classic for Your Bathroom</h2>
             <p>The Victoria and Albert Barcelona 2 freestanding bathtub blends contemporary design with timeless appeal. Its smooth curves and refined silhouette create a striking focal point in any bathroom, while the high-quality cast stone construction ensures exceptional durability and heat retention.</p>
             <p>Designed for comfort, the Barcelona 2 offers a deep, spacious interior for a truly relaxing bathing experience. Available in a range of finishes, it's the perfect choice for those who appreciate luxury, craftsmanship and understated elegance.</p>
-            <a class="btn" href="#" onclick="event.preventDefault();toast('Spec sheet download started')">Download Spec Sheet <i data-icon="download" class="sm"></i></a>
+            <a class="btn" href="files/barcelona-2-spec-sheet.pdf" download>Download Spec Sheet <i data-icon="download" class="sm"></i></a>
           </div>
           <div class="feat-list">
             <div><i data-icon="hand"></i><div><h4>Exceptional Craftsmanship</h4><p>Made from premium cast stone for lasting beauty and durability.</p></div></div>
@@ -124,12 +137,52 @@
           <tr><th>Drain</th><td>Centre drain with integrated overflow</td></tr>
           <tr><th>Warranty</th><td>25-year limited</td></tr>
         </table>
+        <h3 class="dl-title">Downloads</h3>
+        <ul class="downloads">
+          <li><a href="files/barcelona-2-spec-sheet.pdf" download><span class="pdf-ic">PDF</span><span><b>Specification Sheet</b><small>Dimensions, sizes, finishes and technical data · 127 KB</small></span><span class="dl-go"><i data-icon="download" class="sm"></i> Download</span></a></li>
+          <li><a href="files/barcelona-2-installation-guide.pdf" download><span class="pdf-ic">PDF</span><span><b>Installation Guide</b><small>Rough-in, drain position and step-by-step setup · 149 KB</small></span><span class="dl-go"><i data-icon="download" class="sm"></i> Download</span></a></li>
+          <li><a href="files/barcelona-2-care-guide.pdf" download><span class="pdf-ic">PDF</span><span><b>Care &amp; Maintenance Guide</b><small>Cleaning and caring for cast stone · 111 KB</small></span><span class="dl-go"><i data-icon="download" class="sm"></i> Download</span></a></li>
+          <li><a href="files/barcelona-2-warranty.pdf" download><span class="pdf-ic">PDF</span><span><b>Warranty</b><small>25-year limited warranty terms · 108 KB</small></span><span class="dl-go"><i data-icon="download" class="sm"></i> Download</span></a></li>
+        </ul>
       </div>
 
       <div class="tab-panel" id="tab-reviews">
-        <div class="review"><div class="stars">★★★★★</div><h4>The centrepiece of our renovation</h4><p>Holds heat for ages and the matte black exterior looks incredible. Delivery team was careful and on time.</p><small>Sarah M. · Toronto, ON · Verified buyer</small></div>
-        <div class="review"><div class="stars">★★★★★</div><h4>Worth every penny</h4><p>Deep enough to fully soak. The Bliss Bath and Kitchen showroom team helped us pick the right filler too.</p><small>David K. · Vancouver, BC · Verified buyer</small></div>
-        <div class="review"><div class="stars">★★★★☆</div><h4>Beautiful, heavy, plan the install</h4><p>Gorgeous tub. Make sure your floor is ready for the weight, but otherwise flawless.</p><small>Priya R. · Seattle, WA · Verified buyer</small></div>
+        <div class="rv-top" id="reviews">
+          <div class="rv-score">
+            <b>4.8</b><div class="stars big">★★★★★</div><span class="muted">Based on 12 reviews</span>
+            <button class="btn block" type="button" id="writeReview"><i data-icon="note" class="sm"></i> Write a Review</button>
+          </div>
+          <div class="rv-bars" id="rvBars"></div>
+          <div class="rv-photos">
+            <h4>Customer photos <span class="muted" id="rvPhotoCount"></span></h4>
+            <div class="rv-strip" id="rvStrip"></div>
+          </div>
+        </div>
+
+        <form class="rv-form" id="rvForm" hidden novalidate>
+          <h3>Write a review</h3>
+          <p class="muted">Share your experience with the Barcelona 2. Photos of the tub in your space help other shoppers the most.</p>
+          <fieldset class="rate-input"><legend>Your rating <span class="req">*</span></legend>
+            <div class="rate-stars"></div>
+          </fieldset>
+          <div class="form-grid">
+            <label class="field full"><span>Review title <span class="req">*</span></span><input name="title" required maxlength="80" placeholder="Sum up your experience"></label>
+            <label class="field full"><span>Your review <span class="req">*</span></span><textarea name="body" required rows="4" placeholder="What did you like? How was delivery and installation?"></textarea></label>
+            <label class="field"><span>Name <span class="req">*</span></span><input name="name" required autocomplete="name"></label>
+            <label class="field"><span>Email <span class="req">*</span> <em>(not published)</em></span><input type="email" name="email" required autocomplete="email"></label>
+            <label class="field full"><span>City &amp; province / state <em>(optional)</em></span><input name="where" placeholder="e.g. Toronto, ON"></label>
+          </div>
+          <div class="field">
+            <span>Add photos <em>(up to 5 · JPG or PNG · 10 MB each)</em></span>
+            <label class="dropzone rv-drop" id="rvDrop"><i data-icon="upload"></i><b>Drop photos here or browse</b><small>Show the tub in your finished space</small><input type="file" id="rvFiles" accept="image/jpeg,image/png,image/webp" multiple></label>
+            <div class="rv-previews" id="rvPreviews"></div>
+          </div>
+          <label class="check"><input type="checkbox" name="consent" required> I confirm this review is about my own experience and the photos are mine.</label>
+          <div class="hero-cta"><button class="btn" type="submit">Submit Review</button><button class="btn ghost" type="button" id="rvCancel">Cancel</button></div>
+        </form>
+
+        <div class="rv-filter chips" id="rvFilter" role="group" aria-label="Filter reviews"></div>
+        <div id="rvList"></div>
       </div>
 
       <div class="tab-panel" id="tab-ship">
@@ -247,6 +300,10 @@
   </section>
 </main>
 
+<div class="sticky-buy notranslate-price" id="stickyBuy" aria-hidden="true">
+  <div class="sb-info"><span class="sb-name">Barcelona 2 Freestanding Bathtub</span><span class="sb-price notranslate" translate="no" id="sbPrice"></span></div>
+  <button class="btn sm" type="button" id="sbBtn">Select Options</button>
+</div>
 <div id="newsletter"></div>
 <div id="site-footer"></div>
 
@@ -266,12 +323,262 @@
   thumbs.forEach((t, i) => t.addEventListener('click', () => show(i)));
   document.querySelectorAll('[data-gal]').forEach((b) => b.addEventListener('click', () => show(gi + +b.dataset.gal)));
 
-  // Colour
-  document.getElementById('colours').addEventListener('click', (e) => {
-    const b = e.target.closest('button'); if (!b) return;
-    document.querySelectorAll('#colours button').forEach((x) => x.classList.toggle('on', x === b));
-    document.getElementById('colourName').textContent = b.dataset.name;
+  /* ---------- Variations (WooCommerce variable product) ----------
+     Each option adds to the base (sale) price. Until every required option is chosen we show the
+     price range and the button asks for the missing options, exactly like WooCommerce. */
+  const BASE = 6490, BASE_WAS = 7190;
+  const VARS = [
+    { key: 'size', label: 'Bathtub Size', req: true, sku: (v) => v, opts: [['59', '59" (1500 mm)', -600], ['67', '67" (1700 mm)', 0], ['71', '71" (1800 mm)', 650]] },
+    { key: 'colour', label: 'Bathtub Colour', req: true, sku: (v) => v.toUpperCase(), swatch: true, opts: [
+      ['bw', 'Black / White (interior / exterior)', 0, '#1f1c1a'], ['gw', 'Gloss White', 0, '#fbfaf7'], ['mw', 'Matte White', 290, '#ece8e1'],
+      ['ral', 'Custom RAL Colour (made to order)', 1150, 'conic-gradient(#8a3b2a, #c9a870, #3f5a47, #2b3c63, #8a3b2a)']] },
+    { key: 'hole', label: 'Faucet Hole', req: true, sku: (v) => 'H' + v.toUpperCase().slice(0, 1), opts: [['none', 'No holes (floor-mount filler)', 0], ['1', '1 hole, deck-mount', 180], ['3', '3 holes, 8" centres', 260]] },
+    { key: 'feetColor', label: 'Feet Color', req: true, opts: [['gold', 'Brushed Gold', 0], ['nickel', 'Polished Nickel', 0], ['black', 'Matte Black', 0], ['chrome', 'Polished Chrome', 0]] },
+    { key: 'feet', label: 'Feet', req: true, sku: (v) => 'F' + v.slice(0, 1).toUpperCase(), opts: [['none', 'No feet (plinth base)', 0], ['claw', 'Ball & Claw', 420], ['imperial', 'Imperial', 380]] },
+    { key: 'waste', label: 'Waste and Overflow', req: false, opts: [['', 'Not required', 0], ['chrome', 'Chrome click-clack', 120], ['gold', 'Brushed Gold', 240], ['black', 'Matte Black', 190], ['nickel', 'Polished Nickel', 220]] },
+  ];
+  const state = {};
+  const grid = document.getElementById('varGrid');
+  const adder = (d) => (d ? ` (${d > 0 ? '+' : '−'}${BLISS.money(Math.abs(d), true)})` : '');
+  const feetless = () => state.feet === 'none';
+
+  function renderSelects() {
+    grid.innerHTML = VARS.map((v) => {
+      const disabled = v.key === 'feetColor' && feetless();
+      return `<label class="var-field${disabled ? ' is-na' : ''}" data-var="${v.key}">
+        <span>${v.label} ${v.req ? '<span class="req" aria-hidden="true">*</span>' : '<em>(optional)</em>'}</span>
+        <select name="${v.key}" ${v.req && !disabled ? 'required aria-required="true"' : ''} ${disabled ? 'disabled' : ''}>
+          ${disabled ? '<option value="na">Not applicable (no feet)</option>' : `<option value="">${v.req ? 'Select an option…' : 'Not required'}</option>`}
+          ${disabled ? '' : v.opts.filter(([val]) => val !== '').map(([val, txt, d]) => `<option value="${val}"${state[v.key] === val ? ' selected' : ''}>${esc(txt)}${adder(d)}</option>`).join('')}
+        </select>
+        ${v.swatch ? `<span class="var-swatches" role="radiogroup" aria-label="${v.label}">${v.opts.map(([val, txt, , c]) => `<button type="button" role="radio" aria-checked="${state[v.key] === val}" data-swatch="${val}" title="${esc(txt)}" aria-label="${esc(txt)}" style="background:${c}"></button>`).join('')}</span>` : ''}
+        <small class="var-err">Please choose a ${v.label.toLowerCase()}.</small>
+      </label>`;
+    }).join('');
+  }
+
+  function selection() {
+    const need = VARS.filter((v) => v.req && !(v.key === 'feetColor' && feetless()));
+    const complete = need.every((v) => state[v.key]);
+    const delta = VARS.reduce((t, v) => t + (v.opts.find(([val]) => val && val === state[v.key])?.[2] || 0), 0);
+    const parts = VARS.map((v) => {
+      if (v.key === 'feetColor' && feetless()) return null;
+      const o = v.opts.find(([val]) => val && val === state[v.key]);
+      return o ? `${v.label}: ${o[1]}` : null;
+    }).filter(Boolean);
+    const sku = ['VA-BAR2', ...VARS.filter((v) => v.sku && state[v.key]).map((v) => v.sku(state[v.key]))].join('-');
+    return { complete, cad: BASE + delta, was: BASE_WAS + delta, label: parts.join(' · '), parts, sku, madeToOrder: state.colour === 'ral' };
+  }
+
+  function priceRange() {
+    let lo = BASE, hi = BASE;
+    VARS.forEach((v) => { const ds = v.opts.map((o) => o[2]); lo += Math.min(...ds, v.req ? Infinity : 0) === Infinity ? 0 : Math.min(...ds); hi += Math.max(...ds); });
+    return [lo, hi];
+  }
+
+  function update() {
+    const sel = selection();
+    const priceEl = document.getElementById('pdpPrice');
+    if (sel.complete) {
+      priceEl.innerHTML = `<span class="sale-price">${BLISS.money(sel.cad)}</span> <del class="was-price" aria-label="Regular price">${BLISS.money(sel.was)}</del> <small data-currency-suffix>${BLISS.currency === 'CAD' ? 'CAD' : ''}</small> <span class="badge sale inline">Sale −${Math.round((1 - sel.cad / sel.was) * 100)}%</span>`;
+    } else {
+      const [lo, hi] = priceRange();
+      priceEl.innerHTML = `<span class="sale-price">${BLISS.money(lo)} – ${BLISS.money(hi)}</span> <small data-currency-suffix>${BLISS.currency === 'CAD' ? 'CAD' : ''}</small> <span class="badge sale inline">Sale</span><small class="price-note">Price depends on the options you choose</small>`;
+    }
+    document.getElementById('sku').textContent = sel.sku;
+    document.getElementById('skuMeta').textContent = sel.sku;
+    const add = document.getElementById('pdpAdd');
+    add.setAttribute('aria-disabled', !sel.complete);
+    add.classList.toggle('is-waiting', !sel.complete);
+    document.getElementById('varClear').hidden = !Object.values(state).some(Boolean);
+    const sum = document.getElementById('varSummary');
+    sum.hidden = !sel.complete;
+    if (sel.complete) {
+      sum.innerHTML = `<div class="vs-head"><b>Your selection</b><span class="sale-price notranslate" translate="no">${BLISS.money(sel.cad)}</span></div>
+        <ul>${sel.parts.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+        <div class="vs-stock ${sel.madeToOrder ? 'mto' : ''}">${icon(sel.madeToOrder ? 'clock' : 'check', 'sm')} ${sel.madeToOrder ? 'Made to order · ships in approximately 6–8 weeks' : 'In stock · typically ships in 2–5 business days'}</div>`;
+    }
+  }
+
+  grid.addEventListener('change', (e) => {
+    const f = e.target.closest('select'); if (!f) return;
+    state[f.name] = f.value;
+    f.closest('.var-field').classList.remove('missing');
+    if (f.name === 'feet') { if (feetless()) delete state.feetColor; renderSelects(); }
+    else if (f.name === 'colour') renderSelects();
+    update();
   });
+  grid.addEventListener('click', (e) => {
+    const sw = e.target.closest('[data-swatch]'); if (!sw) return;
+    state.colour = sw.dataset.swatch;
+    renderSelects(); update();
+  });
+  document.getElementById('varClear').addEventListener('click', () => { Object.keys(state).forEach((k) => delete state[k]); renderSelects(); update(); });
+  document.addEventListener('currency:change', () => { renderSelects(); update(); });
+
+  window.PDP = {
+    selection,
+    flagMissing() {
+      let first = null;
+      VARS.forEach((v) => {
+        if (!v.req || (v.key === 'feetColor' && feetless()) || state[v.key]) return;
+        const f = grid.querySelector(`[data-var="${v.key}"]`);
+        f.classList.add('missing'); first = first || f;
+      });
+      first?.querySelector('select').focus();
+      first?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    },
+  };
+  renderSelects(); update();
+
+  /* ---------- Reviews with customer photos (WooCommerce: e.g. "Customer Reviews for WooCommerce" photo uploads) ---------- */
+  const REVIEWS = [
+    { n: 'Sarah M.', w: 'Toronto, ON', r: 5, d: '2026-09-02', t: 'The centrepiece of our renovation', b: 'Holds heat for ages and the matte black exterior looks incredible. Delivery team was careful and on time.', p: ['pd-room', 'pd-ig2'], h: 14 },
+    { n: 'David K.', w: 'Vancouver, BC', r: 5, d: '2026-08-19', t: 'Worth every penny', b: 'Deep enough to fully soak. The Bliss Bath and Kitchen showroom team helped us pick the right filler too.', p: ['ym-1'], h: 9 },
+    { n: 'Priya R.', w: 'Seattle, WA', r: 4, d: '2026-08-04', t: 'Beautiful, heavy, plan the install', b: 'Gorgeous tub. Make sure your floor is ready for the weight, but otherwise flawless.', p: [], h: 11 },
+    { n: 'Marc L.', w: 'Montréal, QC', r: 5, d: '2026-07-21', t: 'Better than the photos', b: 'The finish is flawless and the shape is so comfortable. Went with the 67" and it fits two kids easily.', p: ['pd-ig3', 'pd-ig4', 'pd-c2'], h: 6 },
+    { n: 'Hannah W.', w: 'Calgary, AB', r: 5, d: '2026-07-02', t: 'Spa at home', b: 'We use it every evening. Warm for a long time and easy to clean.', p: ['pd-ig5'], h: 4 },
+    { n: 'Olivia B.', w: 'Boston, MA', r: 4, d: '2026-06-15', t: 'Lovely tub, long lead time on custom colour', b: 'We ordered a custom RAL colour, it took about 7 weeks but was exactly what we wanted.', p: ['pd-ig1'], h: 3 },
+    { n: 'James P.', w: 'Ottawa, ON', r: 5, d: '2026-05-30', t: 'Great service', b: 'Freight delivery was booked in a 2-hour window and the driver was great.', p: [], h: 2 },
+  ];
+  const dist = { 5: 9, 4: 3, 3: 0, 2: 0, 1: 0 };
+  const allPhotos = REVIEWS.flatMap((r, i) => r.p.map((img) => ({ img, i })));
+  let rvFilter = 'all';
+  const starsOf = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
+  const fmtD = (d) => new Date(d + 'T12:00:00').toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
+  const imgSrc = (x) => (x.startsWith('blob:') ? x : `img/${x}.webp`);
+
+  document.getElementById('rvBars').innerHTML = [5, 4, 3, 2, 1].map((n) => `
+    <button type="button" class="rv-bar" data-rv="${n}" ${dist[n] ? '' : 'disabled'}><span>${n} ★</span><i><em style="width:${(dist[n] / 12) * 100}%"></em></i><span>${dist[n]}</span></button>`).join('');
+  function renderStrip() {
+    document.getElementById('rvPhotoCount').textContent = `(${allPhotos.length})`;
+    document.getElementById('rvStrip').innerHTML = allPhotos.slice(0, 7).map((ph, k) => `
+      <button type="button" class="rv-thumb" data-photo="${k}" aria-label="View customer photo ${k + 1}"><img src="${imgSrc(ph.img)}" alt="" loading="lazy">${k === 6 && allPhotos.length > 7 ? `<span>+${allPhotos.length - 7}</span>` : ''}</button>`).join('');
+  }
+  function renderList() {
+    const withPhotos = REVIEWS.filter((r) => r.p.length).length;
+    document.getElementById('rvFilter').innerHTML = [['all', `All reviews (${REVIEWS.length})`], ['photos', `With photos (${withPhotos})`], ['5', '5 stars'], ['4', '4 stars']]
+      .map(([k, t]) => `<button type="button" aria-pressed="${rvFilter === k}" data-rvf="${k}">${t}</button>`).join('');
+    const list = REVIEWS.filter((r) => rvFilter === 'all' || (rvFilter === 'photos' ? r.p.length : r.r === +rvFilter));
+    document.getElementById('rvList').innerHTML = list.map((r) => {
+      const i = REVIEWS.indexOf(r);
+      return `<article class="review">
+        <div class="rv-head"><div class="stars">${starsOf(r.r)}</div>${r.pending ? '<span class="status st-quote">Pending approval</span>' : ''}<time>${fmtD(r.d)}</time></div>
+        <h4>${esc(r.t)}</h4><p>${esc(r.b)}</p>
+        ${r.p.length ? `<div class="rv-imgs">${r.p.map((img, k) => `<button type="button" class="rv-thumb sm" data-rvimg="${i}:${k}" aria-label="View photo"><img src="${imgSrc(img)}" alt="Customer photo from ${esc(r.n)}" loading="lazy"></button>`).join('')}</div>` : ''}
+        <div class="rv-foot"><small><b>${esc(r.n)}</b>${r.w ? ` · ${esc(r.w)}` : ''} · ${icon('check', 'sm')} Verified buyer</small>
+          <button type="button" class="rv-helpful" data-helpful="${i}">Helpful (${r.h})</button></div>
+      </article>`;
+    }).join('') || '<p class="muted">No reviews match this filter yet.</p>';
+  }
+
+  /* lightbox */
+  const lb = document.createElement('div');
+  lb.className = 'lightbox'; lb.hidden = true; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', 'Customer photo');
+  document.body.append(lb);
+  let lbList = [], lbAt = 0;
+  function openLb(list, at) {
+    lbList = list; lbAt = at;
+    const it = list[at], r = REVIEWS[it.i];
+    lb.innerHTML = `<button class="lb-x" aria-label="Close">${icon('close')}</button>
+      <button class="lb-nav prev" aria-label="Previous photo">${icon('left')}</button>
+      <figure><img src="${imgSrc(it.img)}" alt="Customer photo"><figcaption><span class="stars">${starsOf(r.r)}</span> <b>${esc(r.t)}</b><br><small>${esc(r.n)}${r.w ? ' · ' + esc(r.w) : ''} · ${at + 1} of ${list.length}</small></figcaption></figure>
+      <button class="lb-nav next" aria-label="Next photo">${icon('right')}</button>`;
+    lb.hidden = false; document.body.classList.add('consent-open');
+    lb.querySelector('.lb-x').focus();
+  }
+  const closeLb = () => { lb.hidden = true; document.body.classList.remove('consent-open'); };
+  lb.addEventListener('click', (e) => {
+    if (e.target === lb || e.target.closest('.lb-x')) return closeLb();
+    if (e.target.closest('.prev')) openLb(lbList, (lbAt - 1 + lbList.length) % lbList.length);
+    if (e.target.closest('.next')) openLb(lbList, (lbAt + 1) % lbList.length);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowRight') openLb(lbList, (lbAt + 1) % lbList.length);
+    if (e.key === 'ArrowLeft') openLb(lbList, (lbAt - 1 + lbList.length) % lbList.length);
+  });
+
+  const panelEl = document.getElementById('tab-reviews');
+  panelEl.addEventListener('click', (e) => {
+    const ph = e.target.closest('[data-photo]'); if (ph) return openLb(allPhotos, +ph.dataset.photo);
+    const ri = e.target.closest('[data-rvimg]');
+    if (ri) { const [i, k] = ri.dataset.rvimg.split(':').map(Number); const list = REVIEWS[i].p.map((img) => ({ img, i })); return openLb(list, k); }
+    const f = e.target.closest('[data-rvf]'); if (f) { rvFilter = f.dataset.rvf; renderList(); }
+    const bar = e.target.closest('[data-rv]'); if (bar) { rvFilter = bar.dataset.rv; renderList(); }
+    const h = e.target.closest('[data-helpful]');
+    if (h && !h.disabled) { REVIEWS[h.dataset.helpful].h++; h.textContent = `Helpful (${REVIEWS[h.dataset.helpful].h})`; h.disabled = true; }
+  });
+
+  /* write a review + photo upload */
+  const form = document.getElementById('rvForm');
+  form.querySelector('.rate-stars').innerHTML = [5, 4, 3, 2, 1].map((n) => `<input type="radio" name="rating" id="r${n}" value="${n}" required><label for="r${n}" title="${n} star${n > 1 ? 's' : ''}">★</label>`).join('');
+  let uploads = [];
+  const drop = document.getElementById('rvDrop'), files = document.getElementById('rvFiles'), prev = document.getElementById('rvPreviews');
+  function addFiles(list) {
+    const ok = [...list].filter((f) => /^image\//.test(f.type) && f.size <= 10 * 1024 * 1024);
+    if (ok.length < list.length) toast('Some files were skipped: images up to 10 MB only');
+    uploads = uploads.concat(ok.map((f) => ({ f, url: URL.createObjectURL(f) }))).slice(0, 5);
+    if (list.length + uploads.length > 5) toast('You can add up to 5 photos');
+    prev.innerHTML = uploads.map((u, k) => `<span class="rv-prev"><img src="${u.url}" alt=""><button type="button" data-unup="${k}" aria-label="Remove photo">${icon('close', 'sm')}</button></span>`).join('');
+  }
+  files.addEventListener('change', () => { addFiles(files.files); files.value = ''; });
+  ['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', (e) => addFiles(e.dataTransfer.files));
+  prev.addEventListener('click', (e) => { const b = e.target.closest('[data-unup]'); if (!b) return; URL.revokeObjectURL(uploads[b.dataset.unup].url); uploads.splice(+b.dataset.unup, 1); addFiles([]); });
+  const openForm = () => { form.hidden = false; form.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(() => form.querySelector('#r5').focus(), 400); };
+  document.getElementById('writeReview').addEventListener('click', openForm);
+  document.getElementById('rvCancel').addEventListener('click', () => { form.hidden = true; });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const bad = [...form.elements].filter((el) => el.willValidate && !el.checkValidity());
+    if (bad.length) { bad[0].focus(); bad[0].reportValidity(); return; }
+    REVIEWS.unshift({ n: form.name.value.trim(), w: form.where.value.trim(), r: +form.rating.value, d: new Date().toISOString().slice(0, 10), t: form.title.value.trim(), b: form.body.value.trim(), p: uploads.map((u) => u.url), h: 0, pending: true });
+    uploads.forEach((u) => allPhotos.unshift({ img: u.url, i: 0 }));
+    allPhotos.forEach((ph) => { if (!ph.img.startsWith('blob:')) ph.i += 1; });
+    uploads = []; prev.innerHTML = ''; form.reset(); form.hidden = true;
+    rvFilter = 'all'; renderStrip(); renderList();
+    document.getElementById('rvList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    toast('Thanks! Your review will appear once approved');
+  });
+  // "4.8 (12 reviews)" link under the title opens the reviews tab
+  document.querySelector('[data-open-reviews]').addEventListener('click', (e) => {
+    e.preventDefault(); document.querySelector('[data-tab="reviews"]').click();
+    document.getElementById('reviews').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  renderStrip(); renderList();
+
+  /* ---------- Phones: sticky add-to-cart bar + swipeable gallery ---------- */
+  (function mobileBuy() {
+    const bar = document.getElementById('stickyBuy'), btn = document.getElementById('sbBtn'), main = document.getElementById('pdpAdd');
+    const sync = () => {
+      const sel = window.PDP.selection();
+      document.getElementById('sbPrice').textContent = document.getElementById('pdpPrice').querySelector('.sale-price')?.textContent || '';
+      btn.textContent = sel.complete ? 'Add to Cart' : 'Select Options';
+    };
+    new IntersectionObserver(([en]) => {
+      const show = !en.isIntersecting && en.boundingClientRect.top < 0;
+      bar.classList.toggle('show', show); bar.setAttribute('aria-hidden', !show);
+      document.body.classList.toggle('has-sticky-buy', show);
+      if (show) sync();
+    }).observe(main);
+    document.getElementById('variations').addEventListener('change', sync);
+    btn.addEventListener('click', () => {
+      if (window.PDP.selection().complete) main.click();
+      else { window.PDP.flagMissing(); }
+    });
+    // swipe the main product photo
+    const stage = document.querySelector('.stage');
+    let x0 = null;
+    stage.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) document.querySelector(`[data-gal="${dx < 0 ? 1 : -1}"]`)?.click();
+    });
+  })();
 
   // Qty
   const q = document.querySelector('.qty input');

@@ -142,12 +142,17 @@ window.BLISS = (() => {
   const save = () => { store.set('bliss_cart', cart); document.dispatchEvent(new CustomEvent('cart:change')); };
   const key = (id, variant) => `${id}|${variant || ''}`;
   const cartApi = {
-    items: () => cart.map((l) => ({ ...l, product: byId(l.id) })).filter((l) => l.product),
+    items: () => cart.map((l) => {
+      const p = byId(l.id);
+      if (!p) return null;
+      const product = l.cad && l.cad !== p.cad ? { ...p, cad: l.cad, was: p.was ? p.was + (l.cad - p.cad) : undefined } : p;
+      return { ...l, product };
+    }).filter(Boolean),
     count: () => cart.reduce((n, l) => n + l.qty, 0),
     subtotal: () => cartApi.items().reduce((s, l) => s + l.product.cad * l.qty, 0),
-    add(id, qty = 1, variant = '') {
+    add(id, qty = 1, variant = '', cad = null) {
       const line = cart.find((l) => key(l.id, l.variant) === key(id, variant));
-      line ? (line.qty = Math.min(line.qty + qty, 20)) : cart.push({ id, qty, variant });
+      line ? (line.qty = Math.min(line.qty + qty, 20)) : cart.push(cad ? { id, qty, variant, cad } : { id, qty, variant });
       save();
     },
     setQty(id, variant, qty) {

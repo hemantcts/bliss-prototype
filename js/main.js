@@ -97,7 +97,7 @@ const NAV = [
   ['Lighting', 'search.html?cat=Lighting'], ['Furniture', 'search.html?cat=Furniture'], ['Brands', 'brands.html'],
   ['Inspiration', 'shop-the-look.html'], ['Sale', 'search.html?q=sale'],
 ];
-const navActive = { collection: 'Bath', product: 'Bath', brands: 'Brands', looks: 'Inspiration', look: 'Inspiration', blog: 'Inspiration', 'blog-post': 'Inspiration' };
+const navActive = { collection: 'Bath', product: 'Bath', brands: 'Brands', brand: 'Brands', looks: 'Inspiration', look: 'Inspiration', blog: 'Inspiration', 'blog-post': 'Inspiration' };
 const navLink = ([n, href]) => `<a href="${href}" class="${n === 'Sale' ? 'sale' : ''}${navActive[PAGE] === n ? ' active' : ''}">${n}</a>`;
 
 /* Category link lists: shared by the mega menu, mobile menu and footer (keep every SEO link) */
@@ -115,7 +115,7 @@ const LINKS = {
   vent: [L('Range Hoods'), L('Downdraft Ventilation')],
   lighting: [L('Chandeliers'), L('Pendants'), L('Vanity Lights'), L('Wall Sconces')],
   furniture: [L('Living', 'search.html?cat=Furniture'), L('Dining', 'search.html?cat=Furniture'), L('Bedroom', 'search.html?cat=Furniture'), L('Mirrors')],
-  brands: BLISS.brands.filter((b) => b.featured).map((b) => L(b.name)),
+  brands: BLISS.brands.filter((b) => b.featured).map((b) => L(b.name, `brand.html?b=${b.slug}`)),
 };
 const linkList = (items) => `<ul>${items.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>`;
 const megaCol = (title, items) => `<div class="mega-col"><h4>${title}</h4>${linkList(items)}</div>`;
@@ -222,7 +222,7 @@ const PAGES = [
   ['Search / Shop', 'search.html?q=tub', 'search'], ['Cart', 'cart.html', 'cart'], ['Wishlist', 'wishlist.html', 'wishlist'], ['Login / Register', 'account.html', 'account'], ['Forgot password', 'account.html?view=lost-password', 'account-lost'], ['Checkout', 'checkout.html', 'checkout'],
   ['Order confirmed', 'order-confirmed.html', 'confirmed'], ['Our Story', 'about.html', 'about'], ['Contact', 'contact.html', 'contact'],
   ['Trade Program', 'trade.html', 'trade'], ['Project Inquiries', 'projects.html', 'projects'], ['Showroom', 'showroom.html', 'showroom'],
-  ['Brands', 'brands.html', 'brands'], ['Shop the Look', 'shop-the-look.html', 'looks'], ['Look detail', 'look.html?look=dark-drama', 'look'], ['Blog', 'blog.html', 'blog'], ['Blog article', 'blog-post.html', 'blog-post'], ['Terms & Conditions', 'terms.html', 'terms'], ['Returns', 'returns.html', 'returns'], ['Shipping Policy', 'shipping.html', 'shipping'], ['Privacy Policy', 'privacy.html', 'privacy'],
+  ['Brands', 'brands.html', 'brands'], ['Brand page', 'brand.html?b=victoria-albert', 'brand'], ['Shop the Look', 'shop-the-look.html', 'looks'], ['Look detail', 'look.html?look=dark-drama', 'look'], ['Blog', 'blog.html', 'blog'], ['Blog article', 'blog-post.html', 'blog-post'], ['Terms & Conditions', 'terms.html', 'terms'], ['Returns', 'returns.html', 'returns'], ['Shipping Policy', 'shipping.html', 'shipping'], ['Privacy Policy', 'privacy.html', 'privacy'],
 ];
 const footerHTML = `
 <footer class="site-footer"><div class="wrap">
@@ -439,13 +439,17 @@ document.addEventListener('click', (e) => {
   const add = e.target.closest('[data-add]');
   if (add) {
     e.preventDefault();
-    let qty = 1, variant = '';
+    let qty = 1, variant = '', cad = null;
     if (add.dataset.add === 'pdp') {
       qty = parseInt(document.querySelector('.buy .qty input')?.value, 10) || 1;
-      variant = document.getElementById('colourName')?.textContent || '';
+      if (window.PDP) {                       // variable product: every required option must be chosen
+        const sel = window.PDP.selection();
+        if (!sel.complete) { window.PDP.flagMissing(); toast('Please select all required product options before adding to your cart'); return; }
+        variant = sel.label; cad = sel.cad;
+      } else variant = document.getElementById('colourName')?.textContent || '';
     }
     const id = add.dataset.add === 'pdp' ? add.dataset.id : add.dataset.add;
-    BLISS.cart.add(id, qty, variant);
+    BLISS.cart.add(id, qty, variant, cad);
     add.classList.add('added');
     setTimeout(() => add.classList.remove('added'), 1200);
     if (!add.closest('.drawer')) openCart();

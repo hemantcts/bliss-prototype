@@ -67,7 +67,7 @@
 <script src="js/main.js"></script>
 <script>
   // In WooCommerce each tile links to the brand archive at the live site's URL: /brands/<slug>/
-  const link = (b) => `search.html?q=${encodeURIComponent(b.name)}`;
+  const link = (b) => `brand.html?b=${b.slug}`;
   const initials = (n) => n.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
 
   document.getElementById('featured').innerHTML = BLISS.brands.filter((b) => b.featured).map((b) => `
