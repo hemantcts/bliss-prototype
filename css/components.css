@@ -1037,3 +1037,41 @@ body, .site-header, .site-footer, .topbar, .hero, .btn, .room-card, .p-card { tr
   .wl-tools { width: 100%; }
   .wl-shared .btn { margin-left: 0; }
 }
+
+/* =========================================================
+   Home: Our Story (full width, categories list removed)
+   ========================================================= */
+.story { grid-template-columns: 44% 1fr; }
+.story-inner.story-full { grid-template-columns: 1fr; max-width: 760px; padding: 64px var(--gutter) 64px 64px; }
+.story-full h2 { font-size: 42px; margin-bottom: 14px; }
+.story-full p { margin-bottom: 14px; }
+.story-full .story-lead { font-family: var(--serif); font-size: 23px; line-height: 1.35; color: var(--ink); margin-bottom: 16px; }
+.story-full em { font-style: italic; color: var(--ink); }
+.story-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); margin: 26px 0 24px; }
+.story-stats div { padding: 16px 16px 16px 0; }
+.story-stats div + div { padding-left: 20px; border-left: 1px solid var(--line-strong); }
+.story-stats b { display: block; font-family: var(--serif); font-size: 38px; font-weight: 500; color: var(--ink); line-height: 1; margin-bottom: 6px; }
+.story-stats span { font-size: 12.5px; color: var(--muted); }
+.story-pillars { list-style: none; margin: 0 0 28px; padding: 0; display: grid; gap: 14px; }
+.story-pillars li { display: grid; grid-template-columns: 26px 1fr; gap: 14px; align-items: start; font-size: 14px; color: var(--muted); line-height: 1.55; }
+.story-pillars .icon { width: 22px; height: 22px; color: var(--gold); margin-top: 1px; }
+.story-pillars strong { color: var(--ink); font-weight: 500; }
+@media (max-width: 1180px) { .story-inner.story-full { padding-left: 44px; } }
+@media (max-width: 980px) { .story { grid-template-columns: 1fr; } .story-inner.story-full { padding: 44px var(--gutter); max-width: none; } }
+@media (max-width: 680px) {
+  .story-full h2 { font-size: 32px; }
+  .story-full .story-lead { font-size: 20px; }
+  .story-stats b { font-size: 30px; }
+  .story-stats div + div { padding-left: 12px; }
+}
+
+/* =========================================================
+   Navy theme (#212D7B) with warm gold
+   ========================================================= */
+:root[data-theme="navy"] {
+  --bg: #f5f4f0; --surface: #fbfaf8; --panel: #eaebf0; --line: #dcdee6; --line-strong: #c9cdda; --tint: #f4f5f9;
+  --ink: #161c48; --text: #2e3452; --muted: #6a7089;
+  --dark: #212d7b; --dark-2: #2c3a8f; --dark-rgb: 33, 45, 123; --shade-rgb: 10, 14, 44;
+  --gold: #b0874d; --gold-soft: #d8be8f;
+}
+:root[data-theme="navy"] .sale-price { color: #a33a26; }

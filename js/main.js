@@ -924,7 +924,7 @@ if (autoSearch !== null) openSearch(autoSearch);
 
 /* ---------- Prototype: colour theme switcher (Current / Green / Maroon) ---------- */
 (function themePicker() {
-  const THEMES = [['', 'Current', '#2b2118', '#a9834a'], ['green', 'Green', '#1f3a2e', '#b08d57'], ['maroon', 'Maroon', '#4a1c24', '#b8925a']];
+  const THEMES = [['', 'Current', '#2b2118', '#a9834a'], ['green', 'Green', '#1f3a2e', '#b08d57'], ['maroon', 'Maroon', '#4a1c24', '#b8925a'], ['navy', 'Navy', '#212d7b', '#b0874d']];
   const cur = document.documentElement.dataset.theme || '';
   const box = document.createElement('div');
   box.className = 'theme-pick';
