@@ -924,7 +924,7 @@ if (autoSearch !== null) openSearch(autoSearch);
 
 /* ---------- Prototype: colour theme switcher (Current / Green / Maroon) ---------- */
 (function themePicker() {
-  const THEMES = [['', 'Current', '#2b2118', '#a9834a'], ['green', 'Royal Green', '#0b4431', '#b08a4e'], ['maroon', 'Deep Maroon', '#3b0d16', '#b48a50'], ['night', 'Night Blue', '#0f1b33', '#b48a50'], ['classic', 'Classic Navy', '#212a79', '#72aacb']];
+  const THEMES = [['', 'Current', '#2b2118', '#a9834a'], ['green', 'Royal Green', '#0b4431', '#b08a4e'], ['maroon', 'Deep Maroon', '#3b0d16', '#b48a50'], ['night', 'Night Blue', '#0f1b33', '#b48a50'], ['classic', 'Night Blue + Logo', '#0f1b33', '#72aacb']];
   if (document.documentElement.dataset.theme === 'navy') document.documentElement.dataset.theme = 'night';
   const cur = document.documentElement.dataset.theme || '';
   const box = document.createElement('div');
