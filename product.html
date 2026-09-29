@@ -55,6 +55,9 @@
           <a href="#reviews" class="stars" data-open-reviews>★★★★★<em>4.8 (12 reviews · 6 with photos)</em></a>
           <span class="sku">SKU: <b id="sku">VA-BAR2</b></span>
         </div>
+        <!-- SAMPLE ONLY: design placeholder. On the live site this must show a real live viewer count or be removed
+             (a made-up count is a misleading claim under the Competition Act / FTC Act). -->
+        <p class="watching"><span class="live-dot" aria-hidden="true"></span><i data-icon="users" class="sm"></i><span><b>126</b> people are viewing this product</span></p>
         <p class="lead">The Barcelona 2 is a modern interpretation of a classic shape, offering a refined and sophisticated look that complements a variety of bathroom styles. Crafted with the finest materials, it delivers both beauty and lasting performance.</p>
         <div class="price notranslate" id="pdpPrice" translate="no"></div>
 
@@ -300,9 +303,13 @@
   </section>
 </main>
 
-<div class="sticky-buy notranslate-price" id="stickyBuy" aria-hidden="true">
-  <div class="sb-info"><span class="sb-name">Barcelona 2 Freestanding Bathtub</span><span class="sb-price notranslate" translate="no" id="sbPrice"></span></div>
-  <button class="btn sm" type="button" id="sbBtn">Select Options</button>
+<div class="sticky-buy" id="stickyBuy" aria-hidden="true">
+  <img class="sb-thumb" src="img/pd-main.webp" alt="" width="64" height="64">
+  <div class="sb-info">
+    <span class="sb-name">Victoria + Albert Barcelona 2 Freestanding Bathtub</span>
+    <span class="sb-price notranslate" translate="no"><span class="sale-price" id="sbPrice"></span> <del class="was-price" id="sbWas"></del></span>
+  </div>
+  <button class="sb-btn" type="button" id="sbBtn">Buy Now</button>
 </div>
 <div id="newsletter"></div>
 <div id="site-footer"></div>
@@ -329,7 +336,7 @@
   const BASE = 6490, BASE_WAS = 7190;
   const VARS = [
     { key: 'size', label: 'Bathtub Size', req: true, sku: (v) => v, opts: [['59', '59" (1500 mm)', -600], ['67', '67" (1700 mm)', 0], ['71', '71" (1800 mm)', 650]] },
-    { key: 'colour', label: 'Bathtub Colour', req: true, sku: (v) => v.toUpperCase(), swatch: true, opts: [
+    { key: 'colour', label: 'Bathtub Colour', req: true, sku: (v) => v.toUpperCase(), opts: [
       ['bw', 'Black / White (interior / exterior)', 0, '#1f1c1a'], ['gw', 'Gloss White', 0, '#fbfaf7'], ['mw', 'Matte White', 290, '#ece8e1'],
       ['ral', 'Custom RAL Colour (made to order)', 1150, 'conic-gradient(#8a3b2a, #c9a870, #3f5a47, #2b3c63, #8a3b2a)']] },
     { key: 'hole', label: 'Faucet Hole', req: true, sku: (v) => 'H' + v.toUpperCase().slice(0, 1), opts: [['none', 'No holes (floor-mount filler)', 0], ['1', '1 hole, deck-mount', 180], ['3', '3 holes, 8" centres', 260]] },
@@ -555,19 +562,25 @@
     const bar = document.getElementById('stickyBuy'), btn = document.getElementById('sbBtn'), main = document.getElementById('pdpAdd');
     const sync = () => {
       const sel = window.PDP.selection();
-      document.getElementById('sbPrice').textContent = document.getElementById('pdpPrice').querySelector('.sale-price')?.textContent || '';
-      btn.textContent = sel.complete ? 'Add to Cart' : 'Select Options';
+      // before options are chosen show the "from" price, like Bathify shows the starting price
+      document.getElementById('sbPrice').textContent = BLISS.money(sel.complete ? sel.cad : 5890);
+      document.getElementById('sbWas').textContent = BLISS.money(sel.complete ? sel.was : 6590);
     };
+    // visible whenever the main Add to Cart button is off screen (from page load, like Bathify)
     new IntersectionObserver(([en]) => {
-      const show = !en.isIntersecting && en.boundingClientRect.top < 0;
+      const show = !en.isIntersecting;
       bar.classList.toggle('show', show); bar.setAttribute('aria-hidden', !show);
       document.body.classList.toggle('has-sticky-buy', show);
       if (show) sync();
     }).observe(main);
     document.getElementById('variations').addEventListener('change', sync);
+    // Buy Now: add the chosen configuration and go straight to checkout; if options are missing, take the shopper to them
     btn.addEventListener('click', () => {
-      if (window.PDP.selection().complete) main.click();
-      else { window.PDP.flagMissing(); }
+      const sel = window.PDP.selection();
+      if (!sel.complete) { window.PDP.flagMissing(); toast('Choose your options to buy now'); return; }
+      const qty = parseInt(document.querySelector('.buy .qty input')?.value, 10) || 1;
+      BLISS.cart.add('va-barcelona-2', qty, sel.label, sel.cad);
+      location.href = 'checkout.html';
     });
     // swipe the main product photo
     const stage = document.querySelector('.stage');

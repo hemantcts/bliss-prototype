@@ -1491,3 +1491,37 @@ img { height: auto; }
   .buy-row .btn .icon { display: none; }
   .buy-row .wish-btn { width: 48px; flex: none; }
 }
+
+/* Product: Bathify-style sticky Buy Now bar (phones) */
+.sticky-buy { gap: 14px; padding: 12px 16px max(12px, env(safe-area-inset-bottom)); }
+.sb-thumb { width: 64px; height: 64px; object-fit: cover; background: var(--panel); flex: none; }
+.sticky-buy .sb-name { font-size: 14px; line-height: 1.35; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 4px; font-weight: 500; }
+.sticky-buy .sb-price { display: flex; align-items: baseline; gap: 8px; font-size: 17px; font-weight: 600; }
+.sticky-buy .sb-price .was-price { font-size: 14px; }
+.sb-btn { flex: none; min-height: 52px; padding: 0 22px; border-radius: 26px; background: var(--dark); color: #fff; font-size: 15px; font-weight: 500; letter-spacing: .02em; transition: background .2s; }
+.sb-btn:active { background: var(--gold); }
+body.has-sticky-buy .toast { bottom: 100px; }
+
+/* Product: "people viewing" line (SAMPLE, needs real data before launch) */
+.watching { display: inline-flex; align-items: center; gap: 8px; margin: -6px 0 14px; padding: 6px 12px; border-radius: 16px; background: rgba(178,58,42,.07); color: #8a3b2a; font-size: 13px; }
+.watching .icon { color: #8a3b2a; }
+.watching b { font-weight: 600; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: #d0402b; box-shadow: 0 0 0 0 rgba(208,64,43,.5); animation: livepulse 1.8s ease-out infinite; }
+@keyframes livepulse { 70% { box-shadow: 0 0 0 7px rgba(208,64,43,0); } 100% { box-shadow: 0 0 0 0 rgba(208,64,43,0); } }
+@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+
+/* Phones: keep prototype helpers out of the way of real content */
+@media (max-width: 680px) {
+  .proto-badge { display: none !important; }
+  .theme-pick { padding: 5px 8px; gap: 6px; left: 8px; bottom: 8px; transform: none; opacity: .92; }
+  .theme-pick em, .theme-pick span { display: none; }
+  .theme-pick button { width: 20px; height: 20px; }
+  body.has-sticky-buy .theme-pick { bottom: 98px; }
+  body.has-cookie .theme-pick { bottom: 250px; }
+}
+@media (max-width: 680px) {
+  .cookie-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .cookie-actions .btn { letter-spacing: .08em; white-space: normal; line-height: 1.3; }
+  .cookie-actions [data-c="accept"] { grid-column: 1 / -1; order: -1; }
+  .cookie { font-size: 13px; }
+}
