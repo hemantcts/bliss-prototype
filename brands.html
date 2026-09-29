@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Bathroom &amp; Kitchen Brands | Bliss Bath &amp; Kitchen</title>
+<meta name="description" content="Shop 59 leading bathroom, kitchen and appliance brands at Bliss Bath & Kitchen, including TOTO, Kohler, Victoria + Albert, Riobel, Rohl, Graff, ILVE and SMEG.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script>try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="brands">
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero plain">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur">Brands</span></nav>
+      <span class="eyebrow">Our Brands</span>
+      <h1>The World's Leading Brands, All in One Place</h1>
+      <p>Discover an exceptional selection of established names in bath, kitchen and home, chosen by a team with more than three decades in the industry.</p>
+    </div>
+  </section>
+
+  <section class="section tight">
+    <div class="wrap">
+      <div class="row-head reveal"><div><h2>Featured Brands</h2><p>Signature names our specialists know inside out.</p></div></div>
+      <div class="featured-brands" id="featured"></div>
+    </div>
+  </section>
+
+  <section class="section tight" style="background:var(--panel)" id="directory">
+    <div class="wrap">
+      <div class="dir-head">
+        <div><h2 class="dir-title">All Brands <span class="muted" id="brandCount"></span></h2></div>
+        <label class="results-search dir-search"><input type="search" id="brandSearch" placeholder="Find a brand…" aria-label="Find a brand"><span style="display:grid;place-items:center;padding:0 14px"><i data-icon="search" class="sm"></i></span></label>
+      </div>
+      <div class="chips" id="brandCats" role="group" aria-label="Filter by category"></div>
+      <nav class="az" id="az" aria-label="Jump to letter"></nav>
+      <div id="dir"></div>
+      <div class="empty-state" id="noBrand" hidden><h2>No brand found</h2><p>We work with many more manufacturers than we list here. <a href="contact.html" style="color:var(--gold);text-decoration:underline">Ask a specialist</a> and we'll source it for you.</p></div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap">
+      <div style="max-width:620px"><span class="eyebrow">Can't find a brand?</span><h2 style="font-size:36px;margin-bottom:10px">We can source it</h2><p style="margin:0">Our team has relationships with manufacturers across North America and Europe. Tell us what you're looking for.</p></div>
+      <div class="hero-cta"><a class="btn light" href="contact.html">Ask a Specialist <i data-icon="arrow" class="sm"></i></a><a class="btn light" href="trade.html">Trade Program</a></div>
+    </div>
+  </section>
+</main>
+
+<div id="newsletter"></div>
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // In WooCommerce each tile links to the brand archive at the live site's URL: /brands/<slug>/
+  const link = (b) => `search.html?q=${encodeURIComponent(b.name)}`;
+  const initials = (n) => n.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+
+  document.getElementById('featured').innerHTML = BLISS.brands.filter((b) => b.featured).map((b) => `
+    <a class="fb-tile reveal" href="${link(b)}" data-slug="${b.slug}">
+      <span class="fb-mark">${esc(b.name)}</span>
+      <span class="fb-tag">${esc(b.featured)}</span>
+      <span class="link-arrow">Shop ${esc(b.name)} ${icon('arrow', 'sm')}</span>
+    </a>`).join('');
+  observeReveal(document.getElementById('featured'));
+
+  const CATS = ['All', 'Bath', 'Kitchen', 'Appliances', 'Outdoor'];
+  let cat = 'All', term = '';
+  const catsEl = document.getElementById('brandCats');
+  function renderCats() {
+    catsEl.innerHTML = CATS.map((c) => `<button type="button" aria-pressed="${c === cat}" data-v="${c}">${c} <span class="muted">${c === 'All' ? BLISS.brands.length : BLISS.brands.filter((b) => b.cats.includes(c)).length}</span></button>`).join('');
+  }
+  function render() {
+    const t = term.trim().toLowerCase();
+    const list = BLISS.brands.filter((b) => (cat === 'All' || b.cats.includes(cat)) && (!t || b.name.toLowerCase().includes(t)))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    const groups = {};
+    list.forEach((b) => { const L = /[a-z]/i.test(b.name[0]) ? b.name[0].toUpperCase() : '#'; (groups[L] ||= []).push(b); });
+    document.getElementById('brandCount').textContent = `(${list.length})`;
+    document.getElementById('az').innerHTML = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((L) =>
+      groups[L] ? `<a href="#letter-${L}">${L}</a>` : `<span aria-hidden="true">${L}</span>`).join('');
+    document.getElementById('dir').innerHTML = Object.keys(groups).sort().map((L) => `
+      <div class="dir-group" id="letter-${L}">
+        <h3 class="dir-letter">${L}</h3>
+        <div class="dir-grid">${groups[L].map((b) => `
+          <a class="dir-tile" href="${link(b)}" data-slug="${b.slug}">
+            <span class="dir-mono">${initials(b.name)}</span>
+            <span><b>${t ? esc(b.name).replace(new RegExp(`(${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'i'), '<mark>$1</mark>') : esc(b.name)}</b>
+            <small>${b.cats.join(' · ')}</small></span>
+            ${icon('arrow', 'sm')}
+          </a>`).join('')}</div>
+      </div>`).join('');
+    document.getElementById('noBrand').hidden = list.length > 0;
+    renderCats();
+  }
+  catsEl.addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { cat = b.dataset.v; render(); } });
+  document.getElementById('brandSearch').addEventListener('input', (e) => { term = e.target.value; render(); });
+  render();
+</script>
+</body>
+</html>

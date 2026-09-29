@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Contact Us | Bliss Bath &amp; Kitchen</title>
+<meta name="description" content="Product advice, order support, trade and design services. Contact the Bliss team in Markham, Ontario: 1-855-366-1001.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script>try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="contact">
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero plain">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur">Contact Us</span></nav>
+      <span class="eyebrow">Contact Us</span>
+      <h1>We're Here to Help</h1>
+      <p>Whether you're looking for product advice, placing an order or sourcing an entire project, our team is here to make the process easier.</p>
+    </div>
+  </section>
+
+  <div class="wrap contact-grid">
+    <div class="form-card reveal">
+      <h2>How Can We Help?</h2>
+      <p>Send us a message and a specialist will reply within one business day.</p>
+      <form class="form" data-demo-form data-success-title="Message sent" data-success-text="Thanks for reaching out. A Bliss specialist will reply within one business day.">
+        <div class="form-grid">
+          <label class="field full"><span>Name</span><input name="name" required autocomplete="name"></label>
+          <label class="field"><span>Email</span><input type="email" name="email" required autocomplete="email"><small class="err">Enter a valid email address</small></label>
+          <label class="field"><span>Phone <em>(optional)</em></span><input type="tel" name="phone" autocomplete="tel"></label>
+        </div>
+        <fieldset class="field" style="border:0;padding:0;margin:0"><span>I'm interested in</span>
+          <div class="pills">
+            <label><input type="radio" name="topic" value="product" checked><span>Product Assistance</span></label>
+            <label><input type="radio" name="topic" value="order"><span>Order Support</span></label>
+            <label><input type="radio" name="topic" value="trade"><span>Trade</span></label>
+            <label><input type="radio" name="topic" value="design"><span>Design Services</span></label>
+            <label><input type="radio" name="topic" value="other"><span>Other</span></label>
+          </div>
+        </fieldset>
+        <label class="field" id="orderField" hidden><span>Order number</span><input name="order" placeholder="BL-000000"></label>
+        <label class="field"><span>Message</span><textarea name="message" required rows="5" placeholder="Tell us about your project or question…"></textarea></label>
+        <div><button class="btn" type="submit">Send Message <i data-icon="arrow" class="sm"></i></button></div>
+      </form>
+    </div>
+
+    <div class="contact-side">
+      <div class="i-card reveal"><i data-icon="compass"></i><h3>Product &amp; Design Assistance</h3><p>Need help selecting a faucet, coordinating finishes or completing a room? Speak with one of our product specialists.</p><a class="link-arrow" href="tel:18553661001">1-855-366-1001 <i data-icon="arrow" class="sm"></i></a></div>
+      <div class="i-card reveal"><i data-icon="box"></i><h3>Order Support</h3><p>Have a question about an existing order, delivery or product? Our customer care team is ready to assist.</p><a class="link-arrow" href="mailto:admin@blissbathandkitchen.com">admin@blissbathandkitchen.com</a></div>
+      <div class="i-card reveal"><i data-icon="store"></i><h3>Visit Our Showroom</h3><p>5 Shields Court, Unit 104<br>Markham, Ontario<br>1-855-366-1001</p><a class="link-arrow" href="showroom.html">Plan your visit <i data-icon="arrow" class="sm"></i></a></div>
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.querySelectorAll('input[name=topic]').forEach((r) => r.addEventListener('change', () => {
+    document.getElementById('orderField').hidden = document.querySelector('input[name=topic]:checked').value !== 'order';
+  }));
+</script>
+</body>
+</html>

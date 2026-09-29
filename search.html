@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Shop | Bliss Bath &amp; Kitchen</title>
+<meta name="description" content="Search luxury bath, kitchen, appliance and lighting products from the world's leading brands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script>try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="search">
+<div id="site-header"></div>
+
+<main>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur" id="crumb">Shop</span></nav>
+    <div class="results-head">
+      <div>
+        <span class="eyebrow" id="eyebrow">Shop</span>
+        <h1 id="title">All Products</h1>
+      </div>
+      <form class="results-search" role="search" action="search.html">
+        <input type="search" name="q" id="q" placeholder="Search products, brands, finishes…" aria-label="Search">
+        <button aria-label="Search"><i data-icon="search"></i></button>
+      </form>
+    </div>
+    <div class="facet-bar">
+      <div class="chips" id="catChips" role="group" aria-label="Category"></div>
+      <select id="sort" aria-label="Sort">
+        <option value="rel">Sort: Most relevant</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="rating">Top Rated</option>
+      </select>
+    </div>
+    <div class="chips" id="brandChips" role="group" aria-label="Brand" style="margin-bottom:22px"></div>
+    <p class="muted" id="count" style="font-size:13px;margin-bottom:16px"></p>
+    <div class="p-grid" id="grid" style="margin-bottom:80px"></div>
+  </div>
+</main>
+
+<div id="newsletter"></div>
+<div id="site-footer"></div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const q = (params.get('q') || '').trim();
+  let cat = params.get('cat') || 'All';
+  let brand = 'All';
+  let sort = 'rel';
+  document.getElementById('q').value = q;
+
+  const SPECIAL = {
+    new: { title: 'New Arrivals', eyebrow: 'Just in', filter: (p) => p.tag === 'New' },
+    best: { title: 'Best Sellers', eyebrow: 'Customer favourites', filter: (p) => p.tag === 'Best Seller' || p.rating >= 4.8 },
+    sale: { title: 'Sale', eyebrow: 'Limited-time offers', filter: (p) => BLISS.onSale(p) },
+  };
+  const special = SPECIAL[q.toLowerCase()];
+  const base = special ? BLISS.products.filter(special.filter) : q ? searchProducts(q) : BLISS.products;
+
+  const title = document.getElementById('title');
+  const eyebrow = document.getElementById('eyebrow');
+  if (special) { title.textContent = special.title; eyebrow.textContent = special.eyebrow; }
+  else if (q) { title.innerHTML = `Results for <em>“${esc(q)}”</em>`; eyebrow.textContent = 'Search'; }
+  else if (cat !== 'All') { title.textContent = cat; eyebrow.textContent = 'Shop by space'; }
+  document.getElementById('crumb').textContent = special ? special.title : q ? 'Search' : cat === 'All' ? 'Shop' : cat;
+  document.title = `${special ? special.title : q ? 'Search: ' + q : cat === 'All' ? 'Shop' : cat} | Bliss Bath & Kitchen`;
+
+  const CATS = ['All', 'Bath', 'Kitchen', 'Appliances', 'Lighting', 'Furniture'];
+  function chips(el, values, current, counts) {
+    el.innerHTML = values.map((v) => `<button type="button" aria-pressed="${v === current}" data-v="${esc(v)}">${esc(v)}${counts ? ` <span class="muted">${counts(v)}</span>` : ''}</button>`).join('');
+  }
+  function render() {
+    const inCat = base.filter((p) => cat === 'All' || p.cat === cat);
+    const brands = ['All', ...new Set(inCat.map((p) => p.brand))];
+    if (!brands.includes(brand)) brand = 'All';
+    chips(document.getElementById('catChips'), CATS, cat, (c) => c === 'All' ? base.length : base.filter((p) => p.cat === c).length);
+    chips(document.getElementById('brandChips'), brands, brand);
+    let list = inCat.filter((p) => brand === 'All' || p.brand === brand);
+    if (sort === 'low') list = [...list].sort((a, b) => a.cad - b.cad);
+    if (sort === 'high') list = [...list].sort((a, b) => b.cad - a.cad);
+    if (sort === 'rating') list = [...list].sort((a, b) => b.rating - a.rating);
+    document.getElementById('count').textContent = `${list.length} product${list.length === 1 ? '' : 's'}`;
+    const grid = document.getElementById('grid');
+    if (list.length) { grid.innerHTML = list.map(productCard).join(''); return; }
+    const msg = cat === 'Furniture'
+      ? ['Furniture is arriving soon', 'We\'re curating our furniture collection now. Our specialists can already source pieces for your project.']
+      : q.toLowerCase() === 'sale'
+      ? ['No sale items right now', 'Join the Bliss List below to be first to hear about exclusive offers.']
+      : ['Nothing matches just yet', `We couldn't find products for “${esc(q || cat)}”. Try another term, or ask a specialist. We can source almost anything.`];
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><h2>${msg[0]}</h2><p>${msg[1]}</p>
+      <div class="hero-cta" style="justify-content:center;margin-top:20px"><a class="btn" href="contact.html">Ask a Specialist</a><a class="btn ghost" href="search.html">Browse All</a></div></div>`;
+  }
+  document.getElementById('catChips').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { cat = b.dataset.v; render(); } });
+  document.getElementById('brandChips').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { brand = b.dataset.v; render(); } });
+  document.getElementById('sort').addEventListener('change', (e) => { sort = e.target.value; render(); });
+  render();
+</script>
+</body>
+</html>

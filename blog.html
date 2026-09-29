@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>The Journal: Buying Guides &amp; Design Ideas | Bliss Bath &amp; Kitchen</title>
+<meta name="description" content="Bathroom and kitchen buying guides, design ideas and inspiration from the Bliss Bath & Kitchen specialists.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script>try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="blog">
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero plain">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur">Journal</span></nav>
+      <span class="eyebrow">The Journal</span>
+      <h1>Ideas for a Beautiful Home</h1>
+      <p>Buying guides, design ideas and inspiration from a team with more than three decades in kitchen and bath.</p>
+    </div>
+  </section>
+
+  <section class="section tight">
+    <div class="wrap">
+      <div id="featuredPost"></div>
+      <div class="facet-bar" style="margin-top:44px">
+        <div class="chips" id="catChips" role="group" aria-label="Category"></div>
+        <label class="results-search" style="margin-left:auto;flex:0 1 300px"><input type="search" id="postSearch" placeholder="Search articles…" aria-label="Search articles"><span style="display:grid;place-items:center;padding:0 14px"><i data-icon="search" class="sm"></i></span></label>
+      </div>
+      <div class="blog-grid" id="posts"></div>
+    </div>
+  </section>
+</main>
+
+<div id="newsletter"></div>
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/content.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const card = (p) => `
+    <article class="post reveal">
+      <a class="ph" href="blog-post.html?post=${p.slug}"><img src="img/${p.img}.webp" alt="" loading="lazy" decoding="async"></a>
+      <div class="post-meta"><span class="post-cat">${p.cat}</span><time datetime="${p.date}">${fmtDate(p.date)}</time><span>${p.read} min read</span></div>
+      <h3><a href="blog-post.html?post=${p.slug}">${p.title}</a></h3>
+      <p>${p.excerpt}</p>
+      <a class="link-arrow" href="blog-post.html?post=${p.slug}">Read Article ${icon('arrow', 'sm')}</a>
+    </article>`;
+  const f = POSTS[0];
+  document.getElementById('featuredPost').innerHTML = `
+    <a class="post-feature reveal" href="blog-post.html?post=${f.slug}">
+      <span class="pf-img"><img src="img/${f.img}.webp" alt="" fetchpriority="high"></span>
+      <span class="pf-body"><span class="eyebrow gold">Featured · ${f.cat}</span><b>${f.title}</b><span class="muted">${f.excerpt}</span>
+        <span class="post-meta"><time datetime="${f.date}">${fmtDate(f.date)}</time><span>${f.read} min read</span></span>
+        <span class="link-arrow">Read Article ${icon('arrow', 'sm')}</span></span>
+    </a>`;
+  let cat = 'All', q = '';
+  function render() {
+    const cats = ['All', ...new Set(POSTS.map((p) => p.cat))];
+    document.getElementById('catChips').innerHTML = cats.map((c) => `<button type="button" aria-pressed="${c === cat}" data-v="${c}">${c}</button>`).join('');
+    const list = POSTS.slice(cat === 'All' && !q ? 1 : 0).filter((p) => (cat === 'All' || p.cat === cat) && (!q || (p.title + p.excerpt).toLowerCase().includes(q.toLowerCase())));
+    document.getElementById('posts').innerHTML = list.map(card).join('') || '<div class="empty-state" style="grid-column:1/-1"><h2>No articles found</h2><p>Try another search or category.</p></div>';
+    observeReveal(document.getElementById('posts'));
+  }
+  document.getElementById('catChips').addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (b) { cat = b.dataset.v; render(); } });
+  document.getElementById('postSearch').addEventListener('input', (e) => { q = e.target.value.trim(); render(); });
+  render();
+  observeReveal();
+</script>
+</body>
+</html>

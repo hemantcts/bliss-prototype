@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Shop the Look | Bliss Bath &amp; Kitchen</title>
+<meta name="description" content="Complete bathrooms and kitchens curated by our design team. Tap any product in the room to shop it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script>try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="looks">
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero">
+    <img src="img/look-retreat.webp" alt="" fetchpriority="high">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur" style="color:#fff">Shop the Look</span></nav>
+      <span class="eyebrow">Shop the Look</span>
+      <h1>Beautifully Designed. Effortlessly Shopped.</h1>
+      <p>Discover complete spaces curated by our design team, then shop every product in the room in one place.</p>
+    </div>
+  </section>
+
+  <section class="section tight">
+    <div class="wrap">
+      <div class="facet-bar" style="border-top:0;padding-top:0">
+        <div class="chips" id="roomChips" role="group" aria-label="Room"></div>
+        <div class="chips" id="styleChips" role="group" aria-label="Style" style="margin-left:auto"></div>
+      </div>
+      <div class="looks-grid" id="looksGrid"></div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--panel)">
+    <div class="wrap">
+      <div class="sec-title reveal"><span class="eyebrow">How it works</span><h2>From Inspiration to Order</h2></div>
+      <div class="steps">
+        <div class="step reveal"><h3>Explore a room</h3><p>Browse real spaces styled by our design team and partner brands.</p></div>
+        <div class="step reveal"><h3>Shop the products</h3><p>Every piece in the room is listed beside it. Add them to your cart or ask us about them.</p></div>
+        <div class="step reveal"><h3>Make it yours</h3><p>Swap finishes or sizes with a specialist, or add the whole look at once.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap">
+      <div style="max-width:620px"><span class="eyebrow">Design Services</span><h2 style="font-size:36px;margin-bottom:10px">Want this look in your home?</h2><p style="margin:0">Send us your floor plan and our specialists will adapt any look to your space, budget and timeline.</p></div>
+      <div class="hero-cta"><a class="btn light" href="contact.html?topic=design">Talk to a Designer <i data-icon="arrow" class="sm"></i></a><a class="btn light" href="showroom.html">Visit the Showroom</a></div>
+    </div>
+  </section>
+</main>
+
+<div id="newsletter"></div>
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/content.js"></script>
+<script src="js/main.js"></script>
+<script>
+  let room = 'All', style = 'All';
+  const chipRow = (el, vals, cur) => { el.innerHTML = vals.map((v) => `<button type="button" aria-pressed="${v === cur}" data-v="${esc(v)}">${esc(v)}</button>`).join(''); };
+  function render() {
+    chipRow(document.getElementById('roomChips'), ['All', 'Bath', 'Kitchen'], room);
+    chipRow(document.getElementById('styleChips'), ['All', ...new Set(LOOKS.map((l) => l.style))], style);
+    const list = LOOKS.filter((l) => (room === 'All' || l.room === room) && (style === 'All' || l.style === style));
+    document.getElementById('looksGrid').innerHTML = list.map((l, i) => {
+      const items = [...l.items, ...l.more].map(BLISS.byId).filter(Boolean);
+      const total = l.items.map(BLISS.byId).reduce((t, p) => t + p.cad, 0);
+      return `
+      <a class="look-card reveal${i === 0 && room === 'All' && style === 'All' ? ' big' : ''}" href="look.html?look=${l.id}">
+        <span class="lc-img"><img src="img/${l.img}.webp" alt="${esc(l.title)}" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async"></span>
+        <span class="lc-body">
+          <span class="post-meta"><span class="post-cat">${l.room}</span><span>${l.style}</span><span>${l.items.length} products</span></span>
+          <b>${l.title}</b><span class="lc-intro">${l.intro}</span>
+          <span class="lc-foot"><span class="lc-thumbs">${items.slice(0, 4).map((p) => `<img src="img/${p.img}.webp" alt="" loading="lazy">`).join('')}</span>
+            <span>Look total <strong>${price(total, true)}</strong></span></span>
+          <span class="link-arrow">Shop This Look ${icon('arrow', 'sm')}</span>
+        </span>
+      </a>`;
+    }).join('') || '<div class="empty-state"><h2>No looks yet</h2><p>Try another filter.</p></div>';
+    observeReveal(document.getElementById('looksGrid'));
+  }
+  ['roomChips', 'styleChips'].forEach((id) => document.getElementById(id).addEventListener('click', (e) => {
+    const b = e.target.closest('[data-v]'); if (!b) return;
+    if (id === 'roomChips') room = b.dataset.v; else style = b.dataset.v;
+    render();
+  }));
+  render();
+</script>
+</body>
+</html>

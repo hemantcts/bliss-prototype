@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Journal | Bliss Bath &amp; Kitchen</title>
+<meta name="description" content="Buying guides and design ideas from Bliss Bath & Kitchen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script>try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="blog-post">
+<div id="site-header"></div>
+
+<main>
+  <article>
+    <header class="article-head">
+      <div class="wrap narrow">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="blog.html">Journal</a><span class="sep">›</span><span class="cur" id="crumb"></span></nav>
+        <span class="eyebrow gold" id="aCat"></span>
+        <h1 id="aTitle"></h1>
+        <p class="article-dek" id="aDek"></p>
+        <div class="byline">
+          <span class="by-avatar">B</span>
+          <span><b>Bliss Design Team</b><small id="aMeta"></small></span>
+          <span class="share"><button type="button" id="copyLink" aria-label="Copy link"><i data-icon="file" class="sm"></i> Copy link</button><a href="#" aria-label="Share on Pinterest"><i data-icon="pinterest" class="sm"></i></a><a href="#" aria-label="Share on Facebook"><i data-icon="facebook" class="sm"></i></a></span>
+        </div>
+      </div>
+      <div class="wrap"><figure class="article-hero"><img id="aImg" alt="" fetchpriority="high"></figure></div>
+    </header>
+
+    <div class="wrap article-layout">
+      <div class="prose article-body" id="aBody"></div>
+      <aside class="article-aside">
+        <div class="aside-card">
+          <h4>Need advice?</h4>
+          <p>Our specialists help homeowners and the trade choose the right products every day.</p>
+          <a class="btn sm block" href="contact.html?topic=product">Ask a Specialist</a>
+          <a class="link-arrow" href="showroom.html" style="margin-top:12px">Visit the showroom <i data-icon="arrow" class="sm"></i></a>
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <section class="section tight also" id="shopArticle">
+    <div class="wrap">
+      <div class="row-head"><div><h2 style="font-family:var(--serif);font-size:36px;letter-spacing:0;text-transform:none;font-weight:500">Shop This Article</h2><p>Products mentioned in this guide.</p></div></div>
+      <div class="rail" id="artRail"></div>
+    </div>
+  </section>
+
+  <section class="section tight" style="background:var(--panel)">
+    <div class="wrap">
+      <nav class="post-nav" id="postNav" aria-label="More articles"></nav>
+      <div class="row-head" style="margin-top:44px"><div><h2 style="font-family:var(--serif);font-size:36px;letter-spacing:0;text-transform:none;font-weight:500">Keep Reading</h2></div><a class="link-arrow" href="blog.html">All Articles <i data-icon="arrow" class="sm"></i></a></div>
+      <div class="blog-grid" id="related"></div>
+    </div>
+  </section>
+</main>
+
+<div id="newsletter"></div>
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/content.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const i = Math.max(0, POSTS.findIndex((p) => p.slug === new URLSearchParams(location.search).get('post')));
+  const post = POSTS[i];
+  document.title = `${post.title} | Bliss Bath & Kitchen`;
+  document.querySelector('meta[name=description]').content = post.excerpt;
+  document.getElementById('crumb').textContent = post.title;
+  document.getElementById('aCat').textContent = post.cat;
+  document.getElementById('aTitle').textContent = post.title;
+  document.getElementById('aDek').textContent = post.excerpt;
+  document.getElementById('aMeta').textContent = `${fmtDate(post.date)} · ${post.read} min read`;
+  const img = document.getElementById('aImg'); img.src = `img/${post.img}.webp`; img.alt = post.title;
+  document.getElementById('aBody').innerHTML = post.body.join('');
+  document.getElementById('artRail').innerHTML = post.products.map(BLISS.byId).filter(Boolean).map(productCard).join('');
+  const prev = POSTS[i - 1], next = POSTS[i + 1];
+  document.getElementById('postNav').innerHTML = `
+    ${prev ? `<a href="blog-post.html?post=${prev.slug}">${icon('left', 'sm')}<span><small>Previous</small>${prev.title}</span></a>` : '<span></span>'}
+    ${next ? `<a class="next" href="blog-post.html?post=${next.slug}"><span><small>Next</small>${next.title}</span>${icon('right', 'sm')}</a>` : ''}`;
+  document.getElementById('related').innerHTML = POSTS.filter((p) => p !== post).sort((a, b) => (b.cat === post.cat) - (a.cat === post.cat)).slice(0, 3).map((p) => `
+    <article class="post"><a class="ph" href="blog-post.html?post=${p.slug}"><img src="img/${p.img}.webp" alt="" loading="lazy"></a>
+      <div class="post-meta"><span class="post-cat">${p.cat}</span><span>${p.read} min read</span></div>
+      <h3><a href="blog-post.html?post=${p.slug}">${p.title}</a></h3></article>`).join('');
+  document.getElementById('copyLink').addEventListener('click', () => {
+    navigator.clipboard?.writeText(location.href).then(() => toast('Link copied'), () => toast('Copy the link from your address bar'));
+  });
+  renderIcons();
+</script>
+</body>
+</html>
