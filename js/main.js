@@ -81,7 +81,7 @@ const PAY = {
 const payIcons = (keys = Object.keys(PAY)) => `<div class="pay-badges" aria-label="Accepted payment methods">${keys.map((k) => PAY[k]).join('')}</div>`;
 window.payIcons = payIcons;
 const { money } = BLISS;
-const price = (cad, whole) => `<span data-price="${cad}"${whole ? ' data-whole' : ''}>${money(cad, whole)}</span>`;
+const price = (cad, whole) => `<span class="notranslate" translate="no" data-price="${cad}"${whole ? ' data-whole' : ''}>${money(cad, whole)}</span>`;
 window.price = price;
 /* Product price: sale price + struck-through regular price when on sale */
 const priceOf = (p, qty = 1) => BLISS.onSale(p)
@@ -158,15 +158,29 @@ const currencyMenu = (id) => `
   </ul>
 </div>`;
 
+/* Languages offered through Google Translate (codes are Google's) */
+const LANGS = [['en', 'EN', 'English'], ['ar', 'AR', 'العربية'], ['zh-CN', 'ZH-CN', '中文 (简体)'], ['nl', 'NL', 'Nederlands'], ['fr', 'FR', 'Français'],
+  ['de', 'DE', 'Deutsch'], ['it', 'IT', 'Italiano'], ['pt', 'PT', 'Português'], ['ru', 'RU', 'Русский'], ['es', 'ES', 'Español']];
+const curLang = () => { try { return localStorage.getItem('bliss_lang') || 'en'; } catch { return 'en'; } };
+const langMenu = (id) => `
+<div class="cur lang notranslate" data-cur translate="no">
+  <button class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="${id}" aria-label="Language">
+    ${icon('globe', 'sm')}<span data-lang-label>${(LANGS.find((l) => l[0] === curLang()) || LANGS[0])[1]}</span>${icon('down', 'sm')}
+  </button>
+  <ul class="cur-menu lang-menu" id="${id}" role="listbox" aria-label="Language">
+    ${LANGS.map(([code, short, name]) => `<li role="option" data-set-lang="${code}" lang="${code}" aria-selected="${code === curLang()}"><b>${short}</b><small>${name}</small></li>`).join('')}
+  </ul>
+</div>`;
+
 const headerHTML = `
 <a class="skip" href="#main">Skip to content</a>
 <div class="topbar"><div class="wrap">
   <div class="left"><span>Free shipping on eligible orders · Canada &amp; USA</span><span>Design services available</span></div>
-  <div class="right"><a href="trade.html">Trade program</a><a href="showroom.html">Showroom</a><a href="contact.html">Contact</a>${currencyMenu('curTop')}</div>
+  <div class="right"><a href="trade.html">Trade program</a><a href="showroom.html">Showroom</a><a href="contact.html">Contact</a>${langMenu('langTop')}${currencyMenu('curTop')}</div>
 </div></div>
 <header class="site-header"><div class="wrap">
   <button class="menu-toggle" aria-label="Open menu">${icon('menu')}</button>
-  <a class="logo" href="index.html" aria-label="Bliss Bath and Kitchen home"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss.webp" alt="Bliss Bath and Kitchen" width="596" height="123" loading="lazy" decoding="async"></a>
+  <a class="logo notranslate" translate="no" href="index.html" aria-label="Bliss Bath and Kitchen home"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss.webp" alt="Bliss Bath and Kitchen" width="596" height="123" loading="lazy" decoding="async"></a>
   <nav class="main-nav" aria-label="Main">${NAV.map(navItem).join('')}</nav>
   <div class="header-actions">
     <button aria-label="Search (press /)" data-open-search>${icon('search')}</button>
@@ -179,6 +193,7 @@ const headerHTML = `
   <button class="close" aria-label="Close menu">${icon('close')}</button>
   ${NAV.map(mobileItem).join('')}
   <a href="account.html">My Account</a><a href="wishlist.html">Wishlist <span class="m-count" data-wish-count hidden>0</span></a><a href="about.html">Our Story</a><a href="trade.html">Trade program</a><a href="showroom.html">Showroom</a><a href="contact.html">Contact</a>
+  <div class="m-cur"><span>Language</span>${langMenu('langMobile')}</div>
   <div class="m-cur"><span>Currency</span>${currencyMenu('curMobile')}</div>
 </nav></div>`;
 
@@ -211,7 +226,7 @@ const PAGES = [
 ];
 const footerHTML = `
 <footer class="site-footer"><div class="wrap">
-  <div class="f-brand"><a class="logo" href="index.html"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss-light.webp" alt="Bliss Bath and Kitchen" width="596" height="123" loading="lazy" decoding="async"></a></div>
+  <div class="f-brand"><a class="logo notranslate" translate="no" href="index.html"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss-light.webp" alt="Bliss Bath and Kitchen" width="596" height="123" loading="lazy" decoding="async"></a></div>
   <div class="f-cols f-one">
     <div>${col('Bathroom Products', [L('Bathroom Faucets'), L('Bathroom Vanities'), L('Bathroom Fixtures'), L('Floor Mounted Tub Fillers'), L('Smart Toilets'), L('Freestanding Tub Fillers'), L('LED Mirrors'), L('LED Medicine Cabinets'), L('Shower Bases'), L('Shower Doors'), L('Shower Kits'), L('Thermostatic Shower Systems'), L('Sliding Shower Doors'), L('Wall Hung Toilets'), L('Towel Warmers')])}</div>
     <div>${col('Bathtubs', LINKS.bathtubs)}${col('Lighting', LINKS.lighting)}</div>
@@ -234,7 +249,7 @@ const footerHTML = `
       <a href="#" aria-label="Pinterest">${icon('pinterest', 'sm')}</a><a href="#" aria-label="YouTube">${icon('youtube', 'sm')}</a>
       <a href="#" aria-label="LinkedIn">${icon('linkedin', 'sm')}</a>
     </div>
-    <div class="region">${currencyMenu('curFoot')}</div>
+    <div class="region">${langMenu('langFoot')}${currencyMenu('curFoot')}</div>
   </div>
 </div></footer>
 <div class="toast" role="status" aria-live="polite">${icon('check')}<span></span></div>
@@ -1016,3 +1031,70 @@ function syncAccount() {
 }
 window.syncAccount = syncAccount;
 syncAccount();
+
+
+/* ---------- Language switcher (Google Translate website widget) ----------
+   The Google script is only loaded after a visitor picks a language (and on later visits
+   while a non-English choice is saved), so English visitors get no third-party download. */
+(function languages() {
+  const INCLUDED = LANGS.map((l) => l[0]).join(',');
+  const cookieDomains = () => { const h = location.hostname; return ['', h, '.' + h.split('.').slice(-2).join('.')]; };
+  function setCookie(code) {
+    cookieDomains().forEach((d) => {
+      const dom = d ? `;domain=${d}` : '';
+      document.cookie = code === 'en'
+        ? `googtrans=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/${dom}`
+        : `googtrans=/en/${code};path=/${dom}`;
+    });
+  }
+  let loading = null;
+  function loadGoogle() {
+    if (loading) return loading;
+    loading = new Promise((resolve) => {
+      const holder = document.createElement('div');
+      holder.id = 'gt_el'; holder.hidden = true;
+      document.body.append(holder);
+      window.googleTranslateElementInit = () => {
+        new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: INCLUDED, autoDisplay: false }, 'gt_el');
+        resolve();
+      };
+      const sc = document.createElement('script');
+      sc.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      sc.async = true;
+      sc.onerror = () => { toast('Translation is unavailable right now. Please try again later'); resolve(); };
+      document.head.append(sc);
+    });
+    return loading;
+  }
+  function applyWhenReady(code, tries = 0) {
+    const combo = document.querySelector('.goog-te-combo');
+    if (combo) { combo.value = code; combo.dispatchEvent(new Event('change')); return; }
+    if (tries < 40) setTimeout(() => applyWhenReady(code, tries + 1), 150);
+  }
+  function mark(code) {
+    const l = LANGS.find((x) => x[0] === code) || LANGS[0];
+    document.querySelectorAll('[data-lang-label]').forEach((el) => (el.textContent = l[1]));
+    document.querySelectorAll('[data-set-lang]').forEach((li) => li.setAttribute('aria-selected', li.dataset.setLang === code));
+    document.documentElement.lang = code === 'en' ? 'en' : code;
+  }
+  function choose(code) {
+    try { localStorage.setItem('bliss_lang', code); } catch {}
+    mark(code);
+    setCookie(code);
+    if (code === 'en') { location.reload(); return; }   // cleanest way back to the original English
+    loadGoogle().then(() => applyWhenReady(code));
+  }
+  document.addEventListener('click', (e) => {
+    const li = e.target.closest('[data-set-lang]');
+    if (!li) return;
+    li.closest('[data-cur]')?.classList.remove('open');
+    if (li.dataset.setLang !== curLang()) choose(li.dataset.setLang);
+  });
+  // ?lang=fr style links open the page in that language (handy for sharing); otherwise re-apply a saved choice
+  const fromUrl = new URLSearchParams(location.search).get('lang');
+  if (fromUrl && LANGS.some((l) => l[0] === fromUrl)) { try { localStorage.setItem('bliss_lang', fromUrl); } catch {} }
+  const saved = curLang();
+  mark(saved);
+  if (saved !== 'en') { setCookie(saved); loadGoogle().then(() => applyWhenReady(saved)); }
+  else if (fromUrl === 'en') setCookie('en');
+})();

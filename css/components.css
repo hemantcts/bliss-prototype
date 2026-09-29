@@ -1211,3 +1211,19 @@ body, .site-header, .site-footer, .topbar, .hero, .btn, .room-card, .p-card { tr
   .orders-table td[data-label]::before { content: attr(data-label); display: block; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
   .o-act { grid-column: 1 / -1; text-align: left; }
 }
+
+/* =========================================================
+   Language switcher (Google Translate) + hide Google's own UI
+   ========================================================= */
+.lang .cur-btn .icon:first-child { width: 14px; height: 14px; }
+.lang-menu { min-width: 200px; max-height: min(420px, 70vh); overflow-y: auto; }
+.lang-menu li { grid-template-columns: 52px 1fr; }
+.lang-menu li b { letter-spacing: .04em; }
+.topbar .right .lang + .cur { margin-left: 10px; }
+.region { display: flex; align-items: center; gap: 18px; }
+/* Google Translate chrome: banner bar, tooltips, hover highlights, spinner */
+iframe.skiptranslate, .goog-te-banner-frame, #goog-gt-tt, .goog-te-balloon-frame, .goog-te-spinner-pos,
+.VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9od-aZ2wEe-wOHMyf, .VIpgJd-yAWNEb-L7lbkb { display: none !important; }
+body { top: 0 !important; position: static !important; }
+.goog-text-highlight, font[style] { background: none !important; box-shadow: none !important; }
+#gt_el { display: none !important; }
