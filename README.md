@@ -8,7 +8,7 @@ Clickable HTML prototype of the rebranded blissbathandkitchen.com, for client re
 - Online: GitHub Pages link for this repository
 - Locally: open `index.html`, or serve the folder (e.g. `python -m http.server`)
 
-Use the **Prototype pages** menu (bottom-left) to jump to any page and the **Colour** switcher to compare the four themes. Link straight to a theme with `?theme=current`, `?theme=green`, `?theme=maroon` or `?theme=navy`.
+Use the **Prototype pages** menu (bottom-left) to jump to any page and the **Colour** switcher to compare the four themes. Link straight to a theme with `?theme=current`, `?theme=green`, `?theme=maroon` or `?theme=night`.
 
 ## Pages
 Home · Collection · Product · Search/Shop · Wishlist · Cart · Checkout · Order confirmed · Brands · Shop the Look · Look detail · Journal · Article · Our Story · Contact · Trade Program · Project Inquiries · Showroom · Returns · Shipping · Privacy · Terms

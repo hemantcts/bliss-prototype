@@ -733,15 +733,15 @@ body.mega-open::after { opacity: 1; visibility: visible; transition: opacity .25
    ========================================================= */
 :root[data-theme="green"] {
   --bg: #f4f3ed; --surface: #fafaf6; --panel: #e8ebe2; --line: #d9ddd0; --line-strong: #c9cfbf; --tint: #f6f8f2;
-  --ink: #1b2a23; --text: #34423b; --muted: #6b7a71;
-  --dark: #1f3a2e; --dark-2: #2b4a3c; --dark-rgb: 31, 58, 46; --shade-rgb: 12, 24, 18;
-  --gold: #a88450; --gold-soft: #d1b98c;
+  --ink: #0f2a20; --text: #2c3f37; --muted: #66786f;
+  --dark: #0b4431; --dark-2: #11553e; --dark-rgb: 11, 68, 49; --shade-rgb: 4, 26, 18;
+  --gold: #b08a4e; --gold-soft: #d9c08e;
 }
 :root[data-theme="maroon"] {
   --bg: #f7f2ee; --surface: #fcf9f7; --panel: #f0e5e0; --line: #e5d5ce; --line-strong: #d8c3ba; --tint: #fbf6f3;
-  --ink: #2e1418; --text: #46292d; --muted: #86696b;
-  --dark: #4a1c24; --dark-2: #5e2830; --dark-rgb: 74, 28, 36; --shade-rgb: 30, 10, 14;
-  --gold: #b0864f; --gold-soft: #dcc093;
+  --ink: #2a0c12; --text: #44252a; --muted: #856769;
+  --dark: #3b0d16; --dark-2: #4c1520; --dark-rgb: 59, 13, 22; --shade-rgb: 24, 4, 8;
+  --gold: #b48a50; --gold-soft: #ddc293;
 }
 body, .site-header, .site-footer, .topbar, .hero, .btn, .room-card, .p-card { transition: background-color .4s ease, color .4s ease, border-color .4s ease; }
 
@@ -1068,10 +1068,10 @@ body, .site-header, .site-footer, .topbar, .hero, .btn, .room-card, .p-card { tr
 /* =========================================================
    Navy theme (#212D7B) with warm gold
    ========================================================= */
-:root[data-theme="navy"] {
-  --bg: #f5f4f0; --surface: #fbfaf8; --panel: #eaebf0; --line: #dcdee6; --line-strong: #c9cdda; --tint: #f4f5f9;
-  --ink: #161c48; --text: #2e3452; --muted: #6a7089;
-  --dark: #212d7b; --dark-2: #2c3a8f; --dark-rgb: 33, 45, 123; --shade-rgb: 10, 14, 44;
-  --gold: #b0874d; --gold-soft: #d8be8f;
+:root[data-theme="night"], :root[data-theme="navy"] {
+  --bg: #f5f4f1; --surface: #fbfbf9; --panel: #e9eaee; --line: #dadce3; --line-strong: #c6cad5; --tint: #f4f5f8;
+  --ink: #0f1a2e; --text: #2c3445; --muted: #697083;
+  --dark: #0f1b33; --dark-2: #182743; --dark-rgb: 15, 27, 51; --shade-rgb: 5, 9, 18;
+  --gold: #b48a50; --gold-soft: #dcc190;
 }
-:root[data-theme="navy"] .sale-price { color: #a33a26; }
+:root[data-theme="night"] .sale-price, :root[data-theme="navy"] .sale-price { color: #a33a26; }
