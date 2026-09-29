@@ -166,7 +166,7 @@ const headerHTML = `
 </div></div>
 <header class="site-header"><div class="wrap">
   <button class="menu-toggle" aria-label="Open menu">${icon('menu')}</button>
-  <a class="logo" href="index.html" aria-label="Bliss home"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss.webp" alt="Bliss Bath &amp; Kitchen" width="596" height="123" loading="lazy" decoding="async"></a>
+  <a class="logo" href="index.html" aria-label="Bliss Bath and Kitchen home"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss.webp" alt="Bliss Bath and Kitchen" width="596" height="123" loading="lazy" decoding="async"></a>
   <nav class="main-nav" aria-label="Main">${NAV.map(navItem).join('')}</nav>
   <div class="header-actions">
     <button aria-label="Search (press /)" data-open-search>${icon('search')}</button>
@@ -211,7 +211,7 @@ const PAGES = [
 ];
 const footerHTML = `
 <footer class="site-footer"><div class="wrap">
-  <div class="f-brand"><a class="logo" href="index.html"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss-light.webp" alt="Bliss Bath &amp; Kitchen" width="596" height="123" loading="lazy" decoding="async"></a></div>
+  <div class="f-brand"><a class="logo" href="index.html"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss-light.webp" alt="Bliss Bath and Kitchen" width="596" height="123" loading="lazy" decoding="async"></a></div>
   <div class="f-cols f-one">
     <div>${col('Bathroom Products', [L('Bathroom Faucets'), L('Bathroom Vanities'), L('Bathroom Fixtures'), L('Floor Mounted Tub Fillers'), L('Smart Toilets'), L('Freestanding Tub Fillers'), L('LED Mirrors'), L('LED Medicine Cabinets'), L('Shower Bases'), L('Shower Doors'), L('Shower Kits'), L('Thermostatic Shower Systems'), L('Sliding Shower Doors'), L('Wall Hung Toilets'), L('Towel Warmers')])}</div>
     <div>${col('Bathtubs', LINKS.bathtubs)}${col('Lighting', LINKS.lighting)}</div>
@@ -1002,7 +1002,7 @@ if (autoSearch !== null) openSearch(autoSearch);
     const btn = f.querySelector('[type=submit]');
     btn.classList.add('placing'); btn.innerHTML = '<span class="spinner"></span> Sending…';
     setTimeout(() => {
-      f.outerHTML = `<div class="c-body form-success"><div class="tick">${icon('check')}</div><h3>Inquiry sent</h3><p>Thank you. A Bliss product specialist will reply within one business day.</p><button class="btn ghost" type="button" data-inq-close>Continue Browsing</button></div>`;
+      f.outerHTML = `<div class="c-body form-success"><div class="tick">${icon('check')}</div><h3>Inquiry sent</h3><p>Thank you. A Bliss Bath and Kitchen product specialist will reply within one business day.</p><button class="btn ghost" type="button" data-inq-close>Continue Browsing</button></div>`;
     }, 800);
   });
   window.openInquiry = open;

@@ -11,8 +11,8 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#2b2118">
-<title>My Wishlist | Bliss Bath &amp; Kitchen</title>
-<meta name="description" content="Your saved bath, kitchen and home products at Bliss Bath & Kitchen.">
+<title>My Wishlist | Bliss Bath and Kitchen</title>
+<meta name="description" content="Your saved bath, kitchen and home products at Bliss Bath and Kitchen.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -143,7 +143,7 @@
     if (e.target.closest('#shareWl')) {
       const url = `${location.origin}${location.pathname}?items=${BLISS.wish.ids().join(',')}`;
       const done = () => toast('Share link copied. Send it to your designer or partner');
-      if (navigator.share) navigator.share({ title: 'My Bliss wishlist', url }).catch(() => {});
+      if (navigator.share) navigator.share({ title: 'My Bliss Bath and Kitchen wishlist', url }).catch(() => {});
       else navigator.clipboard?.writeText(url).then(done, () => prompt('Copy this link:', url));
     }
     if (e.target.closest('#saveShared')) {

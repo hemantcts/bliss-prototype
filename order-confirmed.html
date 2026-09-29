@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#2b2118">
-<title>Order Confirmed | Bliss Bath &amp; Kitchen</title>
+<title>Order Confirmed | Bliss Bath and Kitchen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -57,7 +57,7 @@
     </div>
     <div class="confirm-grid">
       <div class="confirm-box"><h3>${order.pickup ? 'Pickup location' : 'Shipping address'}</h3>
-        ${order.pickup ? '<p>Bliss Bath &amp; Kitchen warehouse</p><p>5 Shields Court, Unit 104</p><p>Markham, Ontario</p>' : `<p>${esc(order.name)}</p>${order.address.map((a) => `<p>${esc(a)}</p>`).join('')}`}
+        ${order.pickup ? '<p>Bliss Bath and Kitchen warehouse</p><p>5 Shields Court, Unit 104</p><p>Markham, Ontario</p>' : `<p>${esc(order.name)}</p>${order.address.map((a) => `<p>${esc(a)}</p>`).join('')}`}
       </div>
       <div class="confirm-box"><h3>Payment</h3><p>${{ card: 'Credit card', paypal: 'PayPal'}[order.pay] || 'Credit card'}</p>
         <p class="muted">Total <span data-price="${t.total}"></span> <span data-currency-suffix></span></p></div>

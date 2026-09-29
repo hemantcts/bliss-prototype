@@ -11,8 +11,8 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#2b2118">
-<title>My Account | Bliss Bath &amp; Kitchen</title>
-<meta name="description" content="Sign in or create a Bliss Bath & Kitchen account to track orders, save addresses and manage your wishlist.">
+<title>My Account | Bliss Bath and Kitchen</title>
+<meta name="description" content="Sign in or create a Bliss Bath and Kitchen account to track orders, save addresses and manage your wishlist.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -83,7 +83,7 @@ function validate(form) {
   return true;
 }
 function busy(btn, text) { btn.classList.add('placing'); btn.innerHTML = `<span class="spinner"></span> ${text}`; }
-function setTitle(t, crumb = t) { document.getElementById('acctTitle').textContent = t; document.getElementById('crumb').textContent = crumb; document.title = `${t} | Bliss Bath & Kitchen`; }
+function setTitle(t, crumb = t) { document.getElementById('acctTitle').textContent = t; document.getElementById('crumb').textContent = crumb; document.title = `${t} | Bliss Bath and Kitchen`; }
 function go(params) { const u = new URL(location.href); u.search = new URLSearchParams(params).toString(); u.hash = ''; history.pushState(null, '', u); route(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 const notice = (type, html) => `<div class="acct-notice ${type}">${icon(type === 'ok' ? 'check' : 'info', 'sm')}<span>${html}</span></div>`;
 
@@ -285,7 +285,7 @@ function viewDashboard() {
   const o = orders[0];
   setTitle('My Account');
   shell('dashboard', `
-    ${u.isNew ? notice('ok', `Welcome to Bliss, ${esc(u.first)}. Your account is ready.`) : ''}
+    ${u.isNew ? notice('ok', `Welcome to Bliss Bath and Kitchen, ${esc(u.first)}. Your account is ready.`) : ''}
     <p class="acct-hello">Hello <strong>${esc(u.first)}</strong> <span class="muted">(not ${esc(u.first)}? <a href="account.html?tab=logout" data-tab="logout">Log out</a>)</span></p>
     <p class="muted">From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
     <div class="acct-tiles">

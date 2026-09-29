@@ -1,4 +1,4 @@
-# Bliss Bath & Kitchen: Rebrand Prototype
+# Bliss Bath and Kitchen: Rebrand Prototype
 
 Clickable HTML prototype of the rebranded blissbathandkitchen.com, for client review and approval. It will be rebuilt in WooCommerce. See [WOOCOMMERCE-NOTES.md](WOOCOMMERCE-NOTES.md) for the developer handoff.
 

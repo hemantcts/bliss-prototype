@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#2b2118">
-<title>Shop | Bliss Bath &amp; Kitchen</title>
+<title>Shop | Bliss Bath and Kitchen</title>
 <meta name="description" content="Search luxury bath, kitchen, appliance and lighting products from the world's leading brands.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,7 +75,7 @@
   else if (q) { title.innerHTML = `Results for <em>“${esc(q)}”</em>`; eyebrow.textContent = 'Search'; }
   else if (cat !== 'All') { title.textContent = cat; eyebrow.textContent = 'Shop by space'; }
   document.getElementById('crumb').textContent = special ? special.title : q ? 'Search' : cat === 'All' ? 'Shop' : cat;
-  document.title = `${special ? special.title : q ? 'Search: ' + q : cat === 'All' ? 'Shop' : cat} | Bliss Bath & Kitchen`;
+  document.title = `${special ? special.title : q ? 'Search: ' + q : cat === 'All' ? 'Shop' : cat} | Bliss Bath and Kitchen`;
 
   const CATS = ['All', 'Bath', 'Kitchen', 'Appliances', 'Lighting', 'Furniture'];
   function chips(el, values, current, counts) {
