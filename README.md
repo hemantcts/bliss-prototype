@@ -11,7 +11,7 @@ Clickable HTML prototype of the rebranded blissbathandkitchen.com, for client re
 Use the **Prototype pages** menu (bottom-left) to jump to any page and the **Colour** switcher to compare the three themes. Link straight to a theme with `?theme=current`, `?theme=green` or `?theme=maroon`.
 
 ## Pages
-Home · Collection · Product · Search/Shop · Cart · Checkout · Order confirmed · Brands · Shop the Look · Look detail · Journal · Article · Our Story · Contact · Trade Program · Project Inquiries · Showroom · Returns · Shipping · Privacy · Terms
+Home · Collection · Product · Search/Shop · Wishlist · Cart · Checkout · Order confirmed · Brands · Shop the Look · Look detail · Journal · Article · Our Story · Contact · Trade Program · Project Inquiries · Showroom · Returns · Shipping · Privacy · Terms
 
 ## Notes
 - Product photos are AI-upscaled crops from the design mockups; replace with final photography.

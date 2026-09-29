@@ -161,5 +161,19 @@ window.BLISS = (() => {
     hasFreight: () => cartApi.items().some((l) => l.product.weight === 'freight'),
   };
 
-  return { products, brands, byId, onSale, pctOff, money, convert, setCurrency, refreshPrices, get currency() { return currency; }, cart: cartApi, store };
+  /* ---------- Wishlist store (WooCommerce: YITH / TI Wishlist, saved to the account when logged in) ---------- */
+  let wishIds = store.get('bliss_wishlist', []).filter((id) => byId(id));
+  const saveWish = () => { store.set('bliss_wishlist', wishIds); document.dispatchEvent(new CustomEvent('wish:change')); };
+  const wishApi = {
+    ids: () => [...wishIds],
+    items: () => wishIds.map(byId).filter(Boolean),
+    count: () => wishIds.length,
+    has: (id) => wishIds.includes(id),
+    add(id) { if (byId(id) && !wishIds.includes(id)) { wishIds.unshift(id); saveWish(); } },
+    remove(id) { wishIds = wishIds.filter((x) => x !== id); saveWish(); },
+    toggle(id) { wishApi.has(id) ? wishApi.remove(id) : wishApi.add(id); return wishApi.has(id); },
+    clear() { wishIds = []; saveWish(); },
+  };
+
+  return { products, brands, byId, onSale, pctOff, money, convert, setCurrency, refreshPrices, get currency() { return currency; }, cart: cartApi, wish: wishApi, store };
 })();

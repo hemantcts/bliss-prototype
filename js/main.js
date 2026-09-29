@@ -171,14 +171,14 @@ const headerHTML = `
   <div class="header-actions">
     <button aria-label="Search (press /)" data-open-search>${icon('search')}</button>
     <a href="#" aria-label="Account" class="hide-sm">${icon('user')}</a>
-    <a href="#" aria-label="Wishlist" class="hide-sm">${icon('heart')}</a>
+    <a href="wishlist.html" aria-label="Wishlist" class="hide-sm">${icon('heart')}<span class="cart-count wish-count" data-wish-count hidden>0</span></a>
     <button aria-label="Open cart" data-open-cart>${icon('bag')}<span class="cart-count" data-cart>0</span></button>
   </div>
 </div></header>
 <div class="mobile-nav"><div class="scrim"></div><nav aria-label="Mobile">
   <button class="close" aria-label="Close menu">${icon('close')}</button>
   ${NAV.map(mobileItem).join('')}
-  <a href="about.html">Our Story</a><a href="trade.html">Trade program</a><a href="showroom.html">Showroom</a><a href="contact.html">Contact</a>
+  <a href="wishlist.html">Wishlist <span class="m-count" data-wish-count hidden>0</span></a><a href="about.html">Our Story</a><a href="trade.html">Trade program</a><a href="showroom.html">Showroom</a><a href="contact.html">Contact</a>
   <div class="m-cur"><span>Currency</span>${currencyMenu('curMobile')}</div>
 </nav></div>`;
 
@@ -204,7 +204,7 @@ const newsletterHTML = `
 const col = (title, items) => `<h4>${title}</h4><ul>${items.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>`;
 const PAGES = [
   ['Home', 'index.html', 'home'], ['Collection', 'collection.html', 'collection'], ['Product', 'product.html', 'product'],
-  ['Search / Shop', 'search.html?q=tub', 'search'], ['Cart', 'cart.html', 'cart'], ['Checkout', 'checkout.html', 'checkout'],
+  ['Search / Shop', 'search.html?q=tub', 'search'], ['Cart', 'cart.html', 'cart'], ['Wishlist', 'wishlist.html', 'wishlist'], ['Checkout', 'checkout.html', 'checkout'],
   ['Order confirmed', 'order-confirmed.html', 'confirmed'], ['Our Story', 'about.html', 'about'], ['Contact', 'contact.html', 'contact'],
   ['Trade Program', 'trade.html', 'trade'], ['Project Inquiries', 'projects.html', 'projects'], ['Showroom', 'showroom.html', 'showroom'],
   ['Brands', 'brands.html', 'brands'], ['Shop the Look', 'shop-the-look.html', 'looks'], ['Look detail', 'look.html?look=dark-drama', 'look'], ['Blog', 'blog.html', 'blog'], ['Blog article', 'blog-post.html', 'blog-post'], ['Terms & Conditions', 'terms.html', 'terms'], ['Returns', 'returns.html', 'returns'], ['Shipping Policy', 'shipping.html', 'shipping'], ['Privacy Policy', 'privacy.html', 'privacy'],
@@ -292,12 +292,18 @@ document.querySelectorAll('[data-pay]').forEach((el) => { el.outerHTML = payIcon
 
 /* ---------- Toast ---------- */
 let toastTimer;
-function toast(msg) {
+function toast(msg, action) {
   const t = document.querySelector('.toast');
   t.querySelector('span').textContent = msg;
+  t.querySelector('.toast-act')?.remove();
+  if (action) {
+    const a = document.createElement('a');
+    a.className = 'toast-act'; a.href = action.href; a.textContent = action.label;
+    t.append(a);
+  }
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  toastTimer = setTimeout(() => t.classList.remove('show'), action ? 3600 : 2600);
 }
 window.toast = toast;
 
@@ -440,13 +446,35 @@ document.addEventListener('click', (e) => {
     if (line) BLISS.cart.setQty(id, v, line.qty + +step.dataset.step);
   }
 
-  const wish = e.target.closest('.wish, .wish-btn');
+  const wish = e.target.closest('[data-wish]');
   if (wish) {
     e.preventDefault();
-    wish.classList.toggle('on');
-    toast(wish.classList.contains('on') ? 'Saved to your wishlist' : 'Removed from wishlist');
+    const on = BLISS.wish.toggle(wish.dataset.wish);
+    wish.classList.remove('pop'); void wish.offsetWidth; if (on) wish.classList.add('pop');
+    toast(on ? 'Saved to your wishlist' : 'Removed from your wishlist', on ? { href: 'wishlist.html', label: 'View' } : null);
   }
 });
+
+/* ---------- Wishlist: keep every heart and the header count in sync ---------- */
+function syncWish(root = document) {
+  root.querySelectorAll('[data-wish]').forEach((b) => {
+    const on = BLISS.wish.has(b.dataset.wish);
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-pressed', on);
+    b.setAttribute('aria-label', on ? 'Remove from wishlist' : 'Add to wishlist');
+  });
+  document.querySelectorAll('[data-wish-count]').forEach((c) => {
+    const n = BLISS.wish.count();
+    c.textContent = n; c.hidden = !n;
+  });
+}
+window.syncWish = syncWish;
+document.addEventListener('wish:change', () => syncWish());
+// product grids are re-rendered by page scripts, so re-sync hearts whenever new ones appear
+new MutationObserver((muts) => {
+  if (muts.some((m) => [...m.addedNodes].some((n) => n.nodeType === 1 && (n.matches?.('[data-wish]') || n.querySelector?.('[data-wish]'))))) syncWish();
+}).observe(document.body, { childList: true, subtree: true });
+syncWish();
 document.addEventListener('change', (e) => {
   const input = e.target.closest('[data-line] input');
   if (input) {
@@ -466,6 +494,7 @@ const SITE_PAGES = [
   ['Trade Program', 'trade.html', 'trade designer builder contractor pricing account'],
   ['Project Inquiries', 'projects.html', 'project quote volume pricing builder multi-unit'],
   ['Visit Our Showroom', 'showroom.html', 'showroom markham visit appointment directions hours'],
+  ['My Wishlist', 'wishlist.html', 'wishlist saved favourites favorites'],
   ['Contact Us', 'contact.html', 'contact help phone email support'],
   ['Shop the Look', 'shop-the-look.html', 'shop the look inspiration rooms ideas'],
   ['The Journal (Blog)', 'blog.html', 'blog journal guide ideas articles'],
@@ -729,7 +758,7 @@ window.stars = (r, count) => {
 window.productCard = (p) => `
 <article class="p-card">
   <a class="ph" href="product.html"><img src="img/${p.img}.webp" alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
-  <button class="wish" aria-label="Add to wishlist">${icon('heart', 'sm')}</button>
+  <button class="wish" data-wish="${p.id}" aria-label="Add to wishlist" aria-pressed="false">${icon('heart', 'sm')}</button>
   <div class="body">
     <span class="brand">${p.brand}</span>
     <a class="name" href="product.html">${p.name}</a>

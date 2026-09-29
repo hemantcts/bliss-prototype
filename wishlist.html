@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2b2118">
+<title>My Wishlist | Bliss Bath &amp; Kitchen</title>
+<meta name="description" content="Your saved bath, kitchen and home products at Bliss Bath & Kitchen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script>try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="wishlist">
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero plain">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur">Wishlist</span></nav>
+      <span class="eyebrow">Saved for later</span>
+      <h1 id="wlTitle">My Wishlist</h1>
+      <p id="wlSub">Keep track of the pieces you love, share them with your designer, and move them to your cart when you're ready.</p>
+    </div>
+  </section>
+
+  <div class="wrap" style="padding-top:34px;padding-bottom:70px">
+    <div class="wl-shared" id="sharedBar" hidden></div>
+    <div class="wl-bar" id="wlBar"></div>
+    <div id="wlRoot"></div>
+  </div>
+
+  <section class="section tight also" style="background:var(--panel)">
+    <div class="wrap">
+      <div class="row-head"><div><h2 style="font-family:var(--serif);font-size:36px;letter-spacing:0;text-transform:none;font-weight:500" id="recTitle">You May Also Love</h2></div>
+        <div class="arrows"><button data-scroll="recRail" data-dir="prev" aria-label="Previous"><i data-icon="left" class="sm"></i></button><button data-scroll="recRail" data-dir="next" aria-label="Next"><i data-icon="right" class="sm"></i></button></div></div>
+      <div class="rail" id="recRail"></div>
+    </div>
+  </section>
+</main>
+
+<div id="newsletter"></div>
+<div id="site-footer"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  /* A shared link looks like wishlist.html?items=id1,id2 — shown read-only until the visitor saves it */
+  const sharedIds = (new URLSearchParams(location.search).get('items') || '').split(',').map((s) => s.trim()).filter((id) => BLISS.byId(id));
+  const viewingShared = sharedIds.length > 0 && sharedIds.join() !== BLISS.wish.ids().join();
+  const root = document.getElementById('wlRoot');
+  const bar = document.getElementById('wlBar');
+
+  const shipLine = (p) => p.weight === 'freight'
+    ? `${icon('truck', 'sm')} Ships by freight`
+    : `${icon('check', 'sm')} Free shipping eligible`;
+
+  const wlCard = (p, shared) => `
+    <article class="wl-card">
+      <a class="ph" href="product.html"><img src="img/${p.img}.webp" alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
+      ${shared ? '' : `<button class="wl-remove" data-wl-remove="${p.id}" aria-label="Remove ${esc(p.name)} from wishlist">${icon('close', 'sm')}</button>`}
+      <div class="body">
+        <span class="brand">${p.brand}</span>
+        <a class="name" href="product.html">${p.name}</a>
+        <div class="price">${priceOf(p)}</div>
+        ${BLISS.onSale(p) ? `<span class="wl-drop">${icon('tag', 'sm')} On sale now: save ${price(p.was - p.cad)}</span>` : ''}
+        <span class="wl-ship">${shipLine(p)}</span>
+        <div class="actions">
+          <button class="btn sm" data-wl-move="${p.id}">${shared ? 'Add to cart' : 'Move to cart'}</button>
+          <button class="btn ghost sm" data-inquire="${p.id}">Inquire</button>
+        </div>
+      </div>
+    </article>`;
+
+  function render() {
+    const shared = viewingShared;
+    const items = shared ? sharedIds.map(BLISS.byId) : BLISS.wish.items();
+    const n = items.length;
+    const total = items.reduce((t, p) => t + p.cad, 0);
+    document.getElementById('wlTitle').textContent = shared ? 'A Shared Wishlist' : 'My Wishlist';
+
+    const sb = document.getElementById('sharedBar');
+    sb.hidden = !shared;
+    if (shared) sb.innerHTML = `${icon('users', 'sm')}<span>You're viewing a wishlist someone shared with you (${n} item${n === 1 ? '' : 's'}).</span>
+      <button class="btn sm" id="saveShared">${icon('heart', 'sm')} Save All to My Wishlist</button>`;
+
+    if (!n) {
+      bar.innerHTML = '';
+      root.innerHTML = `<div class="empty-state wl-empty">
+        <span class="wl-heart">${icon('heart', 'lg')}</span>
+        <h2>Your wishlist is empty</h2>
+        <p>Tap the heart on any product to save it here. Handy for comparing finishes or sharing ideas with your designer.</p>
+        <div class="hero-cta" style="justify-content:center;margin-top:20px"><a class="btn" href="collection.html">Shop Bathtubs</a><a class="btn ghost" href="shop-the-look.html">Shop the Look</a></div>
+      </div>`;
+      return;
+    }
+    bar.innerHTML = `
+      <div><strong>${n} item${n === 1 ? '' : 's'}</strong><span class="muted"> · ${price(total)} total</span></div>
+      <div class="wl-tools">
+        <button class="btn sm" id="addAll">${icon('bag', 'sm')} Add All to Cart</button>
+        ${shared ? '' : `<button class="btn ghost sm" id="shareWl">${icon('users', 'sm')} Share</button>
+        <button class="btn ghost sm" data-inquire="" title="Ask about everything on your list">${icon('mail', 'sm')} Inquire About List</button>
+        <button class="wl-clear" id="clearWl">Clear wishlist</button>`}
+      </div>`;
+    root.innerHTML = `<div class="wl-grid">${items.map((p) => wlCard(p, shared)).join('')}</div>`;
+    renderRecs(items);
+  }
+
+  function renderRecs(items) {
+    const have = new Set(items.map((p) => p.id));
+    const cats = new Set(items.map((p) => p.sub));
+    const recs = BLISS.products.filter((p) => !have.has(p.id)).sort((a, b) => cats.has(b.sub) - cats.has(a.sub) || b.rating - a.rating).slice(0, 8);
+    document.getElementById('recRail').innerHTML = recs.map(productCard).join('');
+  }
+
+  document.addEventListener('click', (e) => {
+    const rm = e.target.closest('[data-wl-remove]');
+    if (rm) {
+      const card = rm.closest('.wl-card'); card.classList.add('leaving');
+      setTimeout(() => { BLISS.wish.remove(rm.dataset.wlRemove); toast('Removed from your wishlist'); }, 220);
+    }
+    const mv = e.target.closest('[data-wl-move]');
+    if (mv) {
+      BLISS.cart.add(mv.dataset.wlMove, 1);
+      if (!viewingShared) BLISS.wish.remove(mv.dataset.wlMove);
+      openCart();
+    }
+    if (e.target.closest('#addAll')) {
+      const items = viewingShared ? sharedIds : BLISS.wish.ids();
+      items.forEach((id) => BLISS.cart.add(id, 1));
+      toast(`${items.length} items added to your cart`);
+      openCart();
+    }
+    if (e.target.closest('#clearWl') && confirm('Remove all items from your wishlist?')) { BLISS.wish.clear(); toast('Wishlist cleared'); }
+    if (e.target.closest('#shareWl')) {
+      const url = `${location.origin}${location.pathname}?items=${BLISS.wish.ids().join(',')}`;
+      const done = () => toast('Share link copied. Send it to your designer or partner');
+      if (navigator.share) navigator.share({ title: 'My Bliss wishlist', url }).catch(() => {});
+      else navigator.clipboard?.writeText(url).then(done, () => prompt('Copy this link:', url));
+    }
+    if (e.target.closest('#saveShared')) {
+      sharedIds.forEach((id) => BLISS.wish.add(id));
+      toast('Saved to your wishlist');
+      history.replaceState(null, '', 'wishlist.html');
+      location.reload();
+    }
+  });
+  document.addEventListener('wish:change', render);
+  document.addEventListener('currency:change', render);
+  render();
+  if (!BLISS.wish.count() && !viewingShared) renderRecs([]);
+</script>
+</body>
+</html>
