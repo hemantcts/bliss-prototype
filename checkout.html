@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<script>try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>(function(){try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}})();</script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/components.css">
 </head>
@@ -45,7 +45,7 @@
 
       <form id="co" novalidate>
         <section class="co-sec">
-          <h2>Contact <a href="#">Sign in</a></h2>
+          <h2>Contact <a href="account.html?next=checkout.html" id="coSignIn">Sign in</a></h2>
           <div class="form">
             <label class="field"><span>Email</span><input type="email" name="email" required autocomplete="email"><small class="err">Enter a valid email address</small></label>
             <label class="check"><input type="checkbox" checked> Email me with news, offers and new collections</label>
@@ -272,6 +272,18 @@
   document.addEventListener('cart:change', () => { renderShipMethods(); render(); });
   renderShipMethods();
   fillRegions();
+  // Signed-in customers: pre-fill email and saved shipping address (WooCommerce does this from the account)
+  (function prefill() {
+    const u = BLISS.store.get('bliss_user', null);
+    if (!u) return;
+    form.email.value = u.email;
+    const link = document.getElementById('coSignIn');
+    link.textContent = `Signed in as ${u.first}`; link.href = 'account.html';
+    const a = BLISS.store.get('bliss_addresses', null)?.shipping;
+    if (!a || !a.address) { form.first.value = u.first || ''; form.last.value = u.last || ''; return; }
+    ['first', 'last', 'company', 'address', 'address2', 'city', 'postal', 'phone'].forEach((k) => { if (form[k]) form[k].value = a[k] || ''; });
+    country.value = a.country || 'CA'; fillRegions(); prov.value = a.prov || ''; render();
+  })();
 </script>
 </body>
 </html>

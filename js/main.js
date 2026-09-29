@@ -170,7 +170,7 @@ const headerHTML = `
   <nav class="main-nav" aria-label="Main">${NAV.map(navItem).join('')}</nav>
   <div class="header-actions">
     <button aria-label="Search (press /)" data-open-search>${icon('search')}</button>
-    <a href="#" aria-label="Account" class="hide-sm">${icon('user')}</a>
+    <a href="account.html" aria-label="My account" class="hide-sm acct-link">${icon('user')}<span class="acct-dot" data-acct-dot hidden></span></a>
     <a href="wishlist.html" aria-label="Wishlist" class="hide-sm">${icon('heart')}<span class="cart-count wish-count" data-wish-count hidden>0</span></a>
     <button aria-label="Open cart" data-open-cart>${icon('bag')}<span class="cart-count" data-cart>0</span></button>
   </div>
@@ -178,7 +178,7 @@ const headerHTML = `
 <div class="mobile-nav"><div class="scrim"></div><nav aria-label="Mobile">
   <button class="close" aria-label="Close menu">${icon('close')}</button>
   ${NAV.map(mobileItem).join('')}
-  <a href="wishlist.html">Wishlist <span class="m-count" data-wish-count hidden>0</span></a><a href="about.html">Our Story</a><a href="trade.html">Trade program</a><a href="showroom.html">Showroom</a><a href="contact.html">Contact</a>
+  <a href="account.html">My Account</a><a href="wishlist.html">Wishlist <span class="m-count" data-wish-count hidden>0</span></a><a href="about.html">Our Story</a><a href="trade.html">Trade program</a><a href="showroom.html">Showroom</a><a href="contact.html">Contact</a>
   <div class="m-cur"><span>Currency</span>${currencyMenu('curMobile')}</div>
 </nav></div>`;
 
@@ -204,7 +204,7 @@ const newsletterHTML = `
 const col = (title, items) => `<h4>${title}</h4><ul>${items.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>`;
 const PAGES = [
   ['Home', 'index.html', 'home'], ['Collection', 'collection.html', 'collection'], ['Product', 'product.html', 'product'],
-  ['Search / Shop', 'search.html?q=tub', 'search'], ['Cart', 'cart.html', 'cart'], ['Wishlist', 'wishlist.html', 'wishlist'], ['Checkout', 'checkout.html', 'checkout'],
+  ['Search / Shop', 'search.html?q=tub', 'search'], ['Cart', 'cart.html', 'cart'], ['Wishlist', 'wishlist.html', 'wishlist'], ['Login / Register', 'account.html', 'account'], ['Forgot password', 'account.html?view=lost-password', 'account-lost'], ['Checkout', 'checkout.html', 'checkout'],
   ['Order confirmed', 'order-confirmed.html', 'confirmed'], ['Our Story', 'about.html', 'about'], ['Contact', 'contact.html', 'contact'],
   ['Trade Program', 'trade.html', 'trade'], ['Project Inquiries', 'projects.html', 'projects'], ['Showroom', 'showroom.html', 'showroom'],
   ['Brands', 'brands.html', 'brands'], ['Shop the Look', 'shop-the-look.html', 'looks'], ['Look detail', 'look.html?look=dark-drama', 'look'], ['Blog', 'blog.html', 'blog'], ['Blog article', 'blog-post.html', 'blog-post'], ['Terms & Conditions', 'terms.html', 'terms'], ['Returns', 'returns.html', 'returns'], ['Shipping Policy', 'shipping.html', 'shipping'], ['Privacy Policy', 'privacy.html', 'privacy'],
@@ -495,6 +495,7 @@ const SITE_PAGES = [
   ['Project Inquiries', 'projects.html', 'project quote volume pricing builder multi-unit'],
   ['Visit Our Showroom', 'showroom.html', 'showroom markham visit appointment directions hours'],
   ['My Wishlist', 'wishlist.html', 'wishlist saved favourites favorites'],
+  ['My Account', 'account.html', 'account login sign in register sign up orders password'],
   ['Contact Us', 'contact.html', 'contact help phone email support'],
   ['Shop the Look', 'shop-the-look.html', 'shop the look inspiration rooms ideas'],
   ['The Journal (Blog)', 'blog.html', 'blog journal guide ideas articles'],
@@ -1006,3 +1007,12 @@ if (autoSearch !== null) openSearch(autoSearch);
   });
   window.openInquiry = open;
 })();
+
+/* ---------- Account state (prototype: name/email only, never passwords) ---------- */
+function syncAccount() {
+  const u = BLISS.store.get('bliss_user', null);
+  document.querySelectorAll('[data-acct-dot]').forEach((d) => (d.hidden = !u));
+  document.querySelectorAll('.acct-link').forEach((a) => a.setAttribute('aria-label', u ? `My account (signed in as ${u.first})` : 'Sign in or create an account'));
+}
+window.syncAccount = syncAccount;
+syncAccount();
