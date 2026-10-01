@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<script>(function(){try{var q=new URLSearchParams(location.search).get("logo"),l=q||localStorage.getItem("bliss_logo")||"a";if(q)localStorage.setItem("bliss_logo",q);document.documentElement.dataset.logo=l==="b"?"b":"a";localStorage.removeItem("bliss_theme")}catch(e){document.documentElement.dataset.logo="a"}})();</script>
+<script>(function(){var d=document.documentElement;try{var p=new URLSearchParams(location.search),q=p.get("logo"),t=p.get("theme"),l=q||localStorage.getItem("bliss_logo")||"a",c=t||localStorage.getItem("bliss_theme")||"brown";if(q)localStorage.setItem("bliss_logo",q);if(t)localStorage.setItem("bliss_theme",t);d.dataset.logo=l==="b"?"b":"a";d.dataset.theme=c==="black"?"black":"brown"}catch(e){d.dataset.logo="a";d.dataset.theme="brown"}})();</script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/components.css">
 </head>

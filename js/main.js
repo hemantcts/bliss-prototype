@@ -956,22 +956,31 @@ if (autoSearch !== null) openSearch(autoSearch);
 })();
 
 
-/* ---------- Prototype: logo switcher (Logo A: wordmark · Logo B: wordmark + tagline) ---------- */
+/* ---------- Prototype: colour + logo switcher (Brown / Black · Logo A: wordmark · Logo B: wordmark + tagline) ---------- */
 (function logoPicker() {
-  const cur = document.documentElement.dataset.logo === 'b' ? 'b' : 'a';
+  const root = document.documentElement;
+  const THEMES = { brown: ['Brown', '#2b2118'], black: ['Black', '#000000'] };
+  const LOGOS = { a: 'Wordmark', b: 'With tagline' };
+  const theme = () => (root.dataset.theme === 'black' ? 'black' : 'brown');
+  const logo = () => (root.dataset.logo === 'b' ? 'b' : 'a');
+  const meta = document.querySelector('meta[name="theme-color"]');
   const box = document.createElement('div');
   box.className = 'theme-pick logo-pick';
-  box.setAttribute('role', 'radiogroup');
-  box.setAttribute('aria-label', 'Logo version');
-  box.innerHTML = `<span>Logo</span>${[['a', 'A', 'Wordmark'], ['b', 'B', 'With tagline']].map(([k, n, t]) => `<button type="button" role="radio" aria-checked="${k === cur}" data-logo-set="${k}" title="Logo ${n}: ${t}">${n}</button>`).join('')}<em data-logo-name>${cur === 'b' ? 'With tagline' : 'Wordmark'}</em>`;
+  box.innerHTML = `<span>Colour</span><div class="pick-grp" role="radiogroup" aria-label="Colour version">${Object.entries(THEMES).map(([k, [n, c]]) => `<button type="button" class="sw" role="radio" style="--sw:${c}" data-theme-set="${k}" title="${n}" aria-label="${n}"></button>`).join('')}</div>`
+    + `<span>Logo</span><div class="pick-grp" role="radiogroup" aria-label="Logo version">${Object.keys(LOGOS).map((k) => `<button type="button" role="radio" data-logo-set="${k}" title="Logo ${k.toUpperCase()}: ${LOGOS[k]}">${k.toUpperCase()}</button>`).join('')}</div><em data-pick-name></em>`;
   document.body.append(box);
+  const sync = () => {
+    box.querySelectorAll('[data-theme-set]').forEach((x) => x.setAttribute('aria-checked', x.dataset.themeSet === theme()));
+    box.querySelectorAll('[data-logo-set]').forEach((x) => x.setAttribute('aria-checked', x.dataset.logoSet === logo()));
+    box.querySelector('[data-pick-name]').textContent = `${THEMES[theme()][0]} · ${LOGOS[logo()]}`;
+    if (meta) meta.content = THEMES[theme()][1];
+  };
+  sync();
   box.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-logo-set]'); if (!b) return;
-    const k = b.dataset.logoSet;
-    document.documentElement.dataset.logo = k;
-    try { localStorage.setItem('bliss_logo', k); } catch {}
-    box.querySelectorAll('[data-logo-set]').forEach((x) => x.setAttribute('aria-checked', x === b));
-    box.querySelector('[data-logo-name]').textContent = k === 'b' ? 'With tagline' : 'Wordmark';
+    const t = e.target.closest('[data-theme-set]'); const l = e.target.closest('[data-logo-set]');
+    if (t) { root.dataset.theme = t.dataset.themeSet; try { localStorage.setItem('bliss_theme', t.dataset.themeSet); } catch {} }
+    if (l) { root.dataset.logo = l.dataset.logoSet; try { localStorage.setItem('bliss_logo', l.dataset.logoSet); } catch {} }
+    if (t || l) sync();
   });
 })();
 

@@ -1782,3 +1782,24 @@ body.has-sticky-buy .toast { bottom: 100px; }
 .info-card .btn { white-space: normal; text-align: center; line-height: 1.3; }
 @media (max-width: 980px) { .info-cards { grid-template-columns: 1fr; } .info-card { display: grid; grid-template-columns: 40% 1fr; } .info-card img { height: 100%; aspect-ratio: auto; } }
 @media (max-width: 680px) { .info-card { display: block; } .info-card img { height: auto; aspect-ratio: 2.4; } }
+
+/* =========================================================
+   Colour version B: black with beige (switch: ?theme=black)
+   Same palette as Brown, with the dark brown replaced by black.
+   ========================================================= */
+:root[data-theme="black"] {
+  --ink: #000000;
+  --text: #2b2b2b;
+  --dark: #000000;
+  --dark-2: #1c1c1c;
+  --dark-rgb: 0, 0, 0;
+  --shade-rgb: 0, 0, 0;
+}
+:root[data-theme="black"] .look::after { background: linear-gradient(90deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,.35) 45%, transparent 75%); }
+:root[data-theme="black"] .lightbox { background: rgba(0,0,0,.9); }
+/* switcher: colour swatches + logo buttons */
+.logo-pick .pick-grp { display: flex; gap: 6px; align-items: center; }
+.logo-pick .pick-grp + span { margin-left: 6px; }
+.logo-pick button.sw { width: 22px; height: 22px; border-radius: 50%; background: var(--sw); box-shadow: 0 0 0 1px rgba(255,255,255,.45); padding: 0; }
+.logo-pick button.sw[aria-checked="true"] { background: var(--sw); box-shadow: 0 0 0 2px var(--dark), 0 0 0 3.5px #f1e8da; }
+.logo-pick em { min-width: 0; white-space: nowrap; }
