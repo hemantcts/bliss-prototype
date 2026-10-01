@@ -1803,3 +1803,11 @@ body.has-sticky-buy .toast { bottom: 100px; }
 .logo-pick button.sw { width: 22px; height: 22px; border-radius: 50%; background: var(--sw); box-shadow: 0 0 0 1px rgba(255,255,255,.45); padding: 0; }
 .logo-pick button.sw[aria-checked="true"] { background: var(--sw); box-shadow: 0 0 0 2px var(--dark), 0 0 0 3.5px #f1e8da; }
 .logo-pick em { min-width: 0; white-space: nowrap; }
+
+/* Footer social row: Facebook, Instagram, X */
+.f-social { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 40px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: #bfb3a2; }
+.f-social .socials { gap: 12px; }
+.f-social .socials a { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; border: 1px solid rgba(255,255,255,.28); color: #fff; transition: background-color .25s, border-color .25s, color .25s; }
+.f-social .socials a:hover, .f-social .socials a:focus-visible { background: var(--gold); border-color: var(--gold); color: #fff; }
+.so-ic { width: 20px; height: 20px; display: block; }
+.f-social + .f-pay { margin-top: 24px; }
