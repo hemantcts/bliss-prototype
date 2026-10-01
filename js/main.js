@@ -95,9 +95,9 @@ window.badgeOf = badgeOf;
 const NAV = [
   ['Bath', 'collection.html'], ['Kitchen', 'search.html?cat=Kitchen'], ['Appliances', 'search.html?cat=Appliances'],
   ['Lighting', 'search.html?cat=Lighting'], ['Furniture', 'search.html?cat=Furniture'], ['Brands', 'brands.html'],
-  ['Inspiration', 'shop-the-look.html'], ['Sale', 'search.html?q=sale'],
+  ['Outdoor', 'search.html?cat=Outdoor'], ['Sale', 'search.html?q=sale'],
 ];
-const navActive = { collection: 'Bath', product: 'Bath', brands: 'Brands', brand: 'Brands', looks: 'Inspiration', look: 'Inspiration', blog: 'Inspiration', 'blog-post': 'Inspiration' };
+const navActive = { collection: 'Bath', product: 'Bath', brands: 'Brands', brand: 'Brands', };
 const navLink = ([n, href]) => `<a href="${href}" class="${n === 'Sale' ? 'sale' : ''}${navActive[PAGE] === n ? ' active' : ''}">${n}</a>`;
 
 /* Category link lists: shared by the mega menu, mobile menu and footer (keep every SEO link) */
@@ -113,6 +113,8 @@ const LINKS = {
   cooking: [L('Ranges'), L('Cooktops'), L('Wall Ovens'), L('Outdoor Grills')],
   refrig: [L('Refrigerators'), L('French Door Refrigerators'), L('Wine Storage')],
   vent: [L('Range Hoods'), L('Downdraft Ventilation')],
+  outdoor: [L('Outdoor Grills'), L('Built-in Grills'), L('Outdoor Kitchens'), L('Smokers & Kamado Grills'), L('Pizza Ovens'), L('Outdoor Refrigeration')],
+  outdoorMore: [L('Blaze', 'brand.html?b=blaze'), L('Kamado Joe', 'brand.html?b=kamado-joe'), L('Grill Accessories'), L('Outdoor Lighting')],
   lighting: [L('Chandeliers'), L('Pendants'), L('Vanity Lights'), L('Wall Sconces')],
   furniture: [L('Living', 'search.html?cat=Furniture'), L('Dining', 'search.html?cat=Furniture'), L('Bedroom', 'search.html?cat=Furniture'), L('Mirrors')],
   brands: BLISS.brands.filter((b) => b.featured).map((b) => L(b.name, `brand.html?b=${b.slug}`)),
@@ -134,8 +136,8 @@ const MEGA = {
     megaFeature('cat-home', 'Coming soon', 'The Furniture Collection', 'search.html?cat=Furniture')],
   Brands: [`<div class="mega-col wide"><h4>Featured Brands</h4><ul class="mega-brands">${LINKS.brands.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul><a class="link-arrow" href="brands.html" style="margin-top:16px">View all ${BLISS.brands.length} brands ${icon('arrow', 'sm')}</a></div>`,
     megaFeature('brands-faucet', 'The brands you love', 'All in One Place', 'brands.html')],
-  Inspiration: [megaCol('Get Inspired', [L('Shop the Look', 'shop-the-look.html'), L('The Journal', 'blog.html'), L('Find Your Finish', sq('brass')), L('Our Story', 'about.html'), L('Visit Our Showroom', 'showroom.html')]),
-    megaFeature('look-retreat', 'Shop the look', 'The Modern Retreat', 'look.html?look=modern-retreat'), megaFeature('look-kitchen', 'Shop the look', 'The Contemporary Kitchen', 'look.html?look=contemporary-kitchen')],
+  Outdoor: [megaCol('Outdoor Cooking', LINKS.outdoor), megaCol('Brands &amp; More', LINKS.outdoorMore), megaCol('Get Inspired', [L('Shop the Look', 'shop-the-look.html'), L('The Journal', 'blog.html'), L('Design Services', 'contact.html?topic=design')]),
+    megaFeature('nn-grill', 'New season', 'Outdoor Kitchens', 'search.html?cat=Outdoor')],
 };
 const navItem = ([n, href]) => MEGA[n] ? `
   <div class="nav-item" data-mega>
@@ -180,7 +182,7 @@ const headerHTML = `
 </div></div>
 <header class="site-header"><div class="wrap">
   <button class="menu-toggle" aria-label="Open menu">${icon('menu')}</button>
-  <a class="logo notranslate" translate="no" href="index.html" aria-label="Bliss Bath and Kitchen home"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss.webp" alt="Bliss Bath and Kitchen" width="596" height="123" loading="lazy" decoding="async"></a>
+  <a class="logo notranslate" translate="no" href="index.html" aria-label="Bliss Bath and Kitchen home"><img class="logo-img logo-a" src="img/logo-a.webp" alt="Bliss Bath and Kitchen" width="470" height="111" decoding="async"><img class="logo-img logo-b" src="img/logo-b.webp" alt="Bliss Bath and Kitchen" width="478" height="159" decoding="async"></a>
   <nav class="main-nav" aria-label="Main">${NAV.map(navItem).join('')}</nav>
   <div class="header-actions">
     <button aria-label="Search (press /)" data-open-search>${icon('search')}</button>
@@ -226,7 +228,7 @@ const PAGES = [
 ];
 const footerHTML = `
 <footer class="site-footer"><div class="wrap">
-  <div class="f-brand"><a class="logo notranslate" translate="no" href="index.html"><b>BLISS</b><small>Bath · Kitchen · Appliance · Home</small><img class="logo-img" src="img/logo-bliss-light.webp" alt="Bliss Bath and Kitchen" width="596" height="123" loading="lazy" decoding="async"></a></div>
+  <div class="f-brand"><a class="logo notranslate" translate="no" href="index.html"><img class="logo-img logo-a" src="img/logo-a-light.webp" alt="Bliss Bath and Kitchen" width="470" height="111" decoding="async"><img class="logo-img logo-b" src="img/logo-b-light.webp" alt="Bliss Bath and Kitchen" width="478" height="159" decoding="async"></a></div>
   <div class="f-cols f-one">
     <div>${col('Bathroom Products', [L('Bathroom Faucets'), L('Bathroom Vanities'), L('Bathroom Fixtures'), L('Floor Mounted Tub Fillers'), L('Smart Toilets'), L('Freestanding Tub Fillers'), L('LED Mirrors'), L('LED Medicine Cabinets'), L('Shower Bases'), L('Shower Doors'), L('Shower Kits'), L('Thermostatic Shower Systems'), L('Sliding Shower Doors'), L('Wall Hung Toilets'), L('Towel Warmers')])}</div>
     <div>${col('Bathtubs', LINKS.bathtubs)}${col('Lighting', LINKS.lighting)}</div>
@@ -371,7 +373,7 @@ window.qtyControl = qtyControl;
 function shipNote() {
   if (!BLISS.cart.count()) return '';
   return BLISS.cart.hasFreight()
-    ? `${icon('truck', 'sm')}<span>Your cart includes <b>freight</b> items. Curbside delivery is quoted before we process your order.</span>`
+    ? `${icon('truck', 'sm')}<span>Shipping for this order is <b>calculated at checkout</b>. We confirm delivery details by email before processing.</span>`
     : `${icon('check', 'sm')}<span>Your order qualifies for <b>free standard shipping</b> across Canada &amp; USA.</span>`;
 }
 
@@ -942,24 +944,22 @@ if (autoSearch !== null) openSearch(autoSearch);
 })();
 
 
-/* ---------- Prototype: colour theme switcher (Current / Green / Maroon) ---------- */
-(function themePicker() {
-  const THEMES = [['', 'Current', '#2b2118', '#a9834a'], ['green', 'Royal Green', '#0b4431', '#b08a4e'], ['maroon', 'Deep Maroon', '#3b0d16', '#b48a50'], ['night', 'Night Blue', '#0f1b33', '#b48a50'], ['classic', 'Night Blue + Logo', '#0f1b33', '#72aacb']];
-  if (document.documentElement.dataset.theme === 'navy') document.documentElement.dataset.theme = 'night';
-  const cur = document.documentElement.dataset.theme || '';
+/* ---------- Prototype: logo switcher (Logo A: wordmark · Logo B: wordmark + tagline) ---------- */
+(function logoPicker() {
+  const cur = document.documentElement.dataset.logo === 'b' ? 'b' : 'a';
   const box = document.createElement('div');
-  box.className = 'theme-pick';
+  box.className = 'theme-pick logo-pick';
   box.setAttribute('role', 'radiogroup');
-  box.setAttribute('aria-label', 'Colour theme');
-  box.innerHTML = `<span>Colour</span>${THEMES.map(([k, n, a, b]) => `<button type="button" role="radio" aria-checked="${k === cur}" data-theme-set="${k}" title="${n}" aria-label="${n} theme" style="--a:${a};--b:${b}"></button>`).join('')}<em data-theme-name>${THEMES.find((t) => t[0] === cur)[1]}</em>`;
+  box.setAttribute('aria-label', 'Logo version');
+  box.innerHTML = `<span>Logo</span>${[['a', 'A', 'Wordmark'], ['b', 'B', 'With tagline']].map(([k, n, t]) => `<button type="button" role="radio" aria-checked="${k === cur}" data-logo-set="${k}" title="Logo ${n}: ${t}">${n}</button>`).join('')}<em data-logo-name>${cur === 'b' ? 'With tagline' : 'Wordmark'}</em>`;
   document.body.append(box);
   box.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-theme-set]'); if (!b) return;
-    const k = b.dataset.themeSet;
-    if (k) document.documentElement.dataset.theme = k; else delete document.documentElement.dataset.theme;
-    try { localStorage.setItem('bliss_theme', k); } catch {}
-    box.querySelectorAll('[data-theme-set]').forEach((x) => x.setAttribute('aria-checked', x === b));
-    box.querySelector('[data-theme-name]').textContent = b.title;
+    const b = e.target.closest('[data-logo-set]'); if (!b) return;
+    const k = b.dataset.logoSet;
+    document.documentElement.dataset.logo = k;
+    try { localStorage.setItem('bliss_logo', k); } catch {}
+    box.querySelectorAll('[data-logo-set]').forEach((x) => x.setAttribute('aria-checked', x === b));
+    box.querySelector('[data-logo-name]').textContent = k === 'b' ? 'With tagline' : 'Wordmark';
   });
 })();
 

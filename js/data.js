@@ -34,7 +34,7 @@ window.BLISS = (() => {
     { id: 'ilve-nostalgie-40', was: 12490, brand: 'ILVE', name: 'Nostalgie II 40" Range', cad: 11490, img: 'pc-ovens', cat: 'Appliances', sub: 'Ranges', rating: 4.8, reviews: 9, colors: [B, W], weight: 'freight' },
     { id: 'fp-gas-cooktop', brand: 'SMEG', name: '30" Gas Cooktop', cad: 2199, img: 'pc-cooktops', cat: 'Appliances', sub: 'Cooktops', rating: 4.6, reviews: 19, colors: [B], weight: 'parcel' },
     { id: 'fp-french-door', brand: 'Café Appliances', name: '36" French Door Refrigerator', cad: 5799, img: 'pc-fridges', cat: 'Appliances', sub: 'Refrigeration', rating: 4.7, reviews: 22, colors: [N], weight: 'freight' },
-    { id: 'blaze-grill', was: 4499, brand: 'Blaze', name: 'Premium LTE 32" Outdoor Grill', cad: 3999, img: 'nn-grill', cat: 'Appliances', sub: 'Outdoor', rating: 4.8, reviews: 16, colors: [N], weight: 'freight', tag: 'New' },
+    { id: 'blaze-grill', was: 4499, brand: 'Blaze', name: 'Premium LTE 32" Outdoor Grill', cad: 3999, img: 'nn-grill', cat: 'Outdoor', sub: 'Outdoor Grills', rating: 4.8, reviews: 16, colors: [N], weight: 'freight', tag: 'New' },
     { id: 'vc-chandelier', brand: 'Bliss Bath and Kitchen Collection', name: 'Calais Large Chandelier', cad: 4200, img: 'nn-chandelier', cat: 'Lighting', sub: 'Chandeliers', rating: 4.9, reviews: 7, colors: [BR, B], weight: 'parcel', tag: 'New' },
     { id: 'vc-pendant', brand: 'Bliss Bath and Kitchen Collection', name: 'Bellamy Brass Pendant', cad: 1180, img: 'pc-lighting', cat: 'Lighting', sub: 'Pendants', rating: 4.7, reviews: 12, colors: [BR, N], weight: 'parcel' },
   ];

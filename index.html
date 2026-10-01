@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="img/hero-home.webp" imagesrcset="img/hero-home-800.webp 800w, img/hero-home.webp 1400w" imagesizes="(max-width: 680px) 800px, 70vw" fetchpriority="high">
-<script>(function(){try{var u=new URLSearchParams(location.search).get("theme"),t=u!==null?(u==="current"?"":u):localStorage.getItem("bliss_theme");if(u!==null)localStorage.setItem("bliss_theme",t);if(t)document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<script>(function(){try{var q=new URLSearchParams(location.search).get("logo"),l=q||localStorage.getItem("bliss_logo")||"a";if(q)localStorage.setItem("bliss_logo",q);document.documentElement.dataset.logo=l==="b"?"b":"a";localStorage.removeItem("bliss_theme")}catch(e){document.documentElement.dataset.logo="a"}})();</script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/components.css">
 </head>
@@ -87,29 +87,13 @@
   </section>
 
   <!-- Brands -->
-  <section class="brands-band" id="brands">
-    <img loading="lazy" decoding="async" src="img/brands-faucet.webp" alt="Brushed gold kitchen faucet on marble">
-    <div class="brands-inner">
-      <div class="reveal">
-        <span class="eyebrow">Brands</span>
-        <h2>The World's Leading Brands, All in One Place</h2>
-        <p>Discover an exceptional selection of established names in bath, kitchen and home.</p>
-        <a class="btn" href="brands.html">Explore All Brands <i data-icon="arrow" class="sm"></i></a>
-      </div>
-      <div class="brand-logos reveal">
-        <button data-scroll="brandTrack" data-dir="prev" aria-label="Previous brands"><i data-icon="left"></i></button>
-        <div class="brand-track" id="brandTrack">
-          <a class="brand-tile" href="brand.html?b=toto"><b class="bl-toto">TOTO</b><span>Innovation in<br>every detail</span></a>
-          <a class="brand-tile" href="brand.html?b=kohler"><b class="bl-kohler">KOHLER.</b><span>Iconic design<br>&amp; innovation</span></a>
-          <a class="brand-tile" href="brand.html?b=smeg"><b style="font-family:var(--sans);font-weight:700;font-style:italic;letter-spacing:.02em">SMEG</b><span>Italian style<br>&amp; technology</span></a>
-          <a class="brand-tile" href="brand.html?b=ilve"><b class="bl-ilve">ⓘ ILVE</b><span>Italian cooking<br>excellence</span></a>
-          <a class="brand-tile" href="brand.html?b=riobel"><b class="bl-riobel">Riobel</b><span>Distinctive<br>bath design</span></a>
-          <a class="brand-tile" href="brand.html?b=victoria-albert"><b class="bl-va">VICTORIA + ALBERT</b><span>Handmade<br>volcanic limestone</span></a>
-          <a class="brand-tile" href="brand.html?b=duravit"><b class="bl-duravit">DURAVIT</b><span>German<br>design</span></a>
-        </div>
-        <button data-scroll="brandTrack" data-dir="next" aria-label="Next brands"><i data-icon="right"></i></button>
-      </div>
+  <section class="brand-show" id="brands">
+    <div class="wrap">
+      <div class="sec-title reveal"><span class="eyebrow">Our Brands</span><h2>The World's Leading Brands</h2><p>Discover an exceptional selection of established names in bath, kitchen, appliances and outdoor living, all in one place.</p></div>
     </div>
+    <div class="marquee" id="brandRowA" aria-label="Featured brands"></div>
+    <div class="marquee reverse" id="brandRowB" aria-label="More brands"></div>
+    <div class="wrap brand-show-cta"><a class="btn" href="brands.html">Explore All 59 Brands <i data-icon="arrow" class="sm"></i></a></div>
   </section>
 
   <!-- Shop the look -->
@@ -130,24 +114,27 @@
   </section>
 
   <!-- Categories -->
-  <section class="section tight" style="padding-top:24px">
+  <section class="section" id="categories">
     <div class="wrap">
       <div class="row-head reveal">
         <div><h2>Shop by Category</h2><p>Everything you need to create a beautifully considered home.</p></div>
-        <a class="link-arrow" href="search.html">View All <i data-icon="arrow" class="sm"></i></a>
+        <div class="row-actions">
+          <a class="btn ghost sm" href="search.html">View All Categories</a>
+          <div class="arrows"><button data-scroll="catRail" data-dir="prev" aria-label="Previous categories"><i data-icon="left" class="sm"></i></button><button data-scroll="catRail" data-dir="next" aria-label="Next categories"><i data-icon="right" class="sm"></i></button></div>
+        </div>
       </div>
-      <div class="cat-strip reveal" id="catStrip"></div>
+      <div class="rail cat-rail reveal" id="catRail"></div>
     </div>
   </section>
 
   <!-- New & noteworthy -->
-  <section class="section tight" style="padding-top:8px">
+  <section class="section" style="padding-top:12px">
     <div class="wrap">
       <div class="row-head reveal">
         <div><h2>New &amp; Noteworthy</h2><p>The latest arrivals, signature pieces and new collections from the brands we love.</p></div>
-        <div class="arrows">
-          <button data-scroll="nnRail" data-dir="prev" aria-label="Previous"><i data-icon="left" class="sm"></i></button>
-          <button data-scroll="nnRail" data-dir="next" aria-label="Next"><i data-icon="right" class="sm"></i></button>
+        <div class="row-actions">
+          <a class="btn ghost sm" href="search.html?q=new" id="nnAll">View All New Arrivals</a>
+          <div class="arrows"><button data-scroll="nnRail" data-dir="prev" aria-label="Previous products"><i data-icon="left" class="sm"></i></button><button data-scroll="nnRail" data-dir="next" aria-label="Next products"><i data-icon="right" class="sm"></i></button></div>
         </div>
       </div>
       <div class="nn-tabs reveal" role="tablist">
@@ -155,22 +142,7 @@
         <button role="tab" aria-selected="false" data-nn="best">Best Sellers</button>
         <button role="tab" aria-selected="false" data-nn="picks">Designer Picks</button>
       </div>
-      <div class="rail reveal" id="nnRail"></div>
-    </div>
-  </section>
-
-  <!-- Finishes -->
-  <section class="section" style="background:var(--panel)">
-    <div class="wrap">
-      <div class="sec-title reveal"><span class="eyebrow">Finishes</span><h2>Find Your Finish</h2><p>From timeless polished nickel to warm brass and contemporary matte black, explore finishes designed to bring your entire space together.</p></div>
-      <div class="finishes reveal">
-        <a class="finish" href="search.html?q=brass"><div class="sw" style="background:radial-gradient(circle at 35% 30%,#f3d9a2,#c49a52 45%,#8a6429)"></div><b>Warm Brass</b><span>Brushed &amp; polished</span></a>
-        <a class="finish" href="search.html?q=nickel"><div class="sw" style="background:radial-gradient(circle at 35% 30%,#f6f2ea,#c9c3b8 45%,#8e877c)"></div><b>Polished Nickel</b><span>Soft, warm silver</span></a>
-        <a class="finish" href="search.html?q=black"><div class="sw" style="background:radial-gradient(circle at 35% 30%,#5b5652,#2a2623 45%,#121010)"></div><b>Matte Black</b><span>Contemporary contrast</span></a>
-        <a class="finish" href="search.html?q=chrome"><div class="sw" style="background:radial-gradient(circle at 35% 30%,#ffffff,#d6dade 40%,#8d949c)"></div><b>Polished Chrome</b><span>Bright &amp; classic</span></a>
-        <a class="finish" href="search.html?q=bronze"><div class="sw" style="background:radial-gradient(circle at 35% 30%,#9a7a5e,#5d4432 45%,#2e2119)"></div><b>Oil-Rubbed Bronze</b><span>Rich &amp; traditional</span></a>
-        <a class="finish" href="search.html?q=white"><div class="sw" style="background:radial-gradient(circle at 35% 30%,#ffffff,#f1ede6 50%,#cfc7ba)"></div><b>Matte White</b><span>Soft &amp; sculptural</span></a>
-      </div>
+      <div class="rail nn-rail reveal" id="nnRail"></div>
     </div>
   </section>
 
@@ -280,26 +252,62 @@
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>
 <script>
-  const cats = [['faucets', 'Bathroom Faucets', 'search.html?q=bathroom%20faucet'], ['showers', 'Shower Systems', 'search.html?q=shower'], ['toilets', 'Smart Toilets', 'search.html?q=toilet'],
-    ['vanities', 'Vanities', 'search.html?q=vanity'], ['bathtubs', 'Bathtubs', 'collection.html'], ['../img/nn-faucet', 'Kitchen Faucets', 'search.html?q=kitchen%20faucet'],
-    ['sinks', 'Kitchen Sinks', 'search.html?q=sink'], ['ovens', 'Appliances', 'search.html?cat=Appliances'], ['lighting', 'Lighting', 'search.html?cat=Lighting'], ['../img/cat-home', 'Furniture', 'search.html?cat=Furniture']];
-  document.getElementById('catStrip').innerHTML = cats.map(([k, n, h]) =>
-    `<a class="cat-chip" href="${h}"><div class="ph"><img src="img/${k.startsWith('../') ? k.slice(7) : 'pc-' + k}.webp" alt="" loading="lazy"></div><span>${n}</span></a>`).join('');
+  /* Shop by category: large tiles in a slider */
+  const cats = [['pc-bathtubs', 'Bathtubs', 'collection.html', 22], ['pc-faucets', 'Bathroom Faucets', 'search.html?q=bathroom%20faucet', 3],
+    ['pc-vanities', 'Vanities', 'search.html?q=vanity', 1], ['pc-showers', 'Shower Systems', 'search.html?q=shower', 1], ['pc-toilets', 'Smart Toilets', 'search.html?q=toilet', 2],
+    ['nn-faucet', 'Kitchen Faucets', 'search.html?q=kitchen%20faucet', 1], ['pc-sinks', 'Kitchen Sinks', 'search.html?q=sink', 1], ['pc-ovens', 'Ranges & Ovens', 'search.html?cat=Appliances', 4],
+    ['nn-grill', 'Outdoor', 'search.html?cat=Outdoor', 1], ['pc-lighting', 'Lighting', 'search.html?cat=Lighting', 2], ['cat-home', 'Furniture', 'search.html?cat=Furniture', 0]];
+  document.getElementById('catRail').innerHTML = cats.map(([img, name, href]) => `
+    <a class="cat-tile" href="${href}">
+      <span class="ct-img"><img src="img/${img}.webp" alt="${name}" loading="lazy" decoding="async"></span>
+      <span class="ct-name">${name}</span><span class="link-arrow">Shop now ${icon('arrow', 'sm')}</span>
+    </a>`).join('');
 
+  /* Brands showcase: two gliding rows of large logo tiles (type styled after each brand's wordmark) */
+  const WORD = {
+    'toto': ['TOTO', 'w-toto'], 'kohler': ['KOHLER.', 'w-kohler'], 'victoria-albert': ['VICTORIA + ALBERT', 'w-va'], 'riobel': ['Riobel', 'w-riobel'],
+    'duravit': ['DURAVIT', 'w-duravit'], 'ilve': ['ILVE', 'w-ilve'], 'smeg': ['SMEG', 'w-smeg'], 'brizo': ['BRIZO', 'w-brizo'], 'graff': ['GRAFF', 'w-graff'],
+    'grohe': ['GROHE', 'w-grohe'], 'hansgrohe': ['hansgrohe', 'w-hansgrohe'], 'rohl': ['ROHL', 'w-rohl'], 'blanco': ['BLANCO', 'w-blanco'], 'franke': ['FRANKE', 'w-franke'],
+    'aquabrass': ['AQUABRASS', 'w-aquabrass'], 'bainultra': ['BainUltra', 'w-bain'], 'native-trails': ['Native Trails', 'w-native'], 'perrin-rowe': ['Perrin & Rowe', 'w-perrin'],
+    'cafe-appliances': ['Café', 'w-cafe'], 'samsung': ['SAMSUNG', 'w-samsung'], 'blaze': ['BLAZE', 'w-blaze'], 'kamado-joe': ['KAMADO JOE', 'w-kamado'],
+    'waterstone': ['WATERSTONE', 'w-water'], 'kwc': ['KWC', 'w-kwc'], 'maax': ['MAAX', 'w-maax'], 'fleurco': ['fleurco', 'w-fleurco'],
+    'electric-mirror': ['ELECTRIC MIRROR', 'w-em'], 'caroma': ['Caroma', 'w-caroma'], 'ge': ['GE', 'w-ge'], 'mr-steam': ['MrSteam', 'w-steam'],
+  };
+  const slugs = Object.keys(WORD);
+  const tile = (slug, hidden) => {
+    const b = BLISS.brands.find((x) => x.slug === slug);
+    const [txt, cls] = WORD[slug];
+    return `<a class="brand-logo ${cls}" href="brand.html?b=${slug}" ${hidden ? 'tabindex="-1" aria-hidden="true"' : ''} title="${esc(b ? b.name : txt)}"><span>${esc(txt)}</span></a>`;
+  };
+  const row = (el, list) => {
+    // duplicate the set so the glide loops seamlessly; the copy is hidden from assistive tech
+    el.innerHTML = `<div class="marquee-track">${list.map((x) => tile(x)).join('')}${list.map((x) => tile(x, true)).join('')}</div>`;
+  };
+  row(document.getElementById('brandRowA'), slugs.slice(0, 15));
+  row(document.getElementById('brandRowB'), slugs.slice(15));
+
+  /* New & Noteworthy: 3 large products per view */
   const NN = {
-    new: ['kohler-freestanding', 'riobel-kitchen-faucet', 'toto-neorest-nx', 'vc-chandelier', 'ilve-majestic-36', 'blaze-grill', 'va-barcelona-2'],
+    new: ['kohler-freestanding', 'riobel-kitchen-faucet', 'toto-neorest-nx', 'vc-chandelier', 'ilve-majestic-36', 'blaze-grill', 'va-barcelona-2', 'rohl-tub-filler'],
     best: ['va-barcelona-2', 'riobel-bath-faucet', 'kohler-workstation-sink', 'toto-drake', 'fp-french-door', 'riobel-momenti-shower', 'kohler-veil'],
     picks: ['aquabrass-concerto', 'vc-pendant', 'ilve-nostalgie-40', 'riobel-vanity-oak', 'va-edge', 'fp-gas-cooktop', 'duravit-luv'],
   };
+  const NN_ALL = { new: ['search.html?q=new', 'View All New Arrivals'], best: ['search.html?q=best', 'View All Best Sellers'], picks: ['search.html', 'View All Products'] };
   const rail = document.getElementById('nnRail');
   function renderNN(key) {
     rail.innerHTML = NN[key].map(BLISS.byId).map((p) => `
-      <div class="mini-card">
-        <a class="ph" href="product.html"><img src="img/${p.img}.webp" alt="${esc(p.brand + ' ' + p.name)}" loading="lazy">${badgeOf(p)}</a>
-        <div class="brand">${p.brand}</div><a class="name" href="product.html">${p.name}</a><div class="price">${priceOf(p)}</div>
-        <div class="mini-actions"><button type="button" data-add="${p.id}">${icon('bag', 'sm')} Add to cart</button><button type="button" data-inquire="${p.id}">Inquire</button></div>
-      </div>`).join('');
+      <article class="nn-card">
+        <a class="ph" href="product.html"><img src="img/${p.img}.webp" alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
+        <button class="wish" data-wish="${p.id}" aria-label="Add to wishlist" aria-pressed="false">${icon('heart', 'sm')}</button>
+        <div class="nn-body">
+          <span class="brand">${p.brand}</span>
+          <a class="name" href="product.html">${p.name}</a>
+          <div class="price">${priceOf(p)}</div>
+          <div class="nn-actions"><button class="btn sm" data-add="${p.id}">Add to cart</button><button class="btn ghost sm" data-inquire="${p.id}">Inquire</button></div>
+        </div>
+      </article>`).join('');
     rail.scrollLeft = 0;
+    const [href, label] = NN_ALL[key]; const all = document.getElementById('nnAll'); all.href = href; all.textContent = label;
   }
   document.querySelectorAll('[data-nn]').forEach((b) => b.addEventListener('click', () => {
     document.querySelectorAll('[data-nn]').forEach((x) => x.setAttribute('aria-selected', x === b));
