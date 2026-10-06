@@ -250,7 +250,7 @@ const col = (title, items) => `<h2 class="f-h">${title}</h2><ul>${items.map(([t,
 const PAGES = [
   ['Home', 'index.html', 'home'], ['Collection', 'collection.html', 'collection'], ['Product', 'product.html', 'product'],
   ['Search / Shop', 'search.html?q=tub', 'search'], ['Cart', 'cart.html', 'cart'], ['Wishlist', 'wishlist.html', 'wishlist'], ['Login / Register', 'account.html', 'account'], ['Forgot password', 'account.html?view=lost-password', 'account-lost'], ['Checkout', 'checkout.html', 'checkout'],
-  ['Order confirmed', 'order-confirmed.html', 'confirmed'], ['Our Story', 'about.html', 'about'], ['Contact', 'contact.html', 'contact'],
+  ['Order confirmed', 'order-confirmed.html', 'confirmed'], ['Thank you (inquiry)', 'thank-you.html?type=inquiry', 'thanks'], ['Thank you (contact)', 'thank-you.html?type=contact', 'thanks'], ['404 page', '404.html', '404'], ['Our Story', 'about.html', 'about'], ['Contact', 'contact.html', 'contact'],
   ['Trade Program', 'trade.html', 'trade'], ['Project Inquiries', 'projects.html', 'projects'], ['Showroom', 'showroom.html', 'showroom'],
   ['Brands', 'brands.html', 'brands'], ['Brand page', 'brand.html?b=victoria-albert', 'brand'], ['Shop the Look', 'shop-the-look.html', 'looks'], ['Look detail', 'look.html?look=dark-drama', 'look'], ['Blog', 'blog.html', 'blog'], ['Blog article', 'blog-post.html', 'blog-post'], ['Terms & Conditions', 'terms.html', 'terms'], ['Returns', 'returns.html', 'returns'], ['Shipping Policy', 'shipping.html', 'shipping'], ['Privacy Policy', 'privacy.html', 'privacy'],
 ];
@@ -854,7 +854,16 @@ window.productCard = (p) => `
   if ('requestIdleCallback' in window) requestIdleCallback(() => setTimeout(warm, 1500)); else setTimeout(warm, 2500);
 })();
 
-/* ---------- Demo forms: validate, then show a success state (no data is sent) ---------- */
+/* ---------- Thank-you hand-off ----------
+   Forms send people to thank-you.html?type=<form>. A short summary (first name, product) travels in
+   sessionStorage, never in the URL, so no personal details end up in history, logs or analytics. */
+const firstName = (v) => String(v || '').trim().split(/\s+/)[0].slice(0, 40);
+window.goThanks = (type, info = {}) => {
+  try { sessionStorage.setItem('bliss_thanks', JSON.stringify({ type, ...info, at: Date.now() })); } catch {}
+  location.href = `thank-you.html?type=${encodeURIComponent(type)}`;
+};
+
+/* ---------- Demo forms: validate, then go to the thank-you page (or show an inline success state) ---------- */
 document.querySelectorAll('form[data-demo-form]').forEach((f) => {
   f.noValidate = true;
   f.addEventListener('submit', (e) => {
@@ -864,6 +873,7 @@ document.querySelectorAll('form[data-demo-form]').forEach((f) => {
     const btn = f.querySelector('[type=submit]');
     btn.classList.add('placing'); btn.innerHTML = '<span class="spinner"></span> Sending…';
     setTimeout(() => {
+      if (f.dataset.thanks) { goThanks(f.dataset.thanks, { name: firstName(f.elements.name?.value || f.elements.first?.value) }); return; }
       const box = document.createElement('div');
       box.className = 'form-success';
       box.innerHTML = `<div class="tick">${icon('check')}</div><h3>${esc(f.dataset.successTitle || 'Thank you')}</h3><p>${esc(f.dataset.successText || 'A member of our team will be in touch within one business day.')}</p>`;
@@ -1030,9 +1040,9 @@ if (autoSearch !== null) openSearch(autoSearch);
   m.setAttribute('aria-labelledby', 'inqTitle');
   m.hidden = true;
   document.body.append(m);
-  let back;
+  let back, cur = null;
   function open(p) {
-    back = document.activeElement;
+    back = document.activeElement; cur = p || null;
     m.innerHTML = `
       <div class="c-box">
         <header><h2 id="inqTitle">Make an Inquiry</h2><button type="button" class="c-x" data-inq-close aria-label="Close">${icon('close')}</button></header>
@@ -1078,7 +1088,7 @@ if (autoSearch !== null) openSearch(autoSearch);
     const btn = f.querySelector('[type=submit]');
     btn.classList.add('placing'); btn.innerHTML = '<span class="spinner"></span> Sending…';
     setTimeout(() => {
-      f.outerHTML = `<div class="c-body form-success"><div class="tick">${icon('check')}</div><h3>Inquiry sent</h3><p>Thank you. A Bliss Bath and Kitchen product specialist will reply within one business day.</p><button class="btn ghost" type="button" data-inq-close>Continue Browsing</button></div>`;
+      goThanks('inquiry', { name: firstName(f.elements.name.value), product: cur?.id || '', about: f.elements.about?.value || '' });
     }, 800);
   });
   window.openInquiry = open;

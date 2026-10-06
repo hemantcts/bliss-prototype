@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- 404 can be served at any depth (e.g. /bliss-prototype/a/b): set the base so relative URLs resolve from the site root -->
+<script>(function(){var p=location.pathname,b=p.indexOf('/bliss-prototype/')===0?'/bliss-prototype/':'/';document.write('<base href="'+b+'">');})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#2b2118">
+<title>Page Not Found | Bliss Bath and Kitchen</title>
+<meta name="description" content="Sorry, we can't find that page. Search our collection or explore bath, kitchen, appliances and lighting.">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+</head>
+<body data-page="404">
+<div id="site-header"></div>
+
+<main id="main">
+  <section class="nf">
+    <div class="wrap">
+      <div class="nf-code" aria-hidden="true">404</div>
+      <span class="eyebrow gold">Page not found</span>
+      <h1>We can&rsquo;t find that page</h1>
+      <p class="nf-lead">The page may have moved, been renamed or no longer exists. Try a search, or explore one of our collections below.</p>
+      <form class="nf-search" action="search.html" method="get" role="search">
+        <label class="sr-only" for="nfQ">Search products</label>
+        <input id="nfQ" name="q" type="search" placeholder="Search products, brands, finishes…" autocomplete="off">
+        <button type="submit" aria-label="Search"><i data-icon="search"></i></button>
+      </form>
+      <nav class="nf-links" aria-label="Popular pages">
+        <a href="collection.html">Bath</a><a href="search.html?cat=Kitchen">Kitchen</a><a href="search.html?cat=Appliances">Appliances</a><a href="search.html?cat=Lighting">Lighting</a><a href="search.html?cat=Outdoor">Outdoor</a><a href="brands.html">Brands</a><a href="shop-the-look.html">Shop the Look</a><a href="search.html?q=sale">Sale</a>
+      </nav>
+      <p class="nf-help">Still can&rsquo;t find it? <a href="contact.html">Contact us</a> or call <a href="tel:18553661001">1-855-366-1001</a>. We&rsquo;re happy to help.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-title"><span class="eyebrow">Shop by space</span><h2>Designed for Every Room</h2></div>
+      <div class="rooms">
+        <a class="room-card" href="collection.html">
+          <div class="ph"><img width="1400" height="788" loading="lazy" decoding="async" src="img/cat-bath.webp" srcset="img/cat-bath-400.webp 400w, img/cat-bath-560.webp 560w, img/cat-bath-700.webp 700w, img/cat-bath-840.webp 840w, img/cat-bath-1000.webp 1000w, img/cat-bath.webp 1400w" sizes="(max-width: 680px) 46vw, 25vw" alt="Bathroom with freestanding tub"></div>
+          <div class="body"><h3>Bath</h3></div>
+        </a>
+        <a class="room-card" href="search.html?cat=Kitchen">
+          <div class="ph"><img width="1400" height="1111" loading="lazy" decoding="async" src="img/cat-kitchen.webp" srcset="img/cat-kitchen-400.webp 400w, img/cat-kitchen-560.webp 560w, img/cat-kitchen-700.webp 700w, img/cat-kitchen-840.webp 840w, img/cat-kitchen-1000.webp 1000w, img/cat-kitchen.webp 1400w" sizes="(max-width: 680px) 46vw, 25vw" alt="Kitchen island with gold fixtures"></div>
+          <div class="body"><h3>Kitchen</h3></div>
+        </a>
+        <a class="room-card" href="search.html?cat=Appliances">
+          <div class="ph"><img width="1400" height="1077" loading="lazy" decoding="async" src="img/cat-appliances.webp" srcset="img/cat-appliances-400.webp 400w, img/cat-appliances-560.webp 560w, img/cat-appliances-700.webp 700w, img/cat-appliances-840.webp 840w, img/cat-appliances-1000.webp 1000w, img/cat-appliances.webp 1400w" sizes="(max-width: 680px) 46vw, 25vw" alt="Black and brass range cooker"></div>
+          <div class="body"><h3>Appliances</h3></div>
+        </a>
+        <a class="room-card" href="search.html?cat=Lighting">
+          <div class="ph"><img width="1391" height="1131" loading="lazy" decoding="async" src="img/cat-home.webp" srcset="img/cat-home-400.webp 400w, img/cat-home-560.webp 560w, img/cat-home-700.webp 700w, img/cat-home-840.webp 840w, img/cat-home-1000.webp 1000w, img/cat-home.webp 1391w" sizes="(max-width: 680px) 46vw, 25vw" alt="Warm living room"></div>
+          <div class="body"><h3>Home</h3></div>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/app.min.js"></script>
+</body>
+</html>
