@@ -1,6 +1,6 @@
-/* Final-category product listing (templates/listing.html). Built to js/pages/collection.min.js by `npm run build`. */
-  /* Product listing for a final category (e.g. /bathroom/bathtubs/freestanding-bathtubs/).
-     The category comes from <body data-cat>; filters are built from the products in it. */
+/* Category product listing (templates/category.html). Built to js/pages/collection.min.js by `npm run build`.
+   Lists every product in the category and its sub-categories (e.g. /bathroom/bathtubs/ shows all bathtubs).
+   The category comes from <body data-cat>; filters are built from the products on the page. */
   const slug = document.body.dataset.cat || 'freestanding-bathtubs';
   const cat = BLISS.catBySlug[slug];
   let products = BLISS.catProducts(slug);
@@ -13,10 +13,12 @@
     notice.hidden = false;
     notice.innerHTML = `We’re adding ${esc(cat.name.toLowerCase())} to our online store. ${near ? `Meanwhile, explore more <a href="${BLISS.catUrl(near.slug)}">${esc(near.name.toLowerCase())}</a>, or ` : ''}<a href="contact.html">contact us</a> for availability and pricing.`;
   }
-  const val = (p, key) => key === 'price' ? priceBand(p.cad) : key === 'sale' ? (BLISS.onSale(p) ? 'On Sale' : '') : p[key];
+  const childOf = (p) => { const t = BLISS.catTrail(BLISS.catOf(p)); const i = t.findIndex((c) => c.slug === slug); return i >= 0 && t[i + 1] ? t[i + 1].name : ''; };
+  const val = (p, key) => key === 'price' ? priceBand(p.cad) : key === 'sale' ? (BLISS.onSale(p) ? 'On Sale' : '') : key === 'category' ? childOf(p) : p[key];
   const priceBand = (p) => p < 2000 ? 'Under $2,000' : p < 4000 ? '$2,000 – $4,000' : p < 6000 ? '$4,000 – $6,000' : 'Over $6,000';
   const uniq = (key) => [...new Set(products.map((p) => p[key]).filter(Boolean))];
   const groups = [
+    ['Category', 'category', BLISS.catChildren(slug).map((c) => c.name)],
     ['Offers', 'sale', ['On Sale']],
     ['Price Range (CAD)', 'price', ['Under $2,000', '$2,000 – $4,000', '$4,000 – $6,000', 'Over $6,000']],
     ['Brand', 'brand', uniq('brand').sort()],
@@ -27,7 +29,7 @@
   ].map(([l, k, opts]) => [l, k, opts.filter((o) => products.some((p) => val(p, k) === o))]).filter(([, , opts]) => opts.length);
   const sizeLabel = { Small: 'Small (up to 54")', Standard: 'Standard (54" – 60")', Large: 'Large (60"+)' };
   const active = {};
-  let sort = 'featured';
+  let sort = 'featured', page = 1, perPage = 12;
 
   document.getElementById('filterGroups').innerHTML = groups.map(([label, key, opts], gi) => `
     <div class="fgroup${gi > 3 ? ' closed' : ''}">
@@ -38,18 +40,26 @@
       }).join('')}</div>
     </div>`).join('');
 
-  function render() {
+  function render(keepPage) {
+    if (!keepPage) page = 1;
     let list = products.filter((p) => Object.entries(active).every(([k, set]) => !set.size || set.has(val(p, k))));
     if (sort === 'low') list = [...list].sort((a, b) => a.cad - b.cad);
     if (sort === 'high') list = [...list].sort((a, b) => b.cad - a.cad);
     if (sort === 'rating') list = [...list].sort((a, b) => b.rating - a.rating || b.reviews - a.reviews);
     const grid = document.getElementById('grid');
-    grid.innerHTML = list.length
-      ? list.map(productCard).join('')
+    const pages = Math.max(1, Math.ceil(list.length / perPage));
+    page = Math.min(page, pages);
+    const shown = list.slice((page - 1) * perPage, page * perPage);
+    grid.innerHTML = shown.length
+      ? shown.map(productCard).join('')
       : '<p style="grid-column:1/-1;color:var(--muted);padding:40px 0">No products match these filters. Try removing one.</p>';
     const filtered = Object.values(active).some((s) => s.size);
-    // the freestanding page demonstrates pagination (42 in the full catalogue); other categories show their real count
-    document.getElementById('count').textContent = filtered ? `${list.length} matching products` : slug === 'freestanding-bathtubs' ? `Showing ${list.length} of 42 products` : `${list.length} product${list.length === 1 ? '' : 's'}`;
+    const from = list.length ? (page - 1) * perPage + 1 : 0, to = Math.min(page * perPage, list.length);
+    document.getElementById('count').textContent = list.length > perPage ? `Showing ${from}–${to} of ${list.length} ${filtered ? 'matching ' : ''}products` : `${list.length} ${filtered ? 'matching ' : ''}product${list.length === 1 ? '' : 's'}`;
+    const pager = document.getElementById('pager');
+    pager.hidden = pages < 2;
+    pager.innerHTML = pages < 2 ? '' : `${page > 1 ? `<button type="button" data-page="${page - 1}" aria-label="Previous page">‹</button>` : ''}${Array.from({ length: pages }, (_, i) => `<button type="button" data-page="${i + 1}"${i + 1 === page ? ' class="on" aria-current="page"' : ''}>${i + 1}</button>`).join('')}${page < pages ? `<button type="button" data-page="${page + 1}" aria-label="Next page">›</button>` : ''}`;
+    syncWish();
     const chips = Object.entries(active).flatMap(([k, set]) => [...set].map((v) => `<button data-chip="${k}|${v}">${v} ${icon('close', 'sm')}</button>`));
     document.getElementById('chips').innerHTML = chips.join('');
   }
@@ -108,5 +118,11 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && filters.classList.contains('open')) openF(false); });
   document.addEventListener('change', () => { document.getElementById('filterApply').textContent = `Show ${document.getElementById('grid').querySelectorAll('.p-card').length} results`; });
 
-  document.getElementById('pager').hidden = slug !== 'freestanding-bathtubs';
+  // pagination + products per page
+  document.getElementById('pager').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-page]'); if (!b) return;
+    page = +b.dataset.page; render(true);
+    document.getElementById('shop').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  document.getElementById('perPage')?.addEventListener('change', (e) => { perPage = +e.target.value; render(); });
   render();

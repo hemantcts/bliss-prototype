@@ -19,28 +19,26 @@
 <link rel="stylesheet" href="css/bliss.min.css">
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
-<body data-page="collection" data-top="outdoor" data-cat="grill-accessories">
+<body data-page="category" data-top="outdoor" data-cat="grill-accessories" data-kind="leaf">
 <div id="site-header"></div>
 
 <main id="main">
-  <section class="hero short">
-    <div class="hero-media"><img src="img/mega-outdoor.webp" srcset="img/mega-outdoor-400.webp 400w, img/mega-outdoor-560.webp 560w, img/mega-outdoor-700.webp 700w, img/mega-outdoor.webp 900w" sizes="100vw" width="900" height="822" alt="" fetchpriority="high"></div>
+  <!-- Category header: compact so products appear above the fold -->
+  <section class="cat-head">
     <div class="wrap">
-      <div class="hero-copy">
-        <span class="eyebrow">Outdoor</span>
-        <h1>Grill Accessories</h1>
-        <p>Shop grill accessories from the world’s leading brands, selected for design, quality and lasting performance.</p>
-        <a class="btn light" href="#shop">Shop All Grill Accessories <i data-icon="arrow" class="sm"></i></a>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="outdoor/">Outdoor</a><span class="sep">›</span><span class="cur" aria-current="page">Grill Accessories</span></nav>
+      <div class="cat-head-row">
+        <div class="cat-head-copy">
+          <h1>Grill Accessories</h1>
+          <p class="cat-lead">Shop grill accessories from the world’s leading brands, selected for design, quality and lasting performance.</p>
+        </div>
+        <div class="cat-head-img"><img src="img/mega-outdoor.webp" srcset="img/mega-outdoor-400.webp 400w, img/mega-outdoor-560.webp 560w, img/mega-outdoor-700.webp 700w, img/mega-outdoor.webp 900w" sizes="(max-width: 980px) 0px, 360px" width="900" height="822" alt=""></div>
       </div>
+      <nav class="cat-subnav" aria-label="More in Outdoor"><a class="cs-item cs-all" href="outdoor/"><span class="cs-img"><i data-icon="grid"></i></span><span class="cs-name">All Outdoor</span></a><a class="cs-item" href="outdoor/outdoor-grills/"><span class="cs-img"><img src="img/nn-grill.webp" width="480" height="212" alt=""></span><span class="cs-name">Outdoor Grills</span></a><a class="cs-item" href="outdoor/outdoor-kitchens/"><span class="cs-img photo"><img src="img/mega-outdoor.webp" srcset="img/mega-outdoor-400.webp 400w, img/mega-outdoor-560.webp 560w, img/mega-outdoor-700.webp 700w, img/mega-outdoor.webp 900w" sizes="96px" width="900" height="822" alt=""></span><span class="cs-name">Outdoor Kitchens</span></a><a class="cs-item" href="outdoor/pizza-ovens/"><span class="cs-img"><img src="img/nn-grill.webp" width="480" height="212" alt=""></span><span class="cs-name">Pizza Ovens</span></a><a class="cs-item" href="outdoor/outdoor-refrigeration/"><span class="cs-img"><img src="img/pc-fridges.webp" width="268" height="200" alt=""></span><span class="cs-name">Outdoor Refrigeration</span></a><a class="cs-item on" href="outdoor/grill-accessories/" aria-current="page"><span class="cs-img"><img src="img/nn-grill.webp" width="480" height="212" alt=""></span><span class="cs-name">Grill Accessories</span></a><a class="cs-item" href="outdoor/outdoor-lighting/"><span class="cs-img"><img src="img/pc-lighting.webp" width="320" height="200" alt=""></span><span class="cs-name">Outdoor Lighting</span></a></nav>
     </div>
   </section>
 
-  <div id="trust"></div>
-
   <div class="wrap">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><a href="outdoor/">Outdoor</a><span class="sep">›</span><span class="cur">Grill Accessories</span></nav>
-
-
     <section class="shop" id="shop">
       <aside class="filters" id="filters" aria-label="Filters">
         <div class="f-title"><span>Filter by</span><span class="f-title-act"><button type="button" id="clearFilters">Clear all</button><button type="button" class="f-close" id="filterClose" aria-label="Close filters"><i data-icon="close" class="sm"></i></button></span></div>
@@ -70,30 +68,52 @@
               <button class="view-btn" data-mview="1" aria-label="1 product per row" aria-pressed="false"><svg class="icon sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16"/></svg></button>
               <button class="view-btn on" data-mview="2" aria-label="2 products per row" aria-pressed="true"><svg class="icon sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="7.5" height="16"/><rect x="13" y="4" width="7.5" height="16"/></svg></button>
             </div>
-            <label class="per-page">Show <select aria-label="Per page"><option>12</option><option>24</option><option>48</option></select> per page</label>
+            <label class="per-page">Show <select id="perPage" aria-label="Products per page"><option>12</option><option>24</option><option>48</option></select> per page</label>
           </div>
         </div>
         <div class="chips" id="chips"></div>
         <p class="cat-notice" id="catNotice" hidden></p>
         <div class="p-grid" id="grid"></div>
-        <nav class="pager" id="pager" aria-label="Pagination"><a class="on" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#" aria-label="Next page">›</a></nav>
+        <nav class="pager" id="pager" aria-label="Pagination" hidden></nav>
       </div>
     </section>
   </div>
 
-  <!-- Related categories -->
-  <section class="section tight cat-related">
+  <div id="trust"></div>
+
+  <!-- Content area (editable in WordPress: category description / ACF field) -->
+  <section class="section cat-content">
     <div class="wrap">
-      <div class="row-head"><div><h2>More in Outdoor</h2><p>Explore related categories.</p></div><a class="link-arrow" href="outdoor/">All Outdoor <i data-icon="arrow" class="sm"></i></a></div>
-      <div class="sub-grid sm"><a class="sub-tile" href="outdoor/outdoor-grills/"><span class="st-img"><img src="img/nn-grill.webp" width="480" height="212" alt="Outdoor Grills" loading="lazy" decoding="async"></span><span class="st-name">Outdoor Grills</span><span class="st-meta">2 categories <i data-icon="arrow" class="sm"></i></span></a><a class="sub-tile" href="outdoor/outdoor-kitchens/"><span class="st-img photo"><img src="img/mega-outdoor.webp" srcset="img/mega-outdoor-400.webp 400w, img/mega-outdoor-560.webp 560w, img/mega-outdoor-700.webp 700w, img/mega-outdoor.webp 900w" sizes="(max-width: 680px) 46vw, (max-width: 1180px) 30vw, 22vw" width="900" height="822" alt="Outdoor Kitchens" loading="lazy" decoding="async"></span><span class="st-name">Outdoor Kitchens</span><span class="st-meta">Shop now <i data-icon="arrow" class="sm"></i></span></a><a class="sub-tile" href="outdoor/pizza-ovens/"><span class="st-img"><img src="img/nn-grill.webp" width="480" height="212" alt="Pizza Ovens" loading="lazy" decoding="async"></span><span class="st-name">Pizza Ovens</span><span class="st-meta">Shop now <i data-icon="arrow" class="sm"></i></span></a><a class="sub-tile" href="outdoor/outdoor-refrigeration/"><span class="st-img"><img src="img/pc-fridges.webp" width="268" height="200" alt="Outdoor Refrigeration" loading="lazy" decoding="async"></span><span class="st-name">Outdoor Refrigeration</span><span class="st-meta">Shop now <i data-icon="arrow" class="sm"></i></span></a><a class="sub-tile" href="outdoor/outdoor-lighting/"><span class="st-img"><img src="img/pc-lighting.webp" width="320" height="200" alt="Outdoor Lighting" loading="lazy" decoding="async"></span><span class="st-name">Outdoor Lighting</span><span class="st-meta">Shop now <i data-icon="arrow" class="sm"></i></span></a></div>
+      <div class="cc-grid">
+        <div class="cc-main">
+          <span class="eyebrow">Buying guide</span>
+          <h2>Shop Grill Accessories at Bliss Bath and Kitchen</h2>
+          <p>Shop grill accessories from the world’s leading brands, selected for design, quality and lasting performance.</p>
+          <p>Compare styles, sizes and finishes, filter by price and brand, or ask our specialists to help you choose the right grill accessories for your outdoor project. Many pieces can be seen in person at our Markham showroom.</p>
+          <div class="cc-points"><div><h3>Curated brands</h3><p>Selected for design, engineering and after-sales support.</p></div><div><h3>Expert advice</h3><p>Specialists who can help with sizing, finishes and compatibility.</p></div><div><h3>Delivered across Canada &amp; USA</h3><p>Free standard shipping on eligible orders.</p></div></div>
+        </div>
+        <aside class="cc-side">
+          <h3>More in Outdoor</h3>
+          <ul><li><a href="outdoor/outdoor-grills/">Outdoor Grills</a></li><li><a href="outdoor/outdoor-kitchens/">Outdoor Kitchens</a></li><li><a href="outdoor/pizza-ovens/">Pizza Ovens</a></li><li><a href="outdoor/outdoor-refrigeration/">Outdoor Refrigeration</a></li><li><a href="outdoor/outdoor-lighting/">Outdoor Lighting</a></li></ul>
+          <div class="cc-help"><b>Need help choosing?</b><p>Talk to a specialist about sizing, finishes and availability.</p><a class="btn sm" href="contact.html?topic=design">Ask a Specialist</a><a class="cc-phone" href="tel:18553661001">1-855-366-1001</a></div>
+        </aside>
+      </div>
     </div>
   </section>
 
+  <!-- FAQ (editable per category; output as FAQPage structured data) -->
+  <section class="section tight cat-faq">
+    <div class="wrap">
+      <div class="faq-head"><span class="eyebrow gold">Frequently Asked Questions</span><h2>Grill Accessories FAQ</h2></div>
+      <div class="faq"><div class="faq-col"><details><summary>How do I choose the right grill accessories?</summary><p>Start with the size and installation requirements of your space, then choose a style and finish that coordinates with the rest of the room. Our specialists are happy to review your plans and recommend options.</p></details><details><summary>Do you ship grill accessories across Canada and the USA?</summary><p>Yes. Eligible orders ship free across Canada and the USA. Large items ship by freight with a scheduled delivery appointment.</p></details><details><summary>Can I see grill accessories in person?</summary><p>Many products are on display at our showroom at 5 Shields Court, Unit 104, Markham, Ontario. Book an appointment for dedicated time with a specialist.</p></details></div><div class="faq-col"><details><summary>Do you offer trade or project pricing?</summary><p>Yes. Designers, builders and contractors can apply to our Trade Program for preferred pricing, quotations and dedicated support.</p></details><details><summary>What is your return policy?</summary><p>Eligible unused items in original packaging can be returned within 14 days of delivery. Special-order and made-to-order items are final sale.</p></details></div></div>
+    </div>
+  </section>
 </main>
 
 <div id="newsletter"></div>
 <div id="site-footer"></div>
 
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.blissbathandkitchen.com/"},{"@type":"ListItem","position":2,"name":"Outdoor","item":"https://www.blissbathandkitchen.com/outdoor/"},{"@type":"ListItem","position":3,"name":"Grill Accessories","item":"https://www.blissbathandkitchen.com/outdoor/grill-accessories/"}]},{"@type":"CollectionPage","name":"Grill Accessories","url":"https://www.blissbathandkitchen.com/outdoor/grill-accessories/","description":"Shop grill accessories from the world’s leading brands, selected for design, quality and lasting performance."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I choose the right grill accessories?","acceptedAnswer":{"@type":"Answer","text":"Start with the size and installation requirements of your space, then choose a style and finish that coordinates with the rest of the room. Our specialists are happy to review your plans and recommend options."}},{"@type":"Question","name":"Do you ship grill accessories across Canada and the USA?","acceptedAnswer":{"@type":"Answer","text":"Yes. Eligible orders ship free across Canada and the USA. Large items ship by freight with a scheduled delivery appointment."}},{"@type":"Question","name":"Can I see grill accessories in person?","acceptedAnswer":{"@type":"Answer","text":"Many products are on display at our showroom at 5 Shields Court, Unit 104, Markham, Ontario. Book an appointment for dedicated time with a specialist."}},{"@type":"Question","name":"Do you offer trade or project pricing?","acceptedAnswer":{"@type":"Answer","text":"Yes. Designers, builders and contractors can apply to our Trade Program for preferred pricing, quotations and dedicated support."}},{"@type":"Question","name":"What is your return policy?","acceptedAnswer":{"@type":"Answer","text":"Eligible unused items in original packaging can be returned within 14 days of delivery. Special-order and made-to-order items are final sale."}}]}]}</script>
 <script src="js/app.min.js"></script>
 <script src="js/pages/collection.min.js"></script>
 </body>

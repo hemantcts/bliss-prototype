@@ -32,3 +32,4 @@ npm run build          # css/ + js/ sources -> css/bliss.min.css, js/app*.min.js
 - `js/data.js` + `js/main.js` (+ `js/content.js` on blog/look pages) become `js/app.min.js` / `js/app-content.min.js`; larger page scripts live in `js/pages/<page>.js`.
 - Photos have `-400/-560/-700/-840/-1000/-1400` copies; `imgSet()` in `js/main.js` adds `srcset` to images rendered from JavaScript.
 - Critical-CSS inlining was tested and rejected: with ~1,900 DOM nodes, restyling after the async stylesheet arrived raised Total Blocking Time from ~100 ms to ~600 ms. A single blocking stylesheet (30 KB gzipped) is faster here.
+- Category pages are generated: the tree lives in `js/data.js` (CAT_ROWS), copy and FAQs in `content/categories.json`, the layout in `templates/category.html`. `npm run build` regenerates `bathroom/`, `kitchen/` and the other category folders.

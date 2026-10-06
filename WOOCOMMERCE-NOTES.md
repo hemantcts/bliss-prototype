@@ -69,3 +69,15 @@ This folder is a static, clickable prototype for client approval. Everything bel
 - **Navigation:** the prototype uses Speculation Rules to prerender internal pages on hover (exclude cart/checkout/account URLs).
 - **Off-screen work:** `content-visibility: auto` on the footer and lower homepage sections.
 
+## Category pages (product_cat archives)
+
+- **URLs:** hierarchical, e.g. `/bathroom/`, `/bathroom/bathtubs/`, `/bathroom/bathtubs/freestanding-bathtubs/`. Set Permalinks > Product category base to remove `/product-category/` (e.g. with a "remove category base" setting or plugin) and keep the parent slugs in the path. Add 301 redirects from the live site's old category URLs.
+- **One template for every level** (`taxonomy-product_cat.php`), as in `templates/category.html`:
+  1. Compact header: breadcrumb, H1 (category name), 1–2 line intro.
+  2. Sub-category strip: a parent shows its children; a final category shows its siblings with the current one marked.
+  3. Products from the category **and all sub-categories**, with filters (a "Category" filter on parents), sort, product count and pagination. Use a filter plugin such as FiboFilters, FacetWP or WooCommerce Product Filters.
+  4. Content area below the products: the category description, or an ACF WYSIWYG field.
+  5. FAQ: an ACF repeater (question/answer), output as an accordion **and** as FAQPage JSON-LD.
+- **SEO:** a unique title and meta description per category (Yoast/Rank Math); BreadcrumbList JSON-LD (Yoast/Rank Math add this); canonical URL for each category. Filtered and sorted URLs (`?filter_*`, `?orderby`) should be `noindex,follow` or canonicalised to the clean category URL. Paginated pages get self-referencing canonicals.
+- **Content to supply per category:** intro (1–2 sentences), content area (300–600 words), 4–6 FAQs, and a header image. The prototype's `content/categories.json` shows the structure.
+

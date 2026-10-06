@@ -1,0 +1,343 @@
+{
+ "_readme": "Per-category SEO content and FAQ. In WooCommerce: the category description (or an ACF field) for the content, and a repeater field for the FAQ. Categories without an entry get generated defaults from tools/pages.mjs.",
+ "freestanding-bathtubs": {
+  "title": "Freestanding Bathtubs for Modern Living",
+  "paragraphs": [
+   "A freestanding bathtub is more than just a place to bathe. It's a statement of style, comfort and well-being. Whether you're creating a spa-like retreat or upgrading your everyday routine, our collection offers a variety of shapes, sizes and finishes to suit any bathroom design.",
+   "From sleek modern silhouettes to timeless classics, each tub is crafted with premium materials and designed for lasting comfort.",
+   "A freestanding bathtub is more than a functional fixture. It's a centrepiece that defines your bathroom and elevates your everyday routine. At Bliss Bath and Kitchen, we offer a curated selection of premium freestanding tubs from the world's most trusted brands, designed to bring together style, comfort and lasting quality."
+  ],
+  "points": [
+   [
+    "Why Choose a Freestanding Tub",
+    "Creates a spa-like atmosphere, adds visual appeal and increases the overall value of your home."
+   ],
+   [
+    "Choosing the Right Size & Shape",
+    "From compact spaces to expansive master bathrooms, find the perfect fit for your layout and lifestyle."
+   ],
+   [
+    "Materials & Finishes",
+    "Explore acrylic, stone resin, cast iron and more, with finishes that suit every design aesthetic."
+   ],
+   [
+    "Design Styles",
+    "From modern minimalism to classic heritage, there's a freestanding tub for every style."
+   ],
+   [
+    "Why Shop at Bliss Bath and Kitchen",
+    "Expert guidance, premium brands, competitive pricing and a seamless shopping experience."
+   ],
+   [
+    "Related Categories",
+    "Complete your bathroom with our full range of tub fillers, fixtures, vanities and accessories."
+   ]
+  ],
+  "faq": [
+   [
+    "What size freestanding tub do I need?",
+    "Allow at least 6\" of clearance around the tub for cleaning and plumbing access. Tubs from 54\" to 60\" suit most bathrooms, while 66\"+ models suit larger primary suites."
+   ],
+   [
+    "Are freestanding tubs difficult to install?",
+    "Installation is straightforward for a licensed plumber. You'll need a floor drain in the correct position and either a floor-mounted or wall-mounted tub filler."
+   ],
+   [
+    "What materials are best for a freestanding bathtub?",
+    "Acrylic is light and warm to the touch; stone resin offers a solid, matte finish and excellent heat retention; cast iron is the most durable and traditional choice."
+   ],
+   [
+    "How do I clean and maintain a freestanding tub?",
+    "Use a soft cloth with mild, non-abrasive cleaner. Avoid bleach and scouring pads, and rinse after each use to keep the finish looking new."
+   ],
+   [
+    "Can I get a freestanding tub in a different color?",
+    "Many models are available in matte black, two-tone and custom RAL colours. Look for the colour swatches on each product, or ask our team about special orders."
+   ],
+   [
+    "Do you have a showroom I can visit?",
+    "Yes, visit us at 5 Shields Court, Markham, Ontario to see and even sit in our display tubs."
+   ],
+   [
+    "What is the average price range?",
+    "Our freestanding tubs range from about $1,800 for quality acrylic models to $12,000+ for handcrafted stone and cast iron designs."
+   ],
+   [
+    "Are freestanding tubs good for small bathrooms?",
+    "Yes. Compact models from 54\" and slim-profile designs make a strong visual statement without overwhelming a smaller room."
+   ]
+  ]
+ },
+ "bathroom": {
+  "title": "Luxury Bathroom Fixtures, Curated",
+  "paragraphs": [
+   "From the first faucet to the finishing towel warmer, every piece in our bathroom collection is chosen to work beautifully together. Shop freestanding tubs, vanities, shower systems, smart toilets and fixtures from the world’s leading brands, including Victoria + Albert, Kohler, TOTO, Riobel and Duravit.",
+   "Not sure where to start? Begin with a hero piece such as a sculptural tub or a statement faucet, then coordinate finishes across fixtures, hardware and lighting. Our specialists can help you plan a complete bathroom, and you can see many pieces in person at our Markham showroom."
+  ],
+  "points": [
+   [
+    "Complete the room",
+    "Coordinate faucets, tub fillers, shower systems and accessories in one finish."
+   ],
+   [
+    "Designed to last",
+    "Premium materials such as cast iron, stone resin and solid brass, backed by manufacturer warranties."
+   ],
+   [
+    "Plan with an expert",
+    "Get advice on sizes, rough-in requirements and installation before you buy."
+   ]
+  ],
+  "faq": [
+   [
+    "What should I choose first when designing a bathroom?",
+    "Start with the largest or most visible piece, usually the bathtub or vanity, then choose faucets and fixtures in a finish that complements it. Measuring the space and confirming plumbing locations early avoids surprises later."
+   ],
+   [
+    "Can I match finishes across different brands?",
+    "Yes, but shades vary between manufacturers: brushed gold from one brand may be warmer than another. Ask us for finish samples, or keep one brand for all visible metal fixtures."
+   ],
+   [
+    "Do you ship bathroom products across Canada and the USA?",
+    "Yes. Eligible orders ship free across Canada and the USA. Large items such as bathtubs and vanities ship by freight, and we confirm a delivery appointment with you."
+   ],
+   [
+    "Do you offer installation?",
+    "We don’t install directly, but we can recommend licensed plumbers and contractors in the Greater Toronto Area and share specification sheets with any installer."
+   ],
+   [
+    "Can I see your bathroom products in person?",
+    "Yes. Visit our showroom at 5 Shields Court, Unit 104, Markham, Ontario. Book an appointment for dedicated time with a specialist."
+   ]
+  ]
+ },
+ "bathtubs": {
+  "title": "Bathtubs for Every Bathroom and Budget",
+  "paragraphs": [
+   "A bathtub sets the tone for the whole bathroom. Choose a sculptural freestanding tub as a centrepiece, a clawfoot for classic character, or a corner or non-standard tub to make the most of a smaller or unusual space.",
+   "Compare materials before you decide: acrylic is light and warm to the touch, stone resin offers a solid matte finish and excellent heat retention, and cast iron is the most durable of all. Check the overall length, interior depth and drain position against your plans."
+  ],
+  "points": [
+   [
+    "Size and clearance",
+    "Allow at least 6 inches around a freestanding tub for cleaning and plumbing access."
+   ],
+   [
+    "Material",
+    "Acrylic, stone resin and cast iron each feel and wear differently."
+   ],
+   [
+    "Matching tub filler",
+    "Pair a freestanding tub with a floor-mounted tub filler in the same finish as your faucets."
+   ]
+  ],
+  "faq": [
+   [
+    "What type of bathtub is best for a small bathroom?",
+    "Compact freestanding tubs from 54 inches, corner tubs and Japanese soaking tubs make the most of limited floor space while still offering a deep, comfortable soak."
+   ],
+   [
+    "How long does bathtub delivery take?",
+    "In-stock bathtubs typically ship within 2–5 business days and travel by freight with a scheduled delivery appointment. Made-to-order and special-finish tubs can take 6–8 weeks."
+   ],
+   [
+    "What is the difference between acrylic, stone resin and cast iron tubs?",
+    "Acrylic is lightweight and affordable, stone resin is solid with a velvety matte finish and better heat retention, and cast iron is extremely durable and holds heat longest but is very heavy."
+   ],
+   [
+    "Do bathtubs come with a drain and overflow?",
+    "Most freestanding tubs include a drain, and some include an integrated overflow. Each product lists exactly what is included, or ask us to confirm before you order."
+   ],
+   [
+    "Can I return a bathtub?",
+    "Eligible unused items in original packaging can be returned within 14 days of delivery. Inspect your tub on delivery and note any visible damage on the delivery receipt."
+   ]
+  ]
+ },
+ "kitchen": {
+  "title": "Kitchen Faucets, Sinks and Finishing Details",
+  "paragraphs": [
+   "The kitchen works hard, so every piece should be as practical as it is beautiful. Shop pull-down and touchless faucets, workstation and apron-front sinks, pot fillers and accessories from brands including Riobel, Kohler, Blanco and Franke.",
+   "Choose your sink first, then a faucet with the right height and reach for it. Coordinate the finish with your cabinet hardware and lighting for a calm, considered result."
+  ],
+  "points": [
+   [
+    "Sink and faucet together",
+    "Check faucet reach and spout height against your sink size."
+   ],
+   [
+    "Finish coordination",
+    "Match or mix brushed gold, nickel and matte black across the kitchen."
+   ],
+   [
+    "Built for daily use",
+    "Ceramic cartridges, durable finishes and easy-clean surfaces."
+   ]
+  ],
+  "faq": [
+   [
+    "How do I choose a kitchen faucet that fits my sink?",
+    "Match the faucet reach to the middle of the sink basin and make sure the spout height clears your tallest pots. Check the number of holes in your sink or countertop too."
+   ],
+   [
+    "What is a workstation sink?",
+    "A workstation sink has a built-in ledge for accessories such as cutting boards, colanders and drying racks that slide along the sink, turning it into a prep station."
+   ],
+   [
+    "Do you ship kitchen products across Canada and the USA?",
+    "Yes. Eligible orders ship free across Canada and the USA, and most in-stock faucets ship within 2–5 business days."
+   ],
+   [
+    "Can I get trade pricing for a kitchen project?",
+    "Yes. Designers, builders and contractors can apply to our Trade Program for preferred pricing and project quotations."
+   ]
+  ]
+ },
+ "appliances": {
+  "title": "Professional-Style Appliances for the Home Kitchen",
+  "paragraphs": [
+   "Cook like a professional with Italian ranges, induction and gas cooktops, wall ovens, refrigeration and ventilation from ILVE, SMEG, Fulgor Milano, Café and more.",
+   "Plan appliances early in a kitchen design: range width, gas or electric supply, ventilation capacity and cabinet openings all affect your layout. Our specialists can help you size each appliance correctly."
+  ],
+  "points": [
+   [
+    "Fit and supply",
+    "Confirm width, depth and gas or electrical requirements."
+   ],
+   [
+    "Ventilation",
+    "Size the range hood to the cooktop’s output and width."
+   ],
+   [
+    "Delivery",
+    "Large appliances ship by freight with a scheduled delivery appointment."
+   ]
+  ],
+  "faq": [
+   [
+    "How do I choose the right range size?",
+    "Common widths are 30, 36, 40 and 48 inches. Measure the cabinet opening and consider how many burners and ovens you actually use."
+   ],
+   [
+    "Do I need a special range hood for a professional-style range?",
+    "Yes. Choose a hood at least as wide as the cooktop, with enough airflow (CFM) for its total burner output. Ask us for a recommendation."
+   ],
+   [
+    "How are appliances delivered?",
+    "Appliances ship by freight. We contact you to arrange a delivery appointment, and you should inspect the appliance before signing the delivery receipt."
+   ],
+   [
+    "Do appliances come with a warranty?",
+    "Yes, every appliance carries the manufacturer’s warranty. Warranty terms are listed on each product page."
+   ]
+  ]
+ },
+ "lighting": {
+  "title": "Lighting That Completes the Room",
+  "paragraphs": [
+   "Lighting turns a well-designed room into a beautiful one. Layer statement chandeliers and pendants with vanity lights and sconces, in warm brass, polished nickel and matte black finishes that coordinate with your fixtures.",
+   "Plan three layers of light: ambient for overall brightness, task light where you work, and accent light to highlight architecture and art."
+  ],
+  "points": [
+   [
+    "Layer your light",
+    "Combine ambient, task and accent lighting."
+   ],
+   [
+    "Scale",
+    "Size chandeliers and pendants to the table, island or room."
+   ],
+   [
+    "Colour temperature",
+    "Warm white (2700K–3000K) suits most living spaces."
+   ]
+  ],
+  "faq": [
+   [
+    "What size chandelier do I need?",
+    "Add the room’s length and width in feet and use the total as the chandelier diameter in inches. Over a table, choose about half to two-thirds of the table width."
+   ],
+   [
+    "How high should pendants hang over an island?",
+    "Hang pendants roughly 30–36 inches above the countertop, spaced evenly along the island."
+   ],
+   [
+    "Are your light fixtures dimmable?",
+    "Most are dimmable with a compatible dimmer and bulbs. Check the specifications on each product page."
+   ],
+   [
+    "Do you ship lighting across Canada and the USA?",
+    "Yes. Eligible orders ship free across Canada and the USA."
+   ]
+  ]
+ },
+ "furniture": {
+  "title": "Furniture and Mirrors for a Considered Home",
+  "paragraphs": [
+   "Our furniture collection brings the same calm, curated approach to living, dining and bedroom spaces. The full collection is arriving soon. Contact us for current availability and to view pieces in our showroom."
+  ],
+  "points": [
+   [
+    "Curated pieces",
+    "Selected to complement our bath, kitchen and lighting collections."
+   ],
+   [
+    "See it in person",
+    "Visit our Markham showroom."
+   ],
+   [
+    "Ask about availability",
+    "Our team can source pieces for your project."
+   ]
+  ],
+  "faq": [
+   [
+    "When will the furniture collection be available online?",
+    "We’re adding furniture to our online store soon. Contact us for current availability in the meantime."
+   ],
+   [
+    "Can I see furniture in your showroom?",
+    "Yes, visit 5 Shields Court, Unit 104, Markham, Ontario. We recommend booking an appointment."
+   ],
+   [
+    "Do you offer trade pricing on furniture?",
+    "Yes, trade members receive preferred pricing across our collections."
+   ]
+  ]
+ },
+ "outdoor": {
+  "title": "Outdoor Kitchens, Grills and Pizza Ovens",
+  "paragraphs": [
+   "Bring the kitchen outside with built-in and freestanding grills, kamado smokers, pizza ovens and outdoor refrigeration from Blaze and Kamado Joe.",
+   "Plan your outdoor kitchen around how you cook and entertain, with weather-resistant materials and enough counter space for prep and serving."
+  ],
+  "points": [
+   [
+    "Built for the weather",
+    "Stainless steel and ceramic built for Canadian seasons."
+   ],
+   [
+    "Plan the layout",
+    "Leave landing space on both sides of the grill."
+   ],
+   [
+    "Fuel type",
+    "Choose natural gas, propane or charcoal."
+   ]
+  ],
+  "faq": [
+   [
+    "Should I choose natural gas or propane?",
+    "Natural gas is convenient if you have a supply line nearby; propane offers flexibility in placement. Many grills can be converted with the right kit."
+   ],
+   [
+    "Can outdoor grills stay outside in winter?",
+    "Stainless steel grills can stay outside with a fitted cover. Store propane tanks upright outdoors, away from the house."
+   ],
+   [
+    "Do you ship outdoor products across Canada and the USA?",
+    "Yes. Large items ship by freight with a scheduled delivery appointment."
+   ]
+  ]
+ }
+}

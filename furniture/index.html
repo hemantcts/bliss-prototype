@@ -19,90 +19,92 @@
 <link rel="stylesheet" href="css/bliss.min.css">
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
-<body data-page="category" data-top="furniture" data-cat="furniture">
+<body data-page="category" data-top="furniture" data-cat="furniture" data-kind="parent">
 <div id="site-header"></div>
 
 <main id="main">
-  <section class="hero short">
-    <div class="hero-media"><img src="img/cat-home.webp" srcset="img/cat-home-400.webp 400w, img/cat-home-560.webp 560w, img/cat-home-700.webp 700w, img/cat-home-840.webp 840w, img/cat-home-1000.webp 1000w, img/cat-home.webp 1391w" sizes="100vw" width="1391" height="1131" alt="" fetchpriority="high"></div>
+  <!-- Category header: compact so products appear above the fold -->
+  <section class="cat-head">
     <div class="wrap">
-      <div class="hero-copy">
-        <span class="eyebrow">Shop by Department</span>
-        <h1>Furniture</h1>
-        <p>Considered furniture and mirrors that complete the home. A new collection is arriving soon.</p>
-        <a class="btn light" href="#subcats">Shop Furniture <i data-icon="arrow" class="sm"></i></a>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur" aria-current="page">Furniture</span></nav>
+      <div class="cat-head-row">
+        <div class="cat-head-copy">
+          <h1>Furniture</h1>
+          <p class="cat-lead">Considered furniture and mirrors that complete the home. A new collection is arriving soon.</p>
+        </div>
+        <div class="cat-head-img"><img src="img/cat-home.webp" srcset="img/cat-home-400.webp 400w, img/cat-home-560.webp 560w, img/cat-home-700.webp 700w, img/cat-home-840.webp 840w, img/cat-home-1000.webp 1000w, img/cat-home.webp 1391w" sizes="(max-width: 980px) 0px, 360px" width="1391" height="1131" alt=""></div>
       </div>
+      <nav class="cat-subnav" aria-label="Furniture categories"><a class="cs-item" href="furniture/living/"><span class="cs-img photo"><img src="img/cat-home.webp" srcset="img/cat-home-400.webp 400w, img/cat-home-560.webp 560w, img/cat-home-700.webp 700w, img/cat-home-840.webp 840w, img/cat-home-1000.webp 1000w, img/cat-home.webp 1391w" sizes="96px" width="1391" height="1131" alt=""></span><span class="cs-name">Living</span></a><a class="cs-item" href="furniture/dining/"><span class="cs-img photo"><img src="img/ig-3.webp" srcset="img/ig-3-400.webp 400w, img/ig-3-560.webp 560w, img/ig-3-700.webp 700w, img/ig-3.webp 800w" sizes="96px" width="800" height="450" alt=""></span><span class="cs-name">Dining</span></a><a class="cs-item" href="furniture/bedroom/"><span class="cs-img photo"><img src="img/mega-lighting.webp" srcset="img/mega-lighting-400.webp 400w, img/mega-lighting-560.webp 560w, img/mega-lighting-700.webp 700w, img/mega-lighting.webp 900w" sizes="96px" width="900" height="507" alt=""></span><span class="cs-name">Bedroom</span></a><a class="cs-item" href="furniture/mirrors/"><span class="cs-img photo"><img src="img/mega-furniture.webp" srcset="img/mega-furniture-400.webp 400w, img/mega-furniture-560.webp 560w, img/mega-furniture-700.webp 700w, img/mega-furniture.webp 900w" sizes="96px" width="900" height="507" alt=""></span><span class="cs-name">Mirrors</span></a></nav>
     </div>
   </section>
+
+  <div class="wrap">
+    <section class="shop" id="shop">
+      <aside class="filters" id="filters" aria-label="Filters">
+        <div class="f-title"><span>Filter by</span><span class="f-title-act"><button type="button" id="clearFilters">Clear all</button><button type="button" class="f-close" id="filterClose" aria-label="Close filters"><i data-icon="close" class="sm"></i></button></span></div>
+        <div id="filterGroups"></div>
+        <div style="padding-top:14px">
+          <div class="opt-label">Sort by</div>
+          <select class="select" id="sortSide" aria-label="Sort by">
+            <option value="featured">Featured</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="rating">Top Rated</option>
+          </select>
+        </div>
+              <button type="button" class="btn block filter-apply" id="filterApply">Show results</button>
+      </aside>
+
+      <div>
+        <div class="toolbar col-toolbar" id="colToolbar">
+          <div class="tb-left">
+            <button class="btn ghost sm filter-open" id="filterOpen" aria-controls="filters"><i data-icon="filter" class="sm"></i> Filters <span class="f-count" id="fCount" hidden></span></button>
+            <span id="count">Showing 12 of 42 products</span>
+          </div>
+          <div class="tools">
+            <label class="tb-sort"><span class="sr">Sort by</span><select id="sortTop" aria-label="Sort by"><option value="featured">Featured</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option><option value="rating">Top Rated</option></select></label>
+            <div class="view-toggle view-desk" role="group" aria-label="Products per row">
+              <button class="view-btn on" data-view="4" aria-label="4 per row" aria-pressed="true"><i data-icon="grid3" class="sm"></i></button>
+              <button class="view-btn" data-view="3" aria-label="3 per row" aria-pressed="false"><i data-icon="grid" class="sm"></i></button>
+            </div>
+            <div class="view-toggle view-mob" role="group" aria-label="Products per row">
+              <button class="view-btn" data-mview="1" aria-label="1 product per row" aria-pressed="false"><svg class="icon sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="16"/></svg></button>
+              <button class="view-btn on" data-mview="2" aria-label="2 products per row" aria-pressed="true"><svg class="icon sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="7.5" height="16"/><rect x="13" y="4" width="7.5" height="16"/></svg></button>
+            </div>
+            <label class="per-page">Show <select id="perPage" aria-label="Products per page"><option>12</option><option>24</option><option>48</option></select> per page</label>
+          </div>
+        </div>
+        <div class="chips" id="chips"></div>
+        <p class="cat-notice" id="catNotice" hidden></p>
+        <div class="p-grid" id="grid"></div>
+        <nav class="pager" id="pager" aria-label="Pagination" hidden></nav>
+      </div>
+    </section>
+  </div>
 
   <div id="trust"></div>
 
-  <div class="wrap">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur">Furniture</span></nav>
-  </div>
-
-  <!-- Sub-categories -->
-  <section class="section cat-subs" id="subcats">
+  <!-- Content area (editable in WordPress: category description / ACF field) -->
+  <section class="section cat-content">
     <div class="wrap">
-      <div class="row-head"><div><h2>Shop Furniture by Category</h2><p>4 categories to explore, each curated from brands we know and trust.</p></div></div>
-      <div class="sub-grid"><a class="sub-tile" href="furniture/living/"><span class="st-img photo"><img src="img/cat-home.webp" srcset="img/cat-home-400.webp 400w, img/cat-home-560.webp 560w, img/cat-home-700.webp 700w, img/cat-home-840.webp 840w, img/cat-home-1000.webp 1000w, img/cat-home.webp 1391w" sizes="(max-width: 680px) 46vw, (max-width: 1180px) 30vw, 22vw" width="1391" height="1131" alt="Living" loading="lazy" decoding="async"></span><span class="st-name">Living</span><span class="st-meta">Shop now <i data-icon="arrow" class="sm"></i></span></a><a class="sub-tile" href="furniture/dining/"><span class="st-img photo"><img src="img/ig-3.webp" srcset="img/ig-3-400.webp 400w, img/ig-3-560.webp 560w, img/ig-3-700.webp 700w, img/ig-3.webp 800w" sizes="(max-width: 680px) 46vw, (max-width: 1180px) 30vw, 22vw" width="800" height="450" alt="Dining" loading="lazy" decoding="async"></span><span class="st-name">Dining</span><span class="st-meta">Shop now <i data-icon="arrow" class="sm"></i></span></a><a class="sub-tile" href="furniture/bedroom/"><span class="st-img photo"><img src="img/mega-lighting.webp" srcset="img/mega-lighting-400.webp 400w, img/mega-lighting-560.webp 560w, img/mega-lighting-700.webp 700w, img/mega-lighting.webp 900w" sizes="(max-width: 680px) 46vw, (max-width: 1180px) 30vw, 22vw" width="900" height="507" alt="Bedroom" loading="lazy" decoding="async"></span><span class="st-name">Bedroom</span><span class="st-meta">Shop now <i data-icon="arrow" class="sm"></i></span></a><a class="sub-tile" href="furniture/mirrors/"><span class="st-img photo"><img src="img/mega-furniture.webp" srcset="img/mega-furniture-400.webp 400w, img/mega-furniture-560.webp 560w, img/mega-furniture-700.webp 700w, img/mega-furniture.webp 900w" sizes="(max-width: 680px) 46vw, (max-width: 1180px) 30vw, 22vw" width="900" height="507" alt="Mirrors" loading="lazy" decoding="async"></span><span class="st-name">Mirrors</span><span class="st-meta">Shop now <i data-icon="arrow" class="sm"></i></span></a></div>
-    </div>
-  </section>
-
-  <!-- Best sellers -->
-  <section class="section tight" id="catBestWrap">
-    <div class="wrap">
-      <div class="row-head"><div><h2>Best Sellers in Furniture</h2><p>Our clients’ favourite pieces in this collection.</p></div></div>
-      <div class="p-grid" id="catBest"></div>
-    </div>
-  </section>
-
-  <!-- Guide -->
-  <section class="band cat-guide">
-    <div class="wrap why">
-      <img class="reveal" src="img/cat-home.webp" srcset="img/cat-home-400.webp 400w, img/cat-home-560.webp 560w, img/cat-home-700.webp 700w, img/cat-home-840.webp 840w, img/cat-home-1000.webp 1000w, img/cat-home.webp 1391w" sizes="(max-width: 980px) 100vw, 44vw" width="1391" height="1131" alt="" loading="lazy" decoding="async">
-      <div>
-        <span class="eyebrow">Buying guide</span>
-        <h2>Choosing the Right Furniture</h2>
-        <p>Considered furniture and mirrors that complete the home. A new collection is arriving soon.</p>
-        <div class="features">
-          <div class="feature"><i data-icon="ruler"></i><h3>Measure first</h3><p>Confirm dimensions, clearances and rough-in requirements before you choose. Our specialists can review your plans.</p></div>
-          <div class="feature"><i data-icon="palette"></i><h3>Coordinate finishes</h3><p>Match or mix brushed gold, polished nickel and matte black across faucets, hardware and lighting.</p></div>
-          <div class="feature"><i data-icon="award"></i><h3>Choose trusted brands</h3><p>Every brand we carry is selected for design, engineering and after-sales support.</p></div>
-          <div class="feature"><i data-icon="users"></i><h3>Ask the experts</h3><p>Visit our Markham showroom or speak with a specialist for advice, availability and trade pricing.</p></div>
+      <div class="cc-grid">
+        <div class="cc-main">
+          <span class="eyebrow">Buying guide</span>
+          <h2>Furniture and Mirrors for a Considered Home</h2>
+          <p>Our furniture collection brings the same calm, curated approach to living, dining and bedroom spaces. The full collection is arriving soon. Contact us for current availability and to view pieces in our showroom.</p>
+          <div class="cc-points"><div><h3>Curated pieces</h3><p>Selected to complement our bath, kitchen and lighting collections.</p></div><div><h3>See it in person</h3><p>Visit our Markham showroom.</p></div><div><h3>Ask about availability</h3><p>Our team can source pieces for your project.</p></div></div>
         </div>
-        <a class="btn" href="contact.html?topic=design" style="margin-top:22px">Talk to a Specialist <i data-icon="arrow" class="sm"></i></a>
+        <aside class="cc-side">
+          <h3>Shop Furniture</h3>
+          <ul><li><a href="furniture/living/">Living</a></li><li><a href="furniture/dining/">Dining</a></li><li><a href="furniture/bedroom/">Bedroom</a></li><li><a href="furniture/mirrors/">Mirrors</a></li></ul>
+          <div class="cc-help"><b>Need help choosing?</b><p>Talk to a specialist about sizing, finishes and availability.</p><a class="btn sm" href="contact.html?topic=design">Ask a Specialist</a><a class="cc-phone" href="tel:18553661001">1-855-366-1001</a></div>
+        </aside>
       </div>
     </div>
   </section>
 
-  <!-- All products -->
-  <section class="section" id="products">
+  <!-- FAQ (editable per category; output as FAQPage structured data) -->
+  <section class="section tight cat-faq">
     <div class="wrap">
-      <div class="row-head"><div><h2>All Furniture</h2><p id="catAllCount"></p></div></div>
-      <div class="p-grid" id="catAll"></div>
-      <div class="cat-empty" id="catEmpty" hidden>
-        <p>We’re adding the furniture collection to our online store. Contact us for availability, pricing and the full range in our showroom.</p>
-        <a class="btn" href="contact.html">Ask About Furniture <i data-icon="arrow" class="sm"></i></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Brands -->
-  <section class="section tight cat-brands" id="catBrandsWrap">
-    <div class="wrap">
-      <div class="row-head"><div><h2>Brands in Furniture</h2><p>Shop by the names you know.</p></div><a class="link-arrow" href="brands.html">All brands <i data-icon="arrow" class="sm"></i></a></div>
-      <div class="cat-brand-list" id="catBrands"></div>
-    </div>
-  </section>
-
-  <!-- Inspiration -->
-  <section class="section tight">
-    <div class="wrap">
-      <a class="cat-inspire" href="shop-the-look.html">
-        <img src="img/cat-home.webp" srcset="img/cat-home-400.webp 400w, img/cat-home-560.webp 560w, img/cat-home-700.webp 700w, img/cat-home-840.webp 840w, img/cat-home-1000.webp 1000w, img/cat-home.webp 1391w" sizes="100vw" width="1391" height="1131" alt="" loading="lazy" decoding="async">
-        <span class="ci-copy"><span class="eyebrow">Shop the Look</span><b>Complete spaces, curated by our design team</b><span class="link-arrow">Explore the looks <i data-icon="arrow" class="sm"></i></span></span>
-      </a>
+      <div class="faq-head"><span class="eyebrow gold">Frequently Asked Questions</span><h2>Furniture FAQ</h2></div>
+      <div class="faq"><div class="faq-col"><details><summary>When will the furniture collection be available online?</summary><p>We’re adding furniture to our online store soon. Contact us for current availability in the meantime.</p></details><details><summary>Can I see furniture in your showroom?</summary><p>Yes, visit 5 Shields Court, Unit 104, Markham, Ontario. We recommend booking an appointment.</p></details></div><div class="faq-col"><details><summary>Do you offer trade pricing on furniture?</summary><p>Yes, trade members receive preferred pricing across our collections.</p></details></div></div>
     </div>
   </section>
 </main>
@@ -110,7 +112,8 @@
 <div id="newsletter"></div>
 <div id="site-footer"></div>
 
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.blissbathandkitchen.com/"},{"@type":"ListItem","position":2,"name":"Furniture","item":"https://www.blissbathandkitchen.com/furniture/"}]},{"@type":"CollectionPage","name":"Furniture","url":"https://www.blissbathandkitchen.com/furniture/","description":"Considered furniture and mirrors that complete the home. A new collection is arriving soon."},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When will the furniture collection be available online?","acceptedAnswer":{"@type":"Answer","text":"We’re adding furniture to our online store soon. Contact us for current availability in the meantime."}},{"@type":"Question","name":"Can I see furniture in your showroom?","acceptedAnswer":{"@type":"Answer","text":"Yes, visit 5 Shields Court, Unit 104, Markham, Ontario. We recommend booking an appointment."}},{"@type":"Question","name":"Do you offer trade pricing on furniture?","acceptedAnswer":{"@type":"Answer","text":"Yes, trade members receive preferred pricing across our collections."}}]}]}</script>
 <script src="js/app.min.js"></script>
-<script src="js/pages/category.min.js"></script>
+<script src="js/pages/collection.min.js"></script>
 </body>
 </html>
