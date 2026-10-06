@@ -1811,3 +1811,6 @@ body.has-sticky-buy .toast { bottom: 100px; }
 .f-social .socials a:hover, .f-social .socials a:focus-visible { background: var(--gold); border-color: var(--gold); color: #fff; }
 .so-ic { width: 20px; height: 20px; display: block; }
 .f-social + .f-pay { margin-top: 24px; }
+
+/* Outdoor menu image is a cut-out product shot: show it whole */
+.mf-img img[src*="mega-outdoor"] { object-fit: contain; mix-blend-mode: multiply; padding: 6px 0; }

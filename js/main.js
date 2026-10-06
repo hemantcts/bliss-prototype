@@ -148,15 +148,15 @@ const MEGA = {
   Kitchen: [megaCol('Kitchen Faucets', LINKS.kFaucets), megaCol('Kitchen Sinks', LINKS.kSinks), megaCol('More for the Kitchen', LINKS.kMore),
     megaFeature('cat-kitchen', 'Shop the look', 'The Contemporary Kitchen', 'search.html?cat=Kitchen')],
   Appliances: [megaCol('Cooking', LINKS.cooking), megaCol('Refrigeration', LINKS.refrig), megaCol('Ventilation', LINKS.vent),
-    megaFeature('cat-appliances', 'Italian excellence', 'ILVE Ranges', sq('ILVE'))],
+    megaFeature('mega-appliances', 'Italian excellence', 'ILVE Ranges', sq('ILVE'))],
   Lighting: [megaCol('Lighting', LINKS.lighting), megaCol('Shop by Finish', [L('Warm Brass', sq('brass')), L('Polished Nickel', sq('nickel')), L('Matte Black', sq('black'))]),
-    megaFeature('ig-4', 'New arrivals', 'Lighting for Every Room', 'search.html?cat=Lighting')],
+    megaFeature('mega-lighting', 'New arrivals', 'Lighting for Every Room', 'search.html?cat=Lighting')],
   Furniture: [megaCol('Furniture', LINKS.furniture), megaCol('Need Help?', [L('Design Services', 'contact.html?topic=design'), L('Visit Our Showroom', 'showroom.html')]),
-    megaFeature('cat-home', 'Coming soon', 'The Furniture Collection', 'search.html?cat=Furniture')],
+    megaFeature('mega-furniture', 'Coming soon', 'The Furniture Collection', 'search.html?cat=Furniture')],
   Brands: [`<div class="mega-col wide"><h4>Featured Brands</h4><ul class="mega-brands">${LINKS.brands.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul><a class="link-arrow" href="brands.html" style="margin-top:16px">View all ${BLISS.brands.length} brands ${icon('arrow', 'sm')}</a></div>`,
-    megaFeature('brands-faucet', 'The brands you love', 'All in One Place', 'brands.html')],
+    megaFeature('mega-brands', 'The brands you love', 'All in One Place', 'brands.html')],
   Outdoor: [megaCol('Outdoor Cooking', LINKS.outdoor), megaCol('Brands &amp; More', LINKS.outdoorMore), megaCol('Get Inspired', [L('Shop the Look', 'shop-the-look.html'), L('The Journal', 'blog.html'), L('Design Services', 'contact.html?topic=design')]),
-    megaFeature('nn-grill', 'New season', 'Outdoor Kitchens', 'search.html?cat=Outdoor')],
+    megaFeature('mega-outdoor', 'New season', 'Outdoor Kitchens', 'search.html?cat=Outdoor')],
 };
 const navItem = ([n, href]) => MEGA[n] ? `
   <div class="nav-item" data-mega>
