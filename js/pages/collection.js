@@ -14,13 +14,13 @@
     notice.innerHTML = `We’re adding ${esc(cat.name.toLowerCase())} to our online store. ${near ? `Meanwhile, explore more <a href="${BLISS.catUrl(near.slug)}">${esc(near.name.toLowerCase())}</a>, or ` : ''}<a href="contact.html">contact us</a> for availability and pricing.`;
   }
   const childOf = (p) => { const t = BLISS.catTrail(BLISS.catOf(p)); const i = t.findIndex((c) => c.slug === slug); return i >= 0 && t[i + 1] ? t[i + 1].name : ''; };
-  const val = (p, key) => key === 'price' ? priceBand(p.cad) : key === 'sale' ? (BLISS.onSale(p) ? 'On Sale' : '') : key === 'category' ? childOf(p) : p[key];
+  const val = (p, key) => key === 'price' ? (p.callForPrice ? 'Price on request' : priceBand(p.cad)) : key === 'sale' ? (BLISS.onSale(p) ? 'On Sale' : '') : key === 'category' ? childOf(p) : p[key];
   const priceBand = (p) => p < 2000 ? 'Under $2,000' : p < 4000 ? '$2,000 – $4,000' : p < 6000 ? '$4,000 – $6,000' : 'Over $6,000';
   const uniq = (key) => [...new Set(products.map((p) => p[key]).filter(Boolean))];
   const groups = [
     ['Category', 'category', BLISS.catChildren(slug).map((c) => c.name)],
     ['Offers', 'sale', ['On Sale']],
-    ['Price Range (CAD)', 'price', ['Under $2,000', '$2,000 – $4,000', '$4,000 – $6,000', 'Over $6,000']],
+    ['Price Range (CAD)', 'price', ['Under $2,000', '$2,000 – $4,000', '$4,000 – $6,000', 'Over $6,000', 'Price on request']],
     ['Brand', 'brand', uniq('brand').sort()],
     ['Material', 'material', ['Acrylic', 'Stone Resin', 'Cast Iron', 'Solid Surface']],
     ['Finish', 'finish', ['White', 'Matte', 'Textured', 'Two-Tone']],
@@ -43,8 +43,10 @@
   function render(keepPage) {
     if (!keepPage) page = 1;
     let list = products.filter((p) => Object.entries(active).every(([k, set]) => !set.size || set.has(val(p, k))));
-    if (sort === 'low') list = [...list].sort((a, b) => a.cad - b.cad);
-    if (sort === 'high') list = [...list].sort((a, b) => b.cad - a.cad);
+    // price sorts keep "Price on request" items at the end
+    const priced = (p) => (p.callForPrice ? 1 : 0);
+    if (sort === 'low') list = [...list].sort((a, b) => priced(a) - priced(b) || a.cad - b.cad);
+    if (sort === 'high') list = [...list].sort((a, b) => priced(a) - priced(b) || b.cad - a.cad);
     if (sort === 'rating') list = [...list].sort((a, b) => b.rating - a.rating || b.reviews - a.reviews);
     const grid = document.getElementById('grid');
     const pages = Math.max(1, Math.ceil(list.length / perPage));

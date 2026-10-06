@@ -2071,3 +2071,19 @@ body.has-sticky-buy .toast { bottom: 100px; }
   body.sheet-open { overflow: hidden; }
 }
 @keyframes sheetup { from { transform: translateY(100%); } }
+
+/* "Price on request" products: Call for Pricing instead of Add to Cart */
+.call-price { font-size: 15px; letter-spacing: .04em; color: var(--ink); font-weight: 500; }
+.p-card .call-price, .nn-card .call-price { font-size: 16px; }
+.call-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+/* "Call for Pricing" needs the full card width: stack it above Inquire */
+.p-card .actions:has(.call-btn), .nn-actions:has(.call-btn) { grid-template-columns: 1fr; }
+#pdpPrice .call-price { font-family: var(--serif); font-size: 30px; font-weight: 500; letter-spacing: 0; }
+#pdpPrice .price-note { display: block; margin-top: 4px; }
+body.call-pricing .buy-row .qty, body.call-pricing #pdpAdd { display: none !important; }
+body.call-pricing .buy-row .call-btn { flex: 1; height: 54px; }
+
+/* Card buttons: always the same height side by side; in the narrow 4-per-row view they stack full-width */
+.p-card .actions { align-items: stretch; }
+.p-card .actions .btn { min-height: 42px; }
+@media (min-width: 681px) { .shop #grid:not(.list) .p-card .actions { grid-template-columns: 1fr; } }

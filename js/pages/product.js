@@ -1,4 +1,8 @@
 /* product.html: page script (source). Built to js/pages/product.min.js by `npm run build`. */
+  // Products without a listed price: no add to cart; the shopper can call for pricing or send an inquiry.
+  // In WooCommerce: a product with an empty price (or a 'call for price' flag). Prototype demo: product.html?pricing=call
+  const CALL_FOR_PRICE = new URLSearchParams(location.search).get('pricing') === 'call';
+  const CALL_HTML = '<span class="call-price">Price on request</span><small class="price-note">Call us or send an inquiry for pricing, availability and lead time.</small>';
   // Gallery
   const thumbs = [...document.querySelectorAll('#thumbs button')];
   const stage = document.getElementById('stageImg');
@@ -153,7 +157,9 @@
   function update() {
     const sel = selection();
     const priceEl = document.getElementById('pdpPrice');
-    if (sel.complete) {
+    if (CALL_FOR_PRICE) {
+      priceEl.innerHTML = CALL_HTML;
+    } else if (sel.complete) {
       priceEl.innerHTML = `<span class="sale-price">${BLISS.money(sel.cad)}</span> <del class="was-price" aria-label="Regular price">${BLISS.money(sel.was)}</del> <small data-currency-suffix>${BLISS.currency === 'CAD' ? 'CAD' : ''}</small> <span class="badge sale inline">Sale −${Math.round((1 - sel.cad / sel.was) * 100)}%</span>`;
     } else {
       const [lo, hi] = priceRange();
@@ -168,7 +174,7 @@
     const sum = document.getElementById('varSummary');
     sum.hidden = !sel.complete;
     if (sel.complete) {
-      sum.innerHTML = `<div class="vs-head"><b>Your selection</b><span class="sale-price notranslate" translate="no">${BLISS.money(sel.cad)}</span></div>
+      sum.innerHTML = `<div class="vs-head"><b>Your selection</b>${CALL_FOR_PRICE ? '' : `<span class="sale-price notranslate" translate="no">${BLISS.money(sel.cad)}</span>`}</div>
         <ul>${sel.parts.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
         <div class="vs-stock ${sel.madeToOrder ? 'mto' : ''}">${icon(sel.madeToOrder ? 'clock' : 'check', 'sm')} ${sel.madeToOrder ? 'Made to order · ships in approximately 6–8 weeks' : 'In stock · typically ships in 2–5 business days'}</div>`;
     }
@@ -324,10 +330,19 @@
   });
   renderStrip(); renderList();
 
+  if (CALL_FOR_PRICE) {
+    document.body.classList.add('call-pricing');
+    const row = document.querySelector('.buy-row');
+    row.insertAdjacentHTML('afterbegin', `<a class="btn call-btn" id="pdpCall" href="tel:18553661001" aria-label="Call 1-855-366-1001 for pricing">${icon('phone', 'sm')} Call for Pricing</a>`);
+    document.getElementById('sbBtn').textContent = 'Call for Pricing';
+    document.querySelector('.inq-note').textContent = 'Prefer email? Send an inquiry and a specialist will reply with pricing within one business day.';
+  }
+
   /* ---------- Phones: sticky add-to-cart bar + swipeable gallery ---------- */
   (function mobileBuy() {
     const bar = document.getElementById('stickyBuy'), btn = document.getElementById('sbBtn'), main = document.getElementById('pdpAdd');
     const sync = () => {
+      if (CALL_FOR_PRICE) { document.getElementById('sbPrice').textContent = 'Price on request'; document.getElementById('sbWas').textContent = ''; return; }
       const sel = window.PDP.selection();
       // before options are chosen show the "from" price, like Bathify shows the starting price
       document.getElementById('sbPrice').textContent = BLISS.money(sel.complete ? sel.cad : 5890);
@@ -339,10 +354,11 @@
       bar.classList.toggle('show', show); bar.setAttribute('aria-hidden', !show);
       document.body.classList.toggle('has-sticky-buy', show);
       if (show) sync();
-    }).observe(main);
+    }).observe(CALL_FOR_PRICE ? document.getElementById('pdpCall') : main);
     document.getElementById('variations').addEventListener('change', sync);
     // Buy Now: add the chosen configuration and go straight to checkout; if options are missing, take the shopper to them
     btn.addEventListener('click', () => {
+      if (CALL_FOR_PRICE) { location.href = 'tel:18553661001'; return; }
       const sel = window.PDP.selection();
       if (!sel.complete) { window.PDP.flagMissing(); toast('Choose your options to buy now'); return; }
       const qty = parseInt(document.querySelector('.buy .qty input')?.value, 10) || 1;

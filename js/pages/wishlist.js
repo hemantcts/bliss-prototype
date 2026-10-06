@@ -20,8 +20,7 @@
         ${BLISS.onSale(p) ? `<span class="wl-drop">${icon('tag', 'sm')} On sale now: save ${price(p.was - p.cad)}</span>` : ''}
         <span class="wl-ship">${shipLine(p)}</span>
         <div class="actions">
-          <button class="btn sm" data-wl-move="${p.id}">${shared ? 'Add to cart' : 'Move to cart'}</button>
-          <button class="btn ghost sm" data-inquire="${p.id}">Inquire</button>
+          ${p.callForPrice ? cardAction(p) : `<button class="btn sm" data-wl-move="${p.id}">${shared ? 'Add to cart' : 'Move to cart'}</button>`}
         </div>
       </div>
     </article>`;
@@ -53,7 +52,6 @@
       <div class="wl-tools">
         <button class="btn sm" id="addAll">${icon('bag', 'sm')} Add All to Cart</button>
         ${shared ? '' : `<button class="btn ghost sm" id="shareWl">${icon('users', 'sm')} Share</button>
-        <button class="btn ghost sm" data-inquire="" title="Ask about everything on your list">${icon('mail', 'sm')} Inquire About List</button>
         <button class="wl-clear" id="clearWl">Clear wishlist</button>`}
       </div>`;
     root.innerHTML = `<div class="wl-grid">${items.map((p) => wlCard(p, shared)).join('')}</div>`;

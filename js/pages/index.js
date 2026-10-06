@@ -44,13 +44,13 @@
   function renderNN(key, resetScroll) {
     rail.innerHTML = NN[key].map(BLISS.byId).map((p) => `
       <article class="nn-card">
-        <a class="ph" href="product.html"><img src="img/${p.img}.webp"${imgSet(p.img, '(max-width: 680px) 84vw, 33vw')} alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
+        <a class="ph" href="${productUrl(p)}"><img src="img/${p.img}.webp"${imgSet(p.img, '(max-width: 680px) 84vw, 33vw')} alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
         <button class="wish" data-wish="${p.id}" aria-label="Add to wishlist" aria-pressed="false">${icon('heart', 'sm')}</button>
         <div class="nn-body">
           <span class="brand">${p.brand}</span>
-          <a class="name" href="product.html">${p.name}</a>
+          <a class="name" href="${productUrl(p)}">${p.name}</a>
           <div class="price">${priceOf(p)}</div>
-          <div class="nn-actions"><button class="btn sm" data-add="${p.id}">Add to cart</button><button class="btn ghost sm" data-inquire="${p.id}">Inquire</button></div>
+          <div class="nn-actions">${cardActions(p)}</div>
         </div>
       </article>`).join('');
     if (resetScroll) rail.scrollLeft = 0; // only when switching tabs (avoids a forced layout on load)

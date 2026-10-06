@@ -16,7 +16,7 @@ window.BLISS = (() => {
     { id: 'va-serenity', brand: 'Victoria + Albert', name: 'Serenity Freestanding Tub', cad: 5999, img: 'tub-08', cat: 'Bath', sub: 'Bathtubs', rating: 4, reviews: 8, colors: [W, G], weight: 'freight', material: 'Stone Resin', finish: 'White', shape: 'Oval', size: 'Standard' },
     { id: 'duravit-cape-cod', brand: 'Duravit', name: 'Cape Cod Freestanding Bathtub', cad: 5499, img: 'tub-09', cat: 'Bath', sub: 'Bathtubs', rating: 4, reviews: 8, colors: [W], weight: 'freight', material: 'Solid Surface', finish: 'Matte', shape: 'Round', size: 'Standard' },
     { id: 'kohler-stately', brand: 'Kohler', name: 'Stately Freestanding Bathtub', cad: 4799, img: 'tub-10', cat: 'Bath', sub: 'Bathtubs', rating: 5, reviews: 6, colors: [W, B], weight: 'freight', material: 'Acrylic', finish: 'White', shape: 'Rectangular', size: 'Large' },
-    { id: 'toto-soiree', brand: 'TOTO', name: 'Soiree Freestanding Tub', cad: 7499, img: 'tub-11', cat: 'Bath', sub: 'Bathtubs', rating: 4, reviews: 5, colors: [W], weight: 'freight', material: 'Cast Iron', finish: 'Textured', shape: 'Oval', size: 'Small' },
+    { id: 'toto-soiree', callForPrice: true, brand: 'TOTO', name: 'Soiree Freestanding Tub', cad: 7499, img: 'tub-11', cat: 'Bath', sub: 'Bathtubs', rating: 4, reviews: 5, colors: [W], weight: 'freight', material: 'Cast Iron', finish: 'Textured', shape: 'Oval', size: 'Small' },
     { id: 'blaze-outdoor-tub', brand: 'Blaze', name: 'Outdoor Freestanding Tub', cad: 6299, img: 'tub-12', cat: 'Bath', sub: 'Bathtubs', rating: 4, reviews: 4, colors: [W, G], weight: 'freight', material: 'Acrylic', finish: 'White', shape: 'Oval', size: 'Small' },
     { id: 'va-amalfi', brand: 'Victoria + Albert', name: 'Amalfi Freestanding Bathtub', cad: 5890, img: 'ym-2', cat: 'Bath', sub: 'Bathtubs', rating: 5, reviews: 8, colors: [W, G], weight: 'freight' },
     { id: 'va-napoli', brand: 'Victoria + Albert', name: 'Napoli Freestanding Bathtub', cad: 5790, img: 'ym-3', cat: 'Bath', sub: 'Bathtubs', rating: 5, reviews: 6, colors: [W, B], weight: 'freight' },
@@ -30,12 +30,12 @@ window.BLISS = (() => {
     { id: 'riobel-bath-faucet', was: 790, brand: 'Riobel', name: 'Parabola Bathroom Faucet', cad: 690, img: 'pc-faucets', cat: 'Bath', sub: 'Bathroom Faucets', rating: 4.9, reviews: 31, colors: [BR, B, N], weight: 'parcel' },
     { id: 'riobel-kitchen-faucet', brand: 'Riobel', name: 'Azure Kitchen Faucet', cad: 1299, img: 'nn-faucet', cat: 'Kitchen', sub: 'Kitchen Faucets', rating: 4.8, reviews: 26, colors: [BR, B, N], weight: 'parcel', tag: 'New' },
     { id: 'kohler-workstation-sink', brand: 'Kohler', name: 'Prolific 33" Workstation Sink', cad: 1649, img: 'pc-sinks', cat: 'Kitchen', sub: 'Kitchen Sinks', rating: 4.7, reviews: 38, colors: [N], weight: 'parcel' },
-    { id: 'ilve-majestic-36', brand: 'ILVE', name: 'Majestic II 36" Dual Fuel Range', cad: 9995, img: 'nn-range', cat: 'Appliances', sub: 'Ranges', rating: 4.9, reviews: 14, colors: [B, W, G], weight: 'freight', tag: 'New' },
+    { id: 'ilve-majestic-36', callForPrice: true, brand: 'ILVE', name: 'Majestic II 36" Dual Fuel Range', cad: 9995, img: 'nn-range', cat: 'Appliances', sub: 'Ranges', rating: 4.9, reviews: 14, colors: [B, W, G], weight: 'freight', tag: 'New' },
     { id: 'ilve-nostalgie-40', was: 12490, brand: 'ILVE', name: 'Nostalgie II 40" Range', cad: 11490, img: 'pc-ovens', cat: 'Appliances', sub: 'Ranges', rating: 4.8, reviews: 9, colors: [B, W], weight: 'freight' },
     { id: 'fp-gas-cooktop', brand: 'SMEG', name: '30" Gas Cooktop', cad: 2199, img: 'pc-cooktops', cat: 'Appliances', sub: 'Cooktops', rating: 4.6, reviews: 19, colors: [B], weight: 'parcel' },
-    { id: 'fp-french-door', brand: 'Café Appliances', name: '36" French Door Refrigerator', cad: 5799, img: 'pc-fridges', cat: 'Appliances', sub: 'Refrigeration', rating: 4.7, reviews: 22, colors: [N], weight: 'freight' },
+    { id: 'fp-french-door', callForPrice: true, brand: 'Café Appliances', name: '36" French Door Refrigerator', cad: 5799, img: 'pc-fridges', cat: 'Appliances', sub: 'Refrigeration', rating: 4.7, reviews: 22, colors: [N], weight: 'freight' },
     { id: 'blaze-grill', was: 4499, brand: 'Blaze', name: 'Premium LTE 32" Outdoor Grill', cad: 3999, img: 'nn-grill', cat: 'Outdoor', sub: 'Outdoor Grills', rating: 4.8, reviews: 16, colors: [N], weight: 'freight', tag: 'New' },
-    { id: 'vc-chandelier', brand: 'Bliss Bath and Kitchen Collection', name: 'Calais Large Chandelier', cad: 4200, img: 'nn-chandelier', cat: 'Lighting', sub: 'Chandeliers', rating: 4.9, reviews: 7, colors: [BR, B], weight: 'parcel', tag: 'New' },
+    { id: 'vc-chandelier', callForPrice: true, brand: 'Bliss Bath and Kitchen Collection', name: 'Calais Large Chandelier', cad: 4200, img: 'nn-chandelier', cat: 'Lighting', sub: 'Chandeliers', rating: 4.9, reviews: 7, colors: [BR, B], weight: 'parcel', tag: 'New' },
     { id: 'vc-pendant', brand: 'Bliss Bath and Kitchen Collection', name: 'Bellamy Brass Pendant', cad: 1180, img: 'pc-lighting', cat: 'Lighting', sub: 'Pendants', rating: 4.7, reviews: 12, colors: [BR, N], weight: 'parcel' },
   ];
   /* Colour names + the photo shown for each colour on product cards.
@@ -165,6 +165,8 @@ window.BLISS = (() => {
   const catProducts = (slug) => { const set = new Set(catDescendants(slug)); return products.filter((p) => set.has(catOf(p))); };
 
   const byId = (id) => products.find((p) => p.id === id);
+  // products without a listed price show "Price on request" and a Call for Pricing button (no add to cart)
+  const hasPrice = (p) => !p.callForPrice;
   const onSale = (p) => p.was && p.was > p.cad;
   const pctOff = (p) => (onSale(p) ? Math.round((1 - p.cad / p.was) * 100) : 0);
 
@@ -306,5 +308,5 @@ window.BLISS = (() => {
     clear() { wishIds = []; saveWish(); },
   };
 
-  return { products, brands, byId, variantImg, colorName, categories, catBySlug, catByName, catChildren, catTrail, catUrl, catDescendants, catOf, catProducts, onSale, pctOff, money, convert, setCurrency, refreshPrices, get currency() { return currency; }, cart: cartApi, wish: wishApi, store };
+  return { products, brands, byId, hasPrice, variantImg, colorName, categories, catBySlug, catByName, catChildren, catTrail, catUrl, catDescendants, catOf, catProducts, onSale, pctOff, money, convert, setCurrency, refreshPrices, get currency() { return currency; }, cart: cartApi, wish: wishApi, store };
 })();

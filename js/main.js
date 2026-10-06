@@ -111,12 +111,21 @@ window.payIcons = payIcons;
 const { money } = BLISS;
 const price = (cad, whole) => `<span class="notranslate" translate="no" data-price="${cad}"${whole ? ' data-whole' : ''}>${money(cad, whole)}</span>`;
 window.price = price;
-/* Product price: sale price + struck-through regular price when on sale */
-const priceOf = (p, qty = 1) => BLISS.onSale(p)
+/* Product price: sale price + struck-through regular price when on sale; "Price on request" when not listed */
+const PHONE = '1-855-366-1001', TEL = 'tel:18553661001';
+const priceOf = (p, qty = 1) => p.callForPrice ? '<span class="call-price">Price on request</span>' : BLISS.onSale(p)
   ? `<span class="sale-price">${price(p.cad * qty)}</span> <del class="was-price" aria-label="Regular price">${price(p.was * qty)}</del>`
   : price(p.cad * qty);
 const badgeOf = (p) => BLISS.onSale(p) ? `<span class="badge sale">Sale −${BLISS.pctOff(p)}%</span>` : p.tag ? `<span class="badge">${p.tag}</span>` : '';
 window.priceOf = priceOf;
+// the one action on a product card: add to cart, or call when the price isn't listed
+const cardAction = (p, cls = 'btn sm') => p.callForPrice
+  ? `<a class="${cls} call-btn" href="${TEL}" aria-label="Call ${PHONE} for pricing on ${esc(p.name)}">${icon('phone', 'sm')} Call for Pricing</a>`
+  : `<button class="${cls}" data-add="${p.id}">Add to cart</button>`;
+const productUrl = (p) => (p.callForPrice ? 'product.html?pricing=call' : 'product.html');
+// listing cards: the main action plus Inquire
+const cardActions = (p) => `${cardAction(p)}<button class="btn ghost sm" data-inquire="${p.id}">Inquire</button>`;
+window.cardAction = cardAction; window.cardActions = cardActions; window.productUrl = productUrl;
 window.badgeOf = badgeOf;
 
 /* ---------- Header ---------- */
@@ -435,7 +444,7 @@ function renderDrawer() {
     return;
   }
   const inCart = new Set(items.map((l) => l.id));
-  const recs = BLISS.products.filter((p) => !inCart.has(p.id) && p.weight === 'parcel').slice(0, 3);
+  const recs = BLISS.products.filter((p) => !inCart.has(p.id) && p.weight === 'parcel' && !p.callForPrice).slice(0, 3);
   body.innerHTML = `<ul class="lines">${items.map((l) => `
     <li class="line">
       <a href="product.html" class="line-img"><img src="img/${l.product.img}.webp"${imgSet(l.product.img, '96px')} alt=""></a>
@@ -820,16 +829,15 @@ window.stars = (r, count) => {
 };
 window.productCard = (p) => `
 <article class="p-card">
-  <a class="ph" href="product.html"><img src="img/${p.img}.webp"${imgSet(p.img, '(max-width: 680px) 46vw, (max-width: 1180px) 30vw, 22vw')} alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
+  <a class="ph" href="${productUrl(p)}"><img src="img/${p.img}.webp"${imgSet(p.img, '(max-width: 680px) 46vw, (max-width: 1180px) 30vw, 22vw')} alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
   <button class="wish" data-wish="${p.id}" aria-label="Add to wishlist" aria-pressed="false">${icon('heart', 'sm')}</button>
   <div class="body">
     <span class="brand">${p.brand}</span>
-    <a class="name" href="product.html">${p.name}</a>
+    <a class="name" href="${productUrl(p)}">${p.name}</a>
     <div class="meta-row">${stars(p.rating, p.reviews)}<div class="swatches" role="group" aria-label="Colours">${(p.colors || []).map((c, i) => { const v = BLISS.variantImg ? BLISS.variantImg(p, c) : null, nm = BLISS.colorName ? BLISS.colorName(c) : 'Colour'; return `<button type="button" class="sw${i === 0 ? ' on' : ''}" style="--c:${c}"${v ? ` data-sw-img="img/${v}.webp"` : ''} aria-label="${nm}" aria-pressed="${i === 0}" title="${nm}"></button>`; }).join('')}</div></div>
     <div class="price">${priceOf(p)}</div>
     <div class="actions">
-      <button class="btn sm" data-add="${p.id}">Add to cart</button>
-      <button class="btn ghost sm" data-inquire="${p.id}">Inquire</button>
+      ${cardActions(p)}
     </div>
   </div>
 </article>`;
