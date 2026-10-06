@@ -90,7 +90,29 @@
   });
   // sort: sidebar (desktop) and sticky toolbar (phones) stay in sync
   const sortSide = document.getElementById('sortSide'), sortTop = document.getElementById('sortTop');
-  [sortSide, sortTop].forEach((el) => el.addEventListener('change', (e) => { sort = e.target.value; sortSide.value = sortTop.value = sort; render(); }));
+  const SORT_LABEL = { featured: 'Featured', low: 'Price: Low to High', high: 'Price: High to Low', rating: 'Top Rated' };
+  const sortVal = document.getElementById('sortVal');
+  const setSort = (v) => {
+    sort = v; sortSide.value = sortTop.value = v;
+    document.querySelectorAll('input[name=ssort]').forEach((r) => { r.checked = r.value === v; });
+    const SHORT = { featured: '', low: 'Price: Low', high: 'Price: High', rating: 'Top Rated' };
+    if (sortVal) sortVal.textContent = SHORT[v] ? ` · ${SHORT[v]}` : '';
+    render();
+  };
+  [sortSide, sortTop].forEach((el) => el.addEventListener('change', (e) => setSort(e.target.value)));
+  // phones: Sort button opens a bottom sheet of options
+  const sheet = document.getElementById('sortSheet'), sortOpen = document.getElementById('sortOpen');
+  if (sheet && sortOpen) {
+    const openSheet = (on) => {
+      sheet.hidden = !on; document.body.classList.toggle('sheet-open', on);
+      sortOpen.setAttribute('aria-expanded', on);
+      if (on) (sheet.querySelector('input:checked') || sheet.querySelector('input')).focus(); else sortOpen.focus();
+    };
+    sortOpen.addEventListener('click', () => openSheet(true));
+    sheet.addEventListener('click', (e) => { if (e.target.closest('[data-ss-close]')) openSheet(false); });
+    sheet.addEventListener('change', (e) => { if (e.target.name === 'ssort') { setSort(e.target.value); setTimeout(() => openSheet(false), 120); } });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) openSheet(false); });
+  }
   // grid density: desktop 4 / 3 per row, phones 1 / 2 per row (remembered on this device)
   const gridEl = document.getElementById('grid');
   const setPressed = (sel, b) => document.querySelectorAll(sel).forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });

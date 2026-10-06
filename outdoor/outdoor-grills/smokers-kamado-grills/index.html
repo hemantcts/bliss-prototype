@@ -56,6 +56,7 @@
         <div class="toolbar col-toolbar" id="colToolbar">
           <div class="tb-left">
             <button class="btn ghost sm filter-open" id="filterOpen" aria-controls="filters"><i data-icon="filter" class="sm"></i> Filters <span class="f-count" id="fCount" hidden></span></button>
+            <button type="button" class="btn ghost sm sort-open" id="sortOpen" aria-haspopup="dialog" aria-controls="sortSheet"><i data-icon="down" class="sm"></i> Sort<span class="so-val" id="sortVal"></span></button>
             <span id="count">Showing 12 of 42 products</span>
           </div>
           <div class="tools">
@@ -69,6 +70,19 @@
               <button class="view-btn on" data-mview="2" aria-label="2 products per row" aria-pressed="true"><svg class="icon sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="7.5" height="16"/><rect x="13" y="4" width="7.5" height="16"/></svg></button>
             </div>
             <label class="per-page">Show <select id="perPage" aria-label="Products per page"><option>12</option><option>24</option><option>48</option></select> per page</label>
+          </div>
+        </div>
+        <!-- Phones: sort options in a bottom sheet -->
+        <div class="sort-sheet" id="sortSheet" hidden>
+          <div class="ss-scrim" data-ss-close></div>
+          <div class="ss-panel" role="dialog" aria-modal="true" aria-labelledby="ssTitle">
+            <div class="ss-head"><b id="ssTitle">Sort by</b><button type="button" class="ss-x" data-ss-close aria-label="Close"><i data-icon="close"></i></button></div>
+            <div class="ss-opts" role="radiogroup" aria-labelledby="ssTitle">
+              <label><input type="radio" name="ssort" value="featured" checked><span>Featured</span></label>
+              <label><input type="radio" name="ssort" value="low"><span>Price: Low to High</span></label>
+              <label><input type="radio" name="ssort" value="high"><span>Price: High to Low</span></label>
+              <label><input type="radio" name="ssort" value="rating"><span>Top Rated</span></label>
+            </div>
           </div>
         </div>
         <div class="chips" id="chips"></div>
