@@ -801,7 +801,7 @@ window.productCard = (p) => `
   <div class="body">
     <span class="brand">${p.brand}</span>
     <a class="name" href="product.html">${p.name}</a>
-    <div class="meta-row">${stars(p.rating, p.reviews)}<div class="swatches">${(p.colors || []).map((c) => `<i style="background:${c}"></i>`).join('')}</div></div>
+    <div class="meta-row">${stars(p.rating, p.reviews)}<div class="swatches" role="group" aria-label="Colours">${(p.colors || []).map((c, i) => { const v = BLISS.variantImg ? BLISS.variantImg(p, c) : null, nm = BLISS.colorName ? BLISS.colorName(c) : 'Colour'; return `<button type="button" class="sw${i === 0 ? ' on' : ''}" style="--c:${c}"${v ? ` data-sw-img="img/${v}.webp"` : ''} aria-label="${nm}" aria-pressed="${i === 0}" title="${nm}"></button>`; }).join('')}</div></div>
     <div class="price">${priceOf(p)}</div>
     <div class="actions">
       <button class="btn sm" data-add="${p.id}">Add to cart</button>
@@ -809,6 +809,37 @@ window.productCard = (p) => `
     </div>
   </div>
 </article>`;
+
+/* ---------- Product cards: hovering a colour swatch shows that colour's photo ----------
+   Hover (or keyboard focus) previews; click/tap selects, so it also works on touch screens. */
+(function cardSwatches() {
+  const cardImg = (sw) => sw.closest('.p-card')?.querySelector('.ph img');
+  const preview = (sw) => {
+    const img = cardImg(sw); if (!img) return;
+    if (!img.dataset.base) img.dataset.base = img.getAttribute('src');
+    const src = sw.dataset.swImg || img.dataset.base;
+    if (img.getAttribute('src') !== src) img.src = src;
+  };
+  const restore = (box) => { const on = box.querySelector('.sw.on'); if (on) preview(on); };
+  document.addEventListener('mouseover', (e) => { const sw = e.target.closest('.p-card .sw'); if (sw) preview(sw); });
+  document.addEventListener('focusin', (e) => { const sw = e.target.closest('.p-card .sw'); if (sw) preview(sw); });
+  document.addEventListener('mouseout', (e) => {
+    const box = e.target.closest('.p-card .swatches');
+    if (box && !box.contains(e.relatedTarget)) restore(box);
+  });
+  document.addEventListener('focusout', (e) => {
+    const box = e.target.closest('.p-card .swatches');
+    if (box && !box.contains(e.relatedTarget)) restore(box);
+  });
+  document.addEventListener('click', (e) => {
+    const sw = e.target.closest('.p-card .sw'); if (!sw) return;
+    sw.parentElement.querySelectorAll('.sw').forEach((x) => { x.classList.toggle('on', x === sw); x.setAttribute('aria-pressed', x === sw); });
+    preview(sw);
+  });
+  // warm the cache so the swap is instant on hover
+  const warm = () => document.querySelectorAll('.p-card .sw[data-sw-img]').forEach((sw) => { const i = new Image(); i.src = sw.dataset.swImg; });
+  if ('requestIdleCallback' in window) requestIdleCallback(() => setTimeout(warm, 1500)); else setTimeout(warm, 2500);
+})();
 
 /* ---------- Demo forms: validate, then show a success state (no data is sent) ---------- */
 document.querySelectorAll('form[data-demo-form]').forEach((f) => {

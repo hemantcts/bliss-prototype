@@ -38,6 +38,34 @@ window.BLISS = (() => {
     { id: 'vc-chandelier', brand: 'Bliss Bath and Kitchen Collection', name: 'Calais Large Chandelier', cad: 4200, img: 'nn-chandelier', cat: 'Lighting', sub: 'Chandeliers', rating: 4.9, reviews: 7, colors: [BR, B], weight: 'parcel', tag: 'New' },
     { id: 'vc-pendant', brand: 'Bliss Bath and Kitchen Collection', name: 'Bellamy Brass Pendant', cad: 1180, img: 'pc-lighting', cat: 'Lighting', sub: 'Pendants', rating: 4.7, reviews: 12, colors: [BR, N], weight: 'parcel' },
   ];
+  /* Colour names + the photo shown for each colour on product cards.
+     In WooCommerce this is the image set on each product variation (Variations > Image). */
+  const COLOR_NAMES = { [W]: 'White', [B]: 'Matte Black', [G]: 'Stone Grey', [M]: 'Mushroom', [BR]: 'Brushed Gold', [N]: 'Polished Nickel' };
+  const fx = (img) => ({ [BR]: img, [B]: `${img}-black`, [N]: `${img}-nickel` });
+  const VARIANT_IMG = {
+    'va-barcelona-2': { [W]: 'pd-blend', [G]: 'tub-12' },
+    'kohler-sunstruck': { [B]: 'tub-07' },
+    'toto-neorest-tub': { [W]: 'tub-05' },
+    'va-barcelona': { [B]: 'tub-02', [G]: 'tub-12' },
+    'aquabrass-finch': { [B]: 'pd-room' },
+    'kohler-veil': { [M]: 'tub-12' },
+    'aquabrass-concerto': { [W]: 'tub-10' },
+    'va-serenity': { [G]: 'tub-12' },
+    'kohler-stately': { [B]: 'pd-main' },
+    'blaze-outdoor-tub': { [W]: 'tub-09', [G]: 'tub-12' },
+    'va-amalfi': { [G]: 'tub-12' },
+    'va-napoli': { [B]: 'ym-4' },
+    'va-edge': { [W]: 'ym-3' },
+    'rohl-tub-filler': fx('tub-filler'),
+    'riobel-momenti-shower': fx('pc-showers'),
+    'riobel-bath-faucet': fx('pc-faucets'),
+    'riobel-kitchen-faucet': fx('nn-faucet'),
+    'vc-chandelier': fx('nn-chandelier'),
+    'vc-pendant': fx('pc-lighting'),
+  };
+  // photo for a colour: the variation image if there is one, else the main photo for the first colour
+  const variantImg = (p, c) => VARIANT_IMG[p.id]?.[c] || (c === (p.colors || [])[0] ? p.img : null);
+  const colorName = (c) => COLOR_NAMES[c] || 'Colour';
   const byId = (id) => products.find((p) => p.id === id);
   const onSale = (p) => p.was && p.was > p.cad;
   const pctOff = (p) => (onSale(p) ? Math.round((1 - p.cad / p.was) * 100) : 0);
@@ -180,5 +208,5 @@ window.BLISS = (() => {
     clear() { wishIds = []; saveWish(); },
   };
 
-  return { products, brands, byId, onSale, pctOff, money, convert, setCurrency, refreshPrices, get currency() { return currency; }, cart: cartApi, wish: wishApi, store };
+  return { products, brands, byId, variantImg, colorName, onSale, pctOff, money, convert, setCurrency, refreshPrices, get currency() { return currency; }, cart: cartApi, wish: wishApi, store };
 })();
