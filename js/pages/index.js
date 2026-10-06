@@ -1,9 +1,9 @@
 /* index.html: page script (source). Built to js/pages/index.min.js by `npm run build`. */
   /* Shop by category: large tiles in a slider */
-  const cats = [['pc-bathtubs', 'Bathtubs', 'collection.html', 22], ['pc-faucets', 'Bathroom Faucets', 'search.html?q=bathroom%20faucet', 3],
-    ['pc-vanities', 'Vanities', 'search.html?q=vanity', 1], ['pc-showers', 'Shower Systems', 'search.html?q=shower', 1], ['pc-toilets', 'Smart Toilets', 'search.html?q=toilet', 2],
-    ['nn-faucet', 'Kitchen Faucets', 'search.html?q=kitchen%20faucet', 1], ['pc-sinks', 'Kitchen Sinks', 'search.html?q=sink', 1], ['pc-ovens', 'Ranges & Ovens', 'search.html?cat=Appliances', 4],
-    ['nn-grill', 'Outdoor', 'search.html?cat=Outdoor', 1], ['pc-lighting', 'Lighting', 'search.html?cat=Lighting', 2], ['cat-home', 'Furniture', 'search.html?cat=Furniture', 0]];
+  const cats = [['pc-bathtubs', 'Bathtubs', 'bathroom/bathtubs/freestanding-bathtubs/', 22], ['pc-faucets', 'Bathroom Faucets', 'bathroom/bathroom-faucets/', 3],
+    ['pc-vanities', 'Vanities', 'bathroom/bathroom-vanities/', 1], ['pc-showers', 'Shower Systems', 'bathroom/showers/', 1], ['pc-toilets', 'Smart Toilets', 'bathroom/toilets/smart-toilets/', 2],
+    ['nn-faucet', 'Kitchen Faucets', 'kitchen/kitchen-faucets/', 1], ['pc-sinks', 'Kitchen Sinks', 'kitchen/kitchen-sinks/', 1], ['pc-ovens', 'Ranges & Ovens', 'appliances/', 4],
+    ['nn-grill', 'Outdoor', 'outdoor/', 1], ['pc-lighting', 'Lighting', 'lighting/', 2], ['cat-home', 'Furniture', 'furniture/', 0]];
   document.getElementById('catRail').innerHTML = cats.map(([img, name, href]) => `
     <a class="cat-tile" href="${href}">
       <span class="ct-img"><img src="img/${img}.webp"${imgSet(img, '(max-width: 680px) 72vw, 25vw')} alt="${name}" loading="lazy" decoding="async"></span>

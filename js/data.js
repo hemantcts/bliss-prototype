@@ -66,6 +66,104 @@ window.BLISS = (() => {
   // photo for a colour: the variation image if there is one, else the main photo for the first colour
   const variantImg = (p, c) => VARIANT_IMG[p.id]?.[c] || (c === (p.colors || [])[0] ? p.img : null);
   const colorName = (c) => COLOR_NAMES[c] || 'Colour';
+  /* ---------- Product categories ----------
+     Mirrors the WooCommerce product_cat tree. URLs follow the hierarchy, e.g.
+     /bathroom/  ->  /bathroom/bathtubs/  ->  /bathroom/bathtubs/freestanding-bathtubs/
+     [slug, name, parent slug, image, intro]. A category with children uses the landing layout;
+     a category without children uses the product-listing (collection) layout. */
+  const CAT_ROWS = [
+    ['bathroom', 'Bathroom', '', 'cat-bath', 'Faucets, vanities, freestanding tubs, showers and smart toilets from the world’s leading bath brands, curated to create a calm, beautifully considered bathroom.'],
+    ['bathtubs', 'Bathtubs', 'bathroom', 'look-retreat', 'Sculptural freestanding tubs, timeless clawfoots and space-saving designs in acrylic, stone resin and cast iron.'],
+    ['freestanding-bathtubs', 'Freestanding Bathtubs', 'bathtubs', 'hero-collection', 'Make a statement with a freestanding tub. Explore our curated collection of premium designs that bring comfort, style and a spa-like feel to your bathroom.'],
+    ['clawfoot-bathtubs', 'Clawfoot Bathtubs', 'bathtubs', 'hero-3', ''],
+    ['corner-bathtubs', 'Corner Bathtubs', 'bathtubs', 'pd-room', ''],
+    ['cast-iron-bathtubs', 'Cast Iron Bathtubs', 'bathtubs', 'pd-blend', ''],
+    ['oval-bathtubs', 'Oval Bathtubs', 'bathtubs', 'why-tub', ''],
+    ['japanese-bathtubs', 'Japanese Bathtubs', 'bathtubs', 'cat-bath', ''],
+    ['non-standard-bathtubs', 'Non Standard Bathtubs', 'bathtubs', 'pd-main', ''],
+    ['bathroom-faucets', 'Bathroom Faucets', 'bathroom', 'pc-faucets', ''],
+    ['bathroom-vanities', 'Bathroom Vanities', 'bathroom', 'pc-vanities', ''],
+    ['tub-fillers', 'Tub Fillers', 'bathroom', 'tub-filler', 'Floor-mounted and freestanding tub fillers that complete a freestanding bath with sculptural style.'],
+    ['floor-mounted-tub-fillers', 'Floor Mounted Tub Fillers', 'tub-fillers', 'tub-filler', ''],
+    ['freestanding-tub-fillers', 'Freestanding Tub Fillers', 'tub-fillers', 'blog-tub', ''],
+    ['showers', 'Showers', 'bathroom', 'pc-showers', 'Shower systems, bases, doors and complete kits for a spa-worthy daily ritual.'],
+    ['thermostatic-shower-systems', 'Thermostatic Shower Systems', 'showers', 'pc-showers', ''],
+    ['shower-bases', 'Shower Bases', 'showers', 'pd-c3', ''],
+    ['shower-doors', 'Shower Doors', 'showers', 'pd-c1', ''],
+    ['sliding-shower-doors', 'Sliding Shower Doors', 'showers', 'pd-c2', ''],
+    ['shower-kits', 'Shower Kits', 'showers', 'pc-showers-nickel', ''],
+    ['toilets', 'Toilets', 'bathroom', 'pc-toilets', 'Smart, wall-hung and one-piece toilets engineered for comfort, hygiene and quiet efficiency.'],
+    ['smart-toilets', 'Smart Toilets', 'toilets', 'nn-toilet', ''],
+    ['wall-hung-toilets', 'Wall Hung Toilets', 'toilets', 'pc-toilets', ''],
+    ['bathroom-fixtures', 'Bathroom Fixtures', 'bathroom', 'pc-faucets-nickel', ''],
+    ['led-mirrors', 'LED Mirrors', 'bathroom', 'cat-home', ''],
+    ['led-medicine-cabinets', 'LED Medicine Cabinets', 'bathroom', 'pd-c3', ''],
+    ['towel-warmers', 'Towel Warmers', 'bathroom', 'look-retreat', ''],
+
+    ['kitchen', 'Kitchen', '', 'cat-kitchen', 'Kitchen faucets, sinks and finishing details from leading brands, chosen to make the heart of your home as practical as it is beautiful.'],
+    ['kitchen-faucets', 'Kitchen Faucets', 'kitchen', 'nn-faucet', 'Pull-down, single-hole, bridge and touchless faucets in brushed gold, nickel and matte black.'],
+    ['single-hole-kitchen-faucets', 'Single Hole Kitchen Faucets', 'kitchen-faucets', 'nn-faucet', ''],
+    ['pot-fillers', 'Pot Fillers', 'kitchen-faucets', 'nn-faucet-nickel', ''],
+    ['touchless-kitchen-faucets', 'Touchless Kitchen Faucets', 'kitchen-faucets', 'nn-faucet-black', ''],
+    ['bridge-kitchen-faucets', 'Bridge Kitchen Faucets', 'kitchen-faucets', 'blog-finish', ''],
+    ['kitchen-sinks', 'Kitchen Sinks', 'kitchen', 'pc-sinks', 'Apron-front, undermount and workstation sinks in stainless steel, fireclay and granite composite.'],
+    ['apron-kitchen-sinks', 'Apron Kitchen Sinks', 'kitchen-sinks', 'pc-sinks', ''],
+    ['farmhouse-kitchen-sinks', 'Farmhouse Kitchen Sinks', 'kitchen-sinks', 'look-kitchen', ''],
+    ['undermount-kitchen-sinks', 'Undermount Kitchen Sinks', 'kitchen-sinks', 'pc-sinks', ''],
+    ['workstation-sinks', 'Workstation Sinks', 'kitchen-sinks', 'cat-kitchen', ''],
+    ['granite-undermount-kitchen-sinks', 'Granite Undermount Kitchen Sinks', 'kitchen-sinks', 'pc-sinks', ''],
+    ['soap-dispensers', 'Soap Dispensers', 'kitchen', 'hero-2', ''],
+
+    ['appliances', 'Appliances', '', 'cat-appliances', 'Professional-style ranges, cooktops, refrigeration and ventilation from brands like ILVE, SMEG, Fulgor Milano and Café.'],
+    ['ranges', 'Ranges', 'appliances', 'nn-range', ''],
+    ['cooktops', 'Cooktops', 'appliances', 'pc-cooktops', ''],
+    ['wall-ovens', 'Wall Ovens', 'appliances', 'pc-ovens', ''],
+    ['refrigerators', 'Refrigerators', 'appliances', 'pc-fridges', 'French-door, column and wine refrigeration designed to keep fresh food and wine at its best.'],
+    ['french-door-refrigerators', 'French Door Refrigerators', 'refrigerators', 'pc-fridges', ''],
+    ['wine-storage', 'Wine Storage', 'refrigerators', 'blog-range', ''],
+    ['ventilation', 'Ventilation', 'appliances', 'blog-range', 'Range hoods and downdraft systems that keep the kitchen fresh and quiet.'],
+    ['range-hoods', 'Range Hoods', 'ventilation', 'blog-range', ''],
+    ['downdraft-ventilation', 'Downdraft Ventilation', 'ventilation', 'mega-appliances', ''],
+
+    ['lighting', 'Lighting', '', 'mega-lighting', 'Chandeliers, pendants, vanity lights and sconces in warm brass, polished nickel and matte black.'],
+    ['chandeliers', 'Chandeliers', 'lighting', 'nn-chandelier', ''],
+    ['pendants', 'Pendants', 'lighting', 'pc-lighting', ''],
+    ['vanity-lights', 'Vanity Lights', 'lighting', 'pc-lighting-nickel', ''],
+    ['wall-sconces', 'Wall Sconces', 'lighting', 'nn-chandelier-black', ''],
+
+    ['furniture', 'Furniture', '', 'cat-home', 'Considered furniture and mirrors that complete the home. A new collection is arriving soon.'],
+    ['living', 'Living', 'furniture', 'cat-home', ''],
+    ['dining', 'Dining', 'furniture', 'ig-3', ''],
+    ['bedroom', 'Bedroom', 'furniture', 'mega-lighting', ''],
+    ['mirrors', 'Mirrors', 'furniture', 'mega-furniture', ''],
+
+    ['outdoor', 'Outdoor', '', 'mega-outdoor', 'Grills, outdoor kitchens and pizza ovens from Blaze and Kamado Joe for entertaining under the open sky.'],
+    ['outdoor-grills', 'Outdoor Grills', 'outdoor', 'nn-grill', 'Gas, built-in and kamado grills built for outdoor cooking at its best.'],
+    ['built-in-grills', 'Built-in Grills', 'outdoor-grills', 'nn-grill', ''],
+    ['smokers-kamado-grills', 'Smokers & Kamado Grills', 'outdoor-grills', 'mega-outdoor', ''],
+    ['outdoor-kitchens', 'Outdoor Kitchens', 'outdoor', 'mega-outdoor', ''],
+    ['pizza-ovens', 'Pizza Ovens', 'outdoor', 'nn-grill', ''],
+    ['outdoor-refrigeration', 'Outdoor Refrigeration', 'outdoor', 'pc-fridges', ''],
+    ['grill-accessories', 'Grill Accessories', 'outdoor', 'nn-grill', ''],
+    ['outdoor-lighting', 'Outdoor Lighting', 'outdoor', 'pc-lighting', ''],
+  ];
+  const categories = CAT_ROWS.map(([slug, name, parent, img, intro]) => ({ slug, name, parent, img, intro }));
+  const catBySlug = Object.fromEntries(categories.map((c) => [c.slug, c]));
+  const catByName = (name) => categories.find((c) => c.name.toLowerCase() === String(name).toLowerCase());
+  const catChildren = (slug) => categories.filter((c) => c.parent === slug);
+  const catTrail = (slug) => { const out = []; for (let c = catBySlug[slug]; c; c = catBySlug[c.parent]) out.unshift(c); return out; };
+  const catUrl = (slug) => catTrail(slug).map((c) => c.slug).join('/') + '/';   // relative to the site root
+  const catDescendants = (slug) => [slug, ...catChildren(slug).flatMap((c) => catDescendants(c.slug))];
+  // where each product sits in the tree (product.sub -> deepest matching category)
+  const SUB_TO_CAT = {
+    Bathtubs: 'freestanding-bathtubs', 'Bathroom Faucets': 'bathroom-faucets', 'Freestanding Tub Fillers': 'freestanding-tub-fillers',
+    'Shower Systems': 'thermostatic-shower-systems', 'Smart Toilets': 'smart-toilets', Toilets: 'toilets', Vanities: 'bathroom-vanities',
+    'Kitchen Faucets': 'kitchen-faucets', 'Kitchen Sinks': 'kitchen-sinks', Ranges: 'ranges', Cooktops: 'cooktops', Refrigeration: 'refrigerators',
+    'Outdoor Grills': 'outdoor-grills', Chandeliers: 'chandeliers', Pendants: 'pendants',
+  };
+  const catOf = (p) => SUB_TO_CAT[p.sub] || '';
+  const catProducts = (slug) => { const set = new Set(catDescendants(slug)); return products.filter((p) => set.has(catOf(p))); };
+
   const byId = (id) => products.find((p) => p.id === id);
   const onSale = (p) => p.was && p.was > p.cad;
   const pctOff = (p) => (onSale(p) ? Math.round((1 - p.cad / p.was) * 100) : 0);
@@ -208,5 +306,5 @@ window.BLISS = (() => {
     clear() { wishIds = []; saveWish(); },
   };
 
-  return { products, brands, byId, variantImg, colorName, onSale, pctOff, money, convert, setCurrency, refreshPrices, get currency() { return currency; }, cart: cartApi, wish: wishApi, store };
+  return { products, brands, byId, variantImg, colorName, categories, catBySlug, catByName, catChildren, catTrail, catUrl, catDescendants, catOf, catProducts, onSale, pctOff, money, convert, setCurrency, refreshPrices, get currency() { return currency; }, cart: cartApi, wish: wishApi, store };
 })();

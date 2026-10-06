@@ -7,7 +7,7 @@
     const items = BLISS.cart.items();
     if (!items.length) {
       root.innerHTML = `<div class="empty-state" style="margin-bottom:60px">${icon('bag', 'lg')}<h2>Your cart is empty</h2><p>Discover pieces curated for beautiful living.</p>
-        <div class="hero-cta" style="justify-content:center;margin-top:20px"><a class="btn" href="collection.html">Shop Bathtubs</a><a class="btn ghost" href="search.html?q=new">New Arrivals</a></div></div>`;
+        <div class="hero-cta" style="justify-content:center;margin-top:20px"><a class="btn" href="bathroom/bathtubs/freestanding-bathtubs/">Shop Bathtubs</a><a class="btn ghost" href="search.html?q=new">New Arrivals</a></div></div>`;
       return;
     }
     const sub = BLISS.cart.subtotal();

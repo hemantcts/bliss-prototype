@@ -121,30 +121,32 @@ window.badgeOf = badgeOf;
 
 /* ---------- Header ---------- */
 const NAV = [
-  ['Bath', 'collection.html'], ['Kitchen', 'search.html?cat=Kitchen'], ['Appliances', 'search.html?cat=Appliances'],
-  ['Lighting', 'search.html?cat=Lighting'], ['Furniture', 'search.html?cat=Furniture'], ['Outdoor', 'search.html?cat=Outdoor'],
+  ['Bath', 'bathroom/'], ['Kitchen', 'kitchen/'], ['Appliances', 'appliances/'],
+  ['Lighting', 'lighting/'], ['Furniture', 'furniture/'], ['Outdoor', 'outdoor/'],
   ['Brands', 'brands.html'], ['Sale', 'search.html?q=sale'],
 ];
-const navActive = { collection: 'Bath', product: 'Bath', brands: 'Brands', brand: 'Brands', };
+const TOP_NAV = { bathroom: 'Bath', kitchen: 'Kitchen', appliances: 'Appliances', lighting: 'Lighting', furniture: 'Furniture', outdoor: 'Outdoor' };
+const navActive = { collection: 'Bath', product: 'Bath', brands: 'Brands', brand: 'Brands', category: TOP_NAV[document.body.dataset.top] };
 const navLink = ([n, href]) => `<a href="${href}" class="${n === 'Sale' ? 'sale' : ''}${navActive[PAGE] === n ? ' active' : ''}">${n}</a>`;
 
 /* Category link lists: shared by the mega menu, mobile menu and footer (keep every SEO link) */
 const sq = (t) => `search.html?q=${encodeURIComponent(t)}`;
-const L = (t, h) => [t, h || sq(t)];
+// menu/footer links: a category name links to its category page (e.g. bathroom/bathtubs/), anything else to search
+const L = (t, h) => { const c = BLISS.catByName(t); return [t, h || (c ? BLISS.catUrl(c.slug) : sq(t))]; };
 const LINKS = {
   bathroom: [L('Bathroom Faucets'), L('Bathroom Vanities'), L('Bathroom Fixtures'), L('Floor Mounted Tub Fillers'), L('Freestanding Tub Fillers'), L('LED Mirrors'), L('LED Medicine Cabinets'), L('Towel Warmers')],
   showers: [L('Shower Bases'), L('Shower Doors'), L('Sliding Shower Doors'), L('Shower Kits'), L('Thermostatic Shower Systems'), L('Smart Toilets'), L('Wall Hung Toilets')],
-  bathtubs: [L('Bathtubs', 'collection.html'), L('Freestanding Bathtubs', 'collection.html'), L('Clawfoot Bathtubs'), L('Corner Bathtubs'), L('Cast Iron Bathtubs'), L('Non Standard Bathtubs'), L('Oval Bathtubs'), L('Japanese Bathtubs')],
+  bathtubs: [L('Bathtubs'), L('Freestanding Bathtubs'), L('Clawfoot Bathtubs'), L('Corner Bathtubs'), L('Cast Iron Bathtubs'), L('Non Standard Bathtubs'), L('Oval Bathtubs'), L('Japanese Bathtubs')],
   kFaucets: [L('Kitchen Faucets'), L('Single Hole Kitchen Faucets'), L('Pot Fillers'), L('Touchless Kitchen Faucets'), L('Bridge Kitchen Faucets')],
   kSinks: [L('Kitchen Sinks'), L('Apron Kitchen Sinks'), L('Farmhouse Kitchen Sinks'), L('Undermount Kitchen Sinks'), L('Workstation Sinks'), L('Granite Undermount Kitchen Sinks')],
-  kMore: [L('Kitchen Appliances', 'search.html?cat=Appliances'), L('Soap Dispensers')],
+  kMore: [L('Kitchen Appliances', 'appliances/'), L('Soap Dispensers')],
   cooking: [L('Ranges'), L('Cooktops'), L('Wall Ovens'), L('Outdoor Grills')],
   refrig: [L('Refrigerators'), L('French Door Refrigerators'), L('Wine Storage')],
   vent: [L('Range Hoods'), L('Downdraft Ventilation')],
   outdoor: [L('Outdoor Grills'), L('Built-in Grills'), L('Outdoor Kitchens'), L('Smokers & Kamado Grills'), L('Pizza Ovens'), L('Outdoor Refrigeration')],
   outdoorMore: [L('Blaze', 'brand.html?b=blaze'), L('Kamado Joe', 'brand.html?b=kamado-joe'), L('Grill Accessories'), L('Outdoor Lighting')],
   lighting: [L('Chandeliers'), L('Pendants'), L('Vanity Lights'), L('Wall Sconces')],
-  furniture: [L('Living', 'search.html?cat=Furniture'), L('Dining', 'search.html?cat=Furniture'), L('Bedroom', 'search.html?cat=Furniture'), L('Mirrors')],
+  furniture: [L('Living'), L('Dining'), L('Bedroom'), L('Mirrors')],
   brands: BLISS.brands.filter((b) => b.featured).map((b) => L(b.name, `brand.html?b=${b.slug}`)),
 };
 const linkList = (items) => `<ul>${items.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>`;
@@ -153,19 +155,19 @@ const megaFeature = (img, eyebrow, title, href) => `
   <a class="mega-feature" href="${href}"><span class="mf-img"><img src="img/${img}.webp"${imgSet(img, '280px')} alt="" loading="lazy"></span><span class="eyebrow">${eyebrow}</span><b>${title}</b><span class="link-arrow">Shop now ${icon('arrow', 'sm')}</span></a>`;
 const MEGA = {
   Bath: [megaCol('Bathroom', LINKS.bathroom), megaCol('Showers &amp; Toilets', LINKS.showers), megaCol('Bathtubs', LINKS.bathtubs),
-    megaFeature('cat-bath', 'Featured', 'Freestanding Bathtubs', 'collection.html')],
+    megaFeature('cat-bath', 'Featured', 'Freestanding Bathtubs', 'bathroom/bathtubs/freestanding-bathtubs/')],
   Kitchen: [megaCol('Kitchen Faucets', LINKS.kFaucets), megaCol('Kitchen Sinks', LINKS.kSinks), megaCol('More for the Kitchen', LINKS.kMore),
-    megaFeature('cat-kitchen', 'Shop the look', 'The Contemporary Kitchen', 'search.html?cat=Kitchen')],
+    megaFeature('cat-kitchen', 'Shop the look', 'The Contemporary Kitchen', 'kitchen/')],
   Appliances: [megaCol('Cooking', LINKS.cooking), megaCol('Refrigeration', LINKS.refrig), megaCol('Ventilation', LINKS.vent),
     megaFeature('mega-appliances', 'Italian excellence', 'ILVE Ranges', sq('ILVE'))],
   Lighting: [megaCol('Lighting', LINKS.lighting), megaCol('Shop by Finish', [L('Warm Brass', sq('brass')), L('Polished Nickel', sq('nickel')), L('Matte Black', sq('black'))]),
-    megaFeature('mega-lighting', 'New arrivals', 'Lighting for Every Room', 'search.html?cat=Lighting')],
+    megaFeature('mega-lighting', 'New arrivals', 'Lighting for Every Room', 'lighting/')],
   Furniture: [megaCol('Furniture', LINKS.furniture), megaCol('Need Help?', [L('Design Services', 'contact.html?topic=design'), L('Visit Our Showroom', 'showroom.html')]),
-    megaFeature('mega-furniture', 'Coming soon', 'The Furniture Collection', 'search.html?cat=Furniture')],
+    megaFeature('mega-furniture', 'Coming soon', 'The Furniture Collection', 'furniture/')],
   Brands: [`<div class="mega-col wide"><h4>Featured Brands</h4><ul class="mega-brands">${LINKS.brands.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul><a class="link-arrow" href="brands.html" style="margin-top:16px">View all ${BLISS.brands.length} brands ${icon('arrow', 'sm')}</a></div>`,
     megaFeature('mega-brands', 'The brands you love', 'All in One Place', 'brands.html')],
   Outdoor: [megaCol('Outdoor Cooking', LINKS.outdoor), megaCol('Brands &amp; More', LINKS.outdoorMore), megaCol('Get Inspired', [L('Shop the Look', 'shop-the-look.html'), L('The Journal', 'blog.html'), L('Design Services', 'contact.html?topic=design')]),
-    megaFeature('mega-outdoor', 'New season', 'Outdoor Kitchens', 'search.html?cat=Outdoor')],
+    megaFeature('mega-outdoor', 'New season', 'Outdoor Kitchens', 'outdoor/')],
 };
 const navItem = ([n, href]) => MEGA[n] ? `
   <div class="nav-item" data-mega>
@@ -248,7 +250,7 @@ const newsletterHTML = `
 
 const col = (title, items) => `<h2 class="f-h">${title}</h2><ul>${items.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>`;
 const PAGES = [
-  ['Home', 'index.html', 'home'], ['Collection', 'collection.html', 'collection'], ['Product', 'product.html', 'product'],
+  ['Home', 'index.html', 'home'], ['Category: Bathroom', 'bathroom/', 'category'], ['Sub-category: Bathtubs', 'bathroom/bathtubs/', 'category'], ['Listing: Freestanding Bathtubs', 'bathroom/bathtubs/freestanding-bathtubs/', 'collection'], ['Product', 'product.html', 'product'],
   ['Search / Shop', 'search.html?q=tub', 'search'], ['Cart', 'cart.html', 'cart'], ['Wishlist', 'wishlist.html', 'wishlist'], ['Login / Register', 'account.html', 'account'], ['Forgot password', 'account.html?view=lost-password', 'account-lost'], ['Checkout', 'checkout.html', 'checkout'],
   ['Order confirmed', 'order-confirmed.html', 'confirmed'], ['Thank you (inquiry)', 'thank-you.html?type=inquiry', 'thanks'], ['Thank you (contact)', 'thank-you.html?type=contact', 'thanks'], ['404 page', '404.html', '404'], ['Our Story', 'about.html', 'about'], ['Contact', 'contact.html', 'contact'],
   ['Trade Program', 'trade.html', 'trade'], ['Project Inquiries', 'projects.html', 'projects'], ['Showroom', 'showroom.html', 'showroom'],
@@ -260,7 +262,7 @@ const footerHTML = `
   <div class="f-cols f-one">
     <div>${col('Bathroom Products', [L('Bathroom Faucets'), L('Bathroom Vanities'), L('Bathroom Fixtures'), L('Floor Mounted Tub Fillers'), L('Smart Toilets'), L('Freestanding Tub Fillers'), L('LED Mirrors'), L('LED Medicine Cabinets'), L('Shower Bases'), L('Shower Doors'), L('Shower Kits'), L('Thermostatic Shower Systems'), L('Sliding Shower Doors'), L('Wall Hung Toilets'), L('Towel Warmers')])}</div>
     <div>${col('Bathtubs', LINKS.bathtubs)}${col('Lighting', LINKS.lighting)}</div>
-    <div>${col('Kitchen Products', [L('Kitchen Faucets'), L('Single Hole Kitchen Faucets'), L('Pot Fillers'), L('Kitchen Sinks'), L('Apron Kitchen Sinks'), L('Farmhouse Kitchen Sinks'), L('Undermount Kitchen Sinks'), L('Workstation Sinks'), L('Granite Undermount Kitchen Sinks'), L('Kitchen Appliances', 'search.html?cat=Appliances'), L('Touchless Kitchen Faucets'), L('Bridge Kitchen Faucets'), L('Soap Dispensers')])}</div>
+    <div>${col('Kitchen Products', [L('Kitchen Faucets'), L('Single Hole Kitchen Faucets'), L('Pot Fillers'), L('Kitchen Sinks'), L('Apron Kitchen Sinks'), L('Farmhouse Kitchen Sinks'), L('Undermount Kitchen Sinks'), L('Workstation Sinks'), L('Granite Undermount Kitchen Sinks'), L('Kitchen Appliances', 'appliances/'), L('Touchless Kitchen Faucets'), L('Bridge Kitchen Faucets'), L('Soap Dispensers')])}</div>
     <div>${col('Appliances', [...LINKS.cooking, LINKS.refrig[0], LINKS.vent[0]])}${col('Furniture', LINKS.furniture)}</div>
     <div>${col('Discover', [['Our Story', 'about.html'], ['Brands', 'brands.html'], ['Shop the Look', 'shop-the-look.html'], ['New Arrivals', 'search.html?q=new'], ['Best Sellers', 'search.html?q=best'], ['Sale', 'search.html?q=sale'], ['Design Services', 'contact.html?topic=design'], ['Visit Our Showroom', 'showroom.html'], ['Blogs', 'blog.html']])}</div>
     <div class="f-contact-col">${col('Customer Care', [['About Us', 'about.html'], ['Contact Us', 'contact.html'], ['Return Policy', 'returns.html'], ['Shipping Policy', 'shipping.html'], ['Terms &amp; Conditions', 'terms.html'], ['Trade Program', 'trade.html'], ['Project Inquiries', 'projects.html']])}
@@ -324,6 +326,18 @@ const minimalFooterHTML = `
 </details>`;
 mount('#site-footer', (MINIMAL ? minimalFooterHTML : footerHTML) + drawerHTML + searchHTML);
 if (!document.querySelector('main')?.id) document.querySelector('main')?.setAttribute('id', 'main');
+
+/* Category pages live in sub-folders and use <base href="../">, which would turn "#section" links into links
+   to the home page. Keep in-page links on the current page. */
+if (document.querySelector('base')) {
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]'); if (!a || e.defaultPrevented) return;
+    const id = a.getAttribute('href').slice(1);
+    e.preventDefault();
+    const t = id && document.getElementById(id);
+    if (t) { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', location.pathname + location.search + '#' + id); if (id === 'main') t.focus?.(); }
+  });
+}
 
 /* Render any <i data-icon="name"> placeholders */
 function renderIcons(root = document) {
@@ -414,8 +428,8 @@ function renderDrawer() {
   if (!items.length) {
     body.innerHTML = `<div class="drawer-empty">
       ${icon('bag', 'lg')}<h3>Your cart is empty</h3><p>Discover pieces curated for beautiful living.</p>
-      <a class="btn" href="collection.html">Shop Bathtubs ${icon('arrow', 'sm')}</a>
-      <div class="drawer-cats"><a href="search.html?cat=Kitchen">Kitchen</a><a href="search.html?cat=Appliances">Appliances</a><a href="search.html?cat=Lighting">Lighting</a><a href="search.html?q=new">New Arrivals</a></div>
+      <a class="btn" href="bathroom/bathtubs/freestanding-bathtubs/">Shop Bathtubs ${icon('arrow', 'sm')}</a>
+      <div class="drawer-cats"><a href="kitchen/">Kitchen</a><a href="appliances/">Appliances</a><a href="lighting/">Lighting</a><a href="search.html?q=new">New Arrivals</a></div>
     </div>`;
     foot.innerHTML = '';
     return;
@@ -600,10 +614,10 @@ function renderSearch() {
           <div class="chips">${POPULAR.map((t) => `<button type="button" data-query="${t}">${t}</button>`).join('')}</div>
           <h4>Shop by space</h4>
           <ul class="sr-links">
-            <li><a data-sr href="collection.html">Bath ${icon('arrow', 'sm')}</a></li>
-            <li><a data-sr href="search.html?cat=Kitchen">Kitchen ${icon('arrow', 'sm')}</a></li>
-            <li><a data-sr href="search.html?cat=Appliances">Appliances ${icon('arrow', 'sm')}</a></li>
-            <li><a data-sr href="search.html?cat=Lighting">Lighting ${icon('arrow', 'sm')}</a></li>
+            <li><a data-sr href="bathroom/bathtubs/freestanding-bathtubs/">Bath ${icon('arrow', 'sm')}</a></li>
+            <li><a data-sr href="kitchen/">Kitchen ${icon('arrow', 'sm')}</a></li>
+            <li><a data-sr href="appliances/">Appliances ${icon('arrow', 'sm')}</a></li>
+            <li><a data-sr href="lighting/">Lighting ${icon('arrow', 'sm')}</a></li>
           </ul>
         </div>
         <div><h4>Trending now</h4><div class="sr-products">${trending.map((p) => resultCard(p)).join('')}</div></div>

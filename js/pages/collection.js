@@ -1,17 +1,31 @@
-/* collection.html: page script (source). Built to js/pages/collection.min.js by `npm run build`. */
-  const products = BLISS.products.filter((p) => p.material); // the 12 freestanding tubs
+/* Final-category product listing (templates/listing.html). Built to js/pages/collection.min.js by `npm run build`. */
+  /* Product listing for a final category (e.g. /bathroom/bathtubs/freestanding-bathtubs/).
+     The category comes from <body data-cat>; filters are built from the products in it. */
+  const slug = document.body.dataset.cat || 'freestanding-bathtubs';
+  const cat = BLISS.catBySlug[slug];
+  let products = BLISS.catProducts(slug);
+  const notice = document.getElementById('catNotice');
+  if (!products.length) {
+    // nothing listed yet: show the closest parent category's products instead
+    const trail = BLISS.catTrail(slug).slice(0, -1).reverse();
+    const near = trail.find((c) => BLISS.catProducts(c.slug).length);
+    products = near ? BLISS.catProducts(near.slug) : [];
+    notice.hidden = false;
+    notice.innerHTML = `We’re adding ${esc(cat.name.toLowerCase())} to our online store. ${near ? `Meanwhile, explore more <a href="${BLISS.catUrl(near.slug)}">${esc(near.name.toLowerCase())}</a>, or ` : ''}<a href="contact.html">contact us</a> for availability and pricing.`;
+  }
+  const val = (p, key) => key === 'price' ? priceBand(p.cad) : key === 'sale' ? (BLISS.onSale(p) ? 'On Sale' : '') : p[key];
   const priceBand = (p) => p < 2000 ? 'Under $2,000' : p < 4000 ? '$2,000 – $4,000' : p < 6000 ? '$4,000 – $6,000' : 'Over $6,000';
+  const uniq = (key) => [...new Set(products.map((p) => p[key]).filter(Boolean))];
   const groups = [
     ['Offers', 'sale', ['On Sale']],
     ['Price Range (CAD)', 'price', ['Under $2,000', '$2,000 – $4,000', '$4,000 – $6,000', 'Over $6,000']],
-    ['Brand', 'brand', ['Kohler', 'TOTO', 'Victoria + Albert', 'Duravit', 'Aquabrass', 'Blaze']],
+    ['Brand', 'brand', uniq('brand').sort()],
     ['Material', 'material', ['Acrylic', 'Stone Resin', 'Cast Iron', 'Solid Surface']],
     ['Finish', 'finish', ['White', 'Matte', 'Textured', 'Two-Tone']],
     ['Shape', 'shape', ['Oval', 'Rectangular', 'Round', 'Asymmetrical']],
     ['Size', 'size', ['Small', 'Standard', 'Large']],
-  ];
+  ].map(([l, k, opts]) => [l, k, opts.filter((o) => products.some((p) => val(p, k) === o))]).filter(([, , opts]) => opts.length);
   const sizeLabel = { Small: 'Small (up to 54")', Standard: 'Standard (54" – 60")', Large: 'Large (60"+)' };
-  const val = (p, key) => key === 'price' ? priceBand(p.cad) : key === 'sale' ? (BLISS.onSale(p) ? 'On Sale' : '') : p[key];
   const active = {};
   let sort = 'featured';
 
@@ -32,9 +46,10 @@
     const grid = document.getElementById('grid');
     grid.innerHTML = list.length
       ? list.map(productCard).join('')
-      : '<p style="grid-column:1/-1;color:var(--muted);padding:40px 0">No tubs match these filters. Try removing one.</p>';
+      : '<p style="grid-column:1/-1;color:var(--muted);padding:40px 0">No products match these filters. Try removing one.</p>';
     const filtered = Object.values(active).some((s) => s.size);
-    document.getElementById('count').textContent = filtered ? `${list.length} matching products` : 'Showing 12 of 42 products';
+    // the freestanding page demonstrates pagination (42 in the full catalogue); other categories show their real count
+    document.getElementById('count').textContent = filtered ? `${list.length} matching products` : slug === 'freestanding-bathtubs' ? `Showing ${list.length} of 42 products` : `${list.length} product${list.length === 1 ? '' : 's'}`;
     const chips = Object.entries(active).flatMap(([k, set]) => [...set].map((v) => `<button data-chip="${k}|${v}">${v} ${icon('close', 'sm')}</button>`));
     document.getElementById('chips').innerHTML = chips.join('');
   }
@@ -93,4 +108,5 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && filters.classList.contains('open')) openF(false); });
   document.addEventListener('change', () => { document.getElementById('filterApply').textContent = `Show ${document.getElementById('grid').querySelectorAll('.p-card').length} results`; });
 
+  document.getElementById('pager').hidden = slug !== 'freestanding-bathtubs';
   render();

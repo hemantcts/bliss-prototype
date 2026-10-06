@@ -44,7 +44,7 @@
         <span class="wl-heart">${icon('heart', 'lg')}</span>
         <h2>Your wishlist is empty</h2>
         <p>Tap the heart on any product to save it here. Handy for comparing finishes or sharing ideas with your designer.</p>
-        <div class="hero-cta" style="justify-content:center;margin-top:20px"><a class="btn" href="collection.html">Shop Bathtubs</a><a class="btn ghost" href="shop-the-look.html">Shop the Look</a></div>
+        <div class="hero-cta" style="justify-content:center;margin-top:20px"><a class="btn" href="bathroom/bathtubs/freestanding-bathtubs/">Shop Bathtubs</a><a class="btn ghost" href="shop-the-look.html">Shop the Look</a></div>
       </div>`;
       return;
     }
