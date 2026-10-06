@@ -13,11 +13,10 @@
 <meta name="theme-color" content="#2b2118">
 <title>Contact Us | Bliss Bath and Kitchen</title>
 <meta name="description" content="Product advice, order support, trade and design services. Contact the Bliss Bath and Kitchen team in Markham, Ontario: 1-855-366-1001.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-page="contact">
 <div id="site-header"></div>
@@ -66,8 +65,7 @@
 </main>
 
 <div id="site-footer"></div>
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
+<script src="js/app.min.js"></script>
 <script>
   document.querySelectorAll('input[name=topic]').forEach((r) => r.addEventListener('change', () => {
     document.getElementById('orderField').hidden = document.querySelector('input[name=topic]:checked').value !== 'order';

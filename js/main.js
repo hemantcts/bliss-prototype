@@ -67,6 +67,15 @@ window.icon = icon;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 window.esc = esc;
 
+/* Responsive images: large photos also exist as name-600.webp (and name-900.webp); imgSet() adds the srcset
+   so phones and small cards download a smaller file. In WordPress, wp_get_attachment_image() does this. */
+const IMG_VARIANTS = {"blog-finish":[1200,600],"blog-range":[1200,600],"blog-tub":[1200,600],"brands-faucet":[972,600],"cat-appliances":[1400,600,900],"cat-bath":[1400,600,900],"cat-home":[1391,600],"cat-kitchen":[1400,600,900],"col-intro":[1800,600,900],"hero-1":[1376,600],"hero-2":[1672,600,900],"hero-3":[1672,600,900],"hero-collection":[1180,600],"hero-home":[1400,600,900],"ig-2":[800,600],"ig-3":[800,600],"look-kitchen":[1800,600,900],"look-retreat":[1500,600,900],"mega-appliances":[900,600],"mega-brands":[900,600],"mega-furniture":[900,600],"mega-lighting":[900,600],"mega-outdoor":[900,600],"pd-blend":[1424,600,900],"pd-main":[1248,600],"pd-room":[1116,600],"showroom-hero":[2048,600,900],"story":[1460,600,900],"why-tub":[1672,600,900]};
+const imgSet = (n, sizes = '(max-width: 680px) 92vw, 33vw') => {
+  const v = IMG_VARIANTS[n];
+  return v ? ` srcset="${v.slice(1).map((w) => `img/${n}-${w}.webp ${w}w`).join(', ')}, img/${n}.webp ${v[0]}w" sizes="${sizes}"` : '';
+};
+window.imgSet = imgSet;
+
 const PAGE = document.body.dataset.page || 'home';
 
 /* Social brand glyphs (filled, Simple Icons) for the footer */
@@ -141,7 +150,7 @@ const LINKS = {
 const linkList = (items) => `<ul>${items.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>`;
 const megaCol = (title, items) => `<div class="mega-col"><h4>${title}</h4>${linkList(items)}</div>`;
 const megaFeature = (img, eyebrow, title, href) => `
-  <a class="mega-feature" href="${href}"><span class="mf-img"><img src="img/${img}.webp" alt="" loading="lazy"></span><span class="eyebrow">${eyebrow}</span><b>${title}</b><span class="link-arrow">Shop now ${icon('arrow', 'sm')}</span></a>`;
+  <a class="mega-feature" href="${href}"><span class="mf-img"><img src="img/${img}.webp"${imgSet(img, '280px')} alt="" loading="lazy"></span><span class="eyebrow">${eyebrow}</span><b>${title}</b><span class="link-arrow">Shop now ${icon('arrow', 'sm')}</span></a>`;
 const MEGA = {
   Bath: [megaCol('Bathroom', LINKS.bathroom), megaCol('Showers &amp; Toilets', LINKS.showers), megaCol('Bathtubs', LINKS.bathtubs),
     megaFeature('cat-bath', 'Featured', 'Freestanding Bathtubs', 'collection.html')],
@@ -415,7 +424,7 @@ function renderDrawer() {
   const recs = BLISS.products.filter((p) => !inCart.has(p.id) && p.weight === 'parcel').slice(0, 3);
   body.innerHTML = `<ul class="lines">${items.map((l) => `
     <li class="line">
-      <a href="product.html" class="line-img"><img src="img/${l.product.img}.webp" alt=""></a>
+      <a href="product.html" class="line-img"><img src="img/${l.product.img}.webp"${imgSet(l.product.img, '96px')} alt=""></a>
       <div class="line-info">
         <span class="brand">${l.product.brand}</span>
         <a href="product.html" class="name">${l.product.name}</a>
@@ -425,7 +434,7 @@ function renderDrawer() {
       <div class="line-price">${priceOf(l.product, l.qty)}</div>
     </li>`).join('')}</ul>
     <div class="recs"><h4>Complete the look</h4>${recs.map((p) => `
-      <div class="rec"><img src="img/${p.img}.webp" alt=""><div><span class="brand">${p.brand}</span><span class="name">${p.name}</span>${priceOf(p)}</div>
+      <div class="rec"><img src="img/${p.img}.webp"${imgSet(p.img, '80px')} alt=""><div><span class="brand">${p.brand}</span><span class="name">${p.name}</span>${priceOf(p)}</div>
       <button class="rec-add" data-add="${p.id}" aria-label="Add ${esc(p.name)} to cart">${icon('bag', 'sm')}+</button></div>`).join('')}
     </div>`;
   foot.innerHTML = `
@@ -439,17 +448,18 @@ function renderDrawer() {
   foot.querySelector('textarea').addEventListener('input', (e) => BLISS.store.set('bliss_note', e.target.value));
 }
 
-function updateCartCount() {
+function updateCartCount(animate) {
   document.querySelectorAll('[data-cart]').forEach((c) => {
     c.textContent = BLISS.cart.count();
-    c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump');
+    // restart the bump animation on the next frame instead of forcing a synchronous layout
+    if (animate) { c.classList.remove('bump'); requestAnimationFrame(() => requestAnimationFrame(() => c.classList.add('bump'))); }
   });
 }
 document.addEventListener('cart:change', () => {
-  updateCartCount();
+  updateCartCount(true);
   if (document.body.classList.contains('cart-open')) renderDrawer();
 });
-updateCartCount();
+updateCartCount(false);
 
 document.addEventListener('click', (e) => {
   if (e.target.closest('[data-open-cart]')) { e.preventDefault(); openCart(); }
@@ -575,7 +585,7 @@ const hl = (text, q) => {
 };
 const resultCard = (p, q = '') => `
   <a class="sr-card" href="product.html" data-sr>
-    <div class="ph"><img src="img/${p.img}.webp" alt="" loading="lazy">${badgeOf(p)}</div>
+    <div class="ph"><img src="img/${p.img}.webp"${imgSet(p.img, '(max-width: 680px) 46vw, 22vw')} alt="" loading="lazy">${badgeOf(p)}</div>
     <span class="brand">${hl(p.brand, q)}</span><span class="name">${hl(p.name, q)}</span><span class="sr-price">${priceOf(p)}</span>
   </a>`;
 
@@ -796,7 +806,7 @@ window.stars = (r, count) => {
 };
 window.productCard = (p) => `
 <article class="p-card">
-  <a class="ph" href="product.html"><img src="img/${p.img}.webp" alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
+  <a class="ph" href="product.html"><img src="img/${p.img}.webp"${imgSet(p.img, '(max-width: 680px) 46vw, (max-width: 1180px) 30vw, 22vw')} alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
   <button class="wish" data-wish="${p.id}" aria-label="Add to wishlist" aria-pressed="false">${icon('heart', 'sm')}</button>
   <div class="body">
     <span class="brand">${p.brand}</span>
@@ -816,9 +826,12 @@ window.productCard = (p) => `
   const cardImg = (sw) => sw.closest('.p-card')?.querySelector('.ph img');
   const preview = (sw) => {
     const img = cardImg(sw); if (!img) return;
-    if (!img.dataset.base) img.dataset.base = img.getAttribute('src');
+    if (!img.dataset.base) { img.dataset.base = img.getAttribute('src'); img.dataset.baseSet = img.getAttribute('srcset') || ''; }
     const src = sw.dataset.swImg || img.dataset.base;
-    if (img.getAttribute('src') !== src) img.src = src;
+    if (img.getAttribute('src') === src) return;
+    // a srcset would override src, so drop it for colour photos and restore it for the main photo
+    if (src === img.dataset.base && img.dataset.baseSet) img.setAttribute('srcset', img.dataset.baseSet); else img.removeAttribute('srcset');
+    img.src = src;
   };
   const restore = (box) => { const on = box.querySelector('.sw.on'); if (on) preview(on); };
   document.addEventListener('mouseover', (e) => { const sw = e.target.closest('.p-card .sw'); if (sw) preview(sw); });
@@ -1024,7 +1037,7 @@ if (autoSearch !== null) openSearch(autoSearch);
       <div class="c-box">
         <header><h2 id="inqTitle">Make an Inquiry</h2><button type="button" class="c-x" data-inq-close aria-label="Close">${icon('close')}</button></header>
         <form class="c-body form" data-inq-form novalidate>
-          ${p ? `<div class="inq-product"><img src="img/${p.img}.webp" alt=""><div><span class="brand">${p.brand}</span><b>${p.name}</b>${priceOf(p)}</div></div>` : ''}
+          ${p ? `<div class="inq-product"><img src="img/${p.img}.webp"${imgSet(p.img, '80px')} alt=""><div><span class="brand">${p.brand}</span><b>${p.name}</b>${priceOf(p)}</div></div>` : ''}
           <p class="muted" style="font-size:13.5px;margin:0">Ask about availability, lead times, finishes or trade and project pricing. A product specialist replies within one business day.</p>
           <fieldset class="field" style="border:0;padding:0;margin:0"><span>I'd like to know about</span>
             <div class="pills">
@@ -1224,7 +1237,7 @@ syncAccount();
   function productCards(q) {
     const found = (window.searchProducts ? searchProducts(q) : []).slice(0, 3);
     if (!found.length) return null;
-    return found.map((p) => `<a class="msg-card" href="product.html"><img src="img/${p.img}.webp" alt=""><span><small>${esc(p.brand)}</small>${esc(p.name)}<b>${BLISS.money(p.cad)}</b></span></a>`).join('');
+    return found.map((p) => `<a class="msg-card" href="product.html"><img src="img/${p.img}.webp"${imgSet(p.img, '64px')} alt=""><span><small>${esc(p.brand)}</small>${esc(p.name)}<b>${BLISS.money(p.cad)}</b></span></a>`).join('');
   }
   function reply(text, intentKey) {
     if (awaiting === 'order' && !intentKey) {

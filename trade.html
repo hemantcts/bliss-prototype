@@ -13,18 +13,17 @@
 <meta name="theme-color" content="#2b2118">
 <title>Trade Program | Bliss Bath and Kitchen</title>
 <meta name="description" content="Bliss Trade: preferred pricing, dedicated support and project quotations for designers, builders, architects and contractors across Canada and the USA.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-page="trade">
 <div id="site-header"></div>
 
 <main>
   <section class="page-hero">
-    <img loading="lazy" decoding="async" src="img/cat-appliances.webp" alt="">
+    <img loading="lazy" decoding="async" src="img/cat-appliances.webp" srcset="img/cat-appliances-600.webp 600w, img/cat-appliances-900.webp 900w, img/cat-appliances.webp 1400w" sizes="(max-width: 680px) 46vw, 25vw" alt="">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur" style="color:#fff">Trade Program</span></nav>
       <span class="eyebrow">Bliss Trade</span>
@@ -42,7 +41,7 @@
         <p>We proudly work with homeowners, interior designers, builders, contractors and other industry professionals throughout Canada and the United States.</p>
         <p>With bath, kitchen, appliances, lighting and furniture available through one source, Bliss Bath and Kitchen makes specifying and purchasing for your projects simpler.</p>
       </div>
-      <img loading="lazy" decoding="async" class="reveal" src="img/look-kitchen.webp" alt="Kitchen with built-in ovens">
+      <img loading="lazy" decoding="async" class="reveal" src="img/look-kitchen.webp" srcset="img/look-kitchen-600.webp 600w, img/look-kitchen-900.webp 900w, img/look-kitchen.webp 1800w" sizes="(max-width: 980px) 100vw, 50vw" alt="Kitchen with built-in ovens">
     </div>
   </section>
 
@@ -102,7 +101,6 @@
 </main>
 
 <div id="site-footer"></div>
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
+<script src="js/app.min.js"></script>
 </body>
 </html>

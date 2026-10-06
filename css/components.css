@@ -1871,3 +1871,6 @@ body.has-sticky-buy .toast { bottom: 100px; }
 .swatches .sw:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 .p-card .ph img { transition: opacity .2s, transform .7s; }
 .p-card .meta-row { flex-wrap: wrap; row-gap: 6px; }
+
+/* Performance: skip rendering off-screen sections until they approach the viewport */
+.cv, .site-footer { content-visibility: auto; contain-intrinsic-size: auto 900px; }

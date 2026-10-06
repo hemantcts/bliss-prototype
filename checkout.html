@@ -12,11 +12,10 @@
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#2b2118">
 <title>Checkout | Bliss Bath and Kitchen</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-page="checkout" data-minimal class="co-body">
 <header class="co-header"><div class="wrap">
@@ -125,8 +124,7 @@
 
 <div id="site-footer"></div>
 
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
+<script src="js/app.min.js"></script>
 <script>
   /* Demo: seed a cart so the page is never empty when opened directly */
   if (!BLISS.cart.count()) { BLISS.cart.add('va-barcelona-2', 1, 'Black / White (interior / exterior)'); BLISS.cart.add('riobel-bath-faucet', 1); }
@@ -195,7 +193,7 @@
     const t = totals();
     document.getElementById('coSideBody').innerHTML = `
       <ul class="sum-lines">${items.map((l) => `<li class="sum-line">
-        <div class="thumb"><img loading="lazy" decoding="async" src="img/${l.product.img}.webp" alt=""><b>${l.qty}</b></div>
+        <div class="thumb"><img loading="lazy" decoding="async" src="img/${l.product.img}.webp"${imgSet(l.product.img, '96px')} alt=""><b>${l.qty}</b></div>
         <div><span class="brand">${l.product.brand}</span><span class="name">${l.product.name}</span>${l.variant ? `<span class="variant">${esc(l.variant)}</span>` : ''}</div>
         <span class="sum-price">${priceOf(l.product, l.qty)}</span></li>`).join('')}</ul>
       <form class="promo" id="promoForm"><input id="promoIn" placeholder="Discount code or gift card" aria-label="Discount code" value="${promo || ''}"><button class="btn ghost">Apply</button></form>

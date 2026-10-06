@@ -13,18 +13,17 @@
 <meta name="theme-color" content="#2b2118">
 <title>Our Story | Bliss Bath and Kitchen</title>
 <meta name="description" content="Bliss Bath and Kitchen is a Canadian destination for luxury bath, kitchen, appliances and home, built on more than three decades of industry experience.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-page="about">
 <div id="site-header"></div>
 
 <main>
   <section class="page-hero">
-    <img loading="lazy" decoding="async" src="img/story.webp" alt="">
+    <img loading="lazy" decoding="async" src="img/story.webp" srcset="img/story-600.webp 600w, img/story-900.webp 900w, img/story.webp 1460w" sizes="(max-width: 980px) 100vw, 50vw" alt="">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur" style="color:#fff">Our Story</span></nav>
       <span class="eyebrow">Our Story · About Bliss Bath and Kitchen</span>
@@ -35,7 +34,7 @@
 
   <section class="section">
     <div class="wrap split">
-      <img loading="lazy" decoding="async" class="reveal" src="img/cat-kitchen.webp" alt="Kitchen with brass fixtures and island seating">
+      <img loading="lazy" decoding="async" class="reveal" src="img/cat-kitchen.webp" srcset="img/cat-kitchen-600.webp 600w, img/cat-kitchen-900.webp 900w, img/cat-kitchen.webp 1400w" sizes="(max-width: 680px) 46vw, 25vw" alt="Kitchen with brass fixtures and island seating">
       <div class="reveal">
         <span class="eyebrow gold">Three decades in kitchen &amp; bath</span>
         <h2>Experience you can shop with</h2>
@@ -76,7 +75,7 @@
 
   <section class="section" style="background:var(--panel)">
     <div class="wrap split rev">
-      <img loading="lazy" decoding="async" class="reveal" src="img/pd-room.webp" alt="Black freestanding tub in a warm bathroom">
+      <img loading="lazy" decoding="async" class="reveal" src="img/pd-room.webp" srcset="img/pd-room-600.webp 600w, img/pd-room.webp 1116w" sizes="(max-width: 980px) 100vw, 50vw" alt="Black freestanding tub in a warm bathroom">
       <div class="reveal">
         <span class="eyebrow gold">Expertise Beyond E-Commerce</span>
         <h2>More than an online retailer</h2>
@@ -99,7 +98,6 @@
 
 <div id="newsletter"></div>
 <div id="site-footer"></div>
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
+<script src="js/app.min.js"></script>
 </body>
 </html>

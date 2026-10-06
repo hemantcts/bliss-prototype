@@ -13,11 +13,10 @@
 <meta name="theme-color" content="#2b2118">
 <title>My Wishlist | Bliss Bath and Kitchen</title>
 <meta name="description" content="Your saved bath, kitchen and home products at Bliss Bath and Kitchen.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-page="wishlist">
 <div id="site-header"></div>
@@ -49,8 +48,7 @@
 
 <div id="newsletter"></div>
 <div id="site-footer"></div>
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
+<script src="js/app.min.js"></script>
 <script>
   /* A shared link looks like wishlist.html?items=id1,id2 — shown read-only until the visitor saves it */
   const sharedIds = (new URLSearchParams(location.search).get('items') || '').split(',').map((s) => s.trim()).filter((id) => BLISS.byId(id));
@@ -64,7 +62,7 @@
 
   const wlCard = (p, shared) => `
     <article class="wl-card">
-      <a class="ph" href="product.html"><img src="img/${p.img}.webp" alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
+      <a class="ph" href="product.html"><img src="img/${p.img}.webp"${imgSet(p.img, '(max-width: 680px) 46vw, 22vw')} alt="${esc(p.brand + ' ' + p.name)}" loading="lazy" decoding="async">${badgeOf(p)}</a>
       ${shared ? '' : `<button class="wl-remove" data-wl-remove="${p.id}" aria-label="Remove ${esc(p.name)} from wishlist">${icon('close', 'sm')}</button>`}
       <div class="body">
         <span class="brand">${p.brand}</span>

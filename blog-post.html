@@ -13,11 +13,10 @@
 <meta name="theme-color" content="#2b2118">
 <title>Journal | Bliss Bath and Kitchen</title>
 <meta name="description" content="Buying guides and design ideas from Bliss Bath and Kitchen.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-page="blog-post">
 <div id="site-header"></div>
@@ -70,9 +69,7 @@
 
 <div id="newsletter"></div>
 <div id="site-footer"></div>
-<script src="js/data.js"></script>
-<script src="js/content.js"></script>
-<script src="js/main.js"></script>
+<script src="js/app-content.min.js"></script>
 <script>
   const i = Math.max(0, POSTS.findIndex((p) => p.slug === new URLSearchParams(location.search).get('post')));
   const post = POSTS[i];
@@ -91,7 +88,7 @@
     ${prev ? `<a href="blog-post.html?post=${prev.slug}">${icon('left', 'sm')}<span><small>Previous</small>${prev.title}</span></a>` : '<span></span>'}
     ${next ? `<a class="next" href="blog-post.html?post=${next.slug}"><span><small>Next</small>${next.title}</span>${icon('right', 'sm')}</a>` : ''}`;
   document.getElementById('related').innerHTML = POSTS.filter((p) => p !== post).sort((a, b) => (b.cat === post.cat) - (a.cat === post.cat)).slice(0, 3).map((p) => `
-    <article class="post"><a class="ph" href="blog-post.html?post=${p.slug}"><img src="img/${p.img}.webp" alt="" loading="lazy"></a>
+    <article class="post"><a class="ph" href="blog-post.html?post=${p.slug}"><img src="img/${p.img}.webp"${imgSet(p.img, '(max-width: 680px) 92vw, 33vw')} alt="" loading="lazy"></a>
       <div class="post-meta"><span class="post-cat">${p.cat}</span><span>${p.read} min read</span></div>
       <h3><a href="blog-post.html?post=${p.slug}">${p.title}</a></h3></article>`).join('');
   document.getElementById('copyLink').addEventListener('click', () => {

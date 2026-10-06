@@ -13,18 +13,17 @@
 <meta name="theme-color" content="#2b2118">
 <title>Shop the Look | Bliss Bath and Kitchen</title>
 <meta name="description" content="Complete bathrooms and kitchens curated by our design team. Tap any product in the room to shop it.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-page="looks">
 <div id="site-header"></div>
 
 <main>
   <section class="page-hero">
-    <img src="img/look-retreat.webp" alt="" fetchpriority="high">
+    <img src="img/look-retreat.webp" srcset="img/look-retreat-600.webp 600w, img/look-retreat-900.webp 900w, img/look-retreat.webp 1500w" sizes="(max-width: 980px) 100vw, 50vw" alt="" fetchpriority="high">
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span class="cur" style="color:#fff">Shop the Look</span></nav>
       <span class="eyebrow">Shop the Look</span>
@@ -64,9 +63,7 @@
 
 <div id="newsletter"></div>
 <div id="site-footer"></div>
-<script src="js/data.js"></script>
-<script src="js/content.js"></script>
-<script src="js/main.js"></script>
+<script src="js/app-content.min.js"></script>
 <script>
   let room = 'All', style = 'All';
   const chipRow = (el, vals, cur) => { el.innerHTML = vals.map((v) => `<button type="button" aria-pressed="${v === cur}" data-v="${esc(v)}">${esc(v)}</button>`).join(''); };
@@ -79,11 +76,11 @@
       const total = l.items.map(BLISS.byId).reduce((t, p) => t + p.cad, 0);
       return `
       <a class="look-card reveal${i === 0 && room === 'All' && style === 'All' ? ' big' : ''}" href="look.html?look=${l.id}">
-        <span class="lc-img"><img src="img/${l.img}.webp" alt="${esc(l.title)}" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async"></span>
+        <span class="lc-img"><img src="img/${l.img}.webp"${imgSet(l.img, '(max-width: 980px) 100vw, 50vw')} alt="${esc(l.title)}" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async"></span>
         <span class="lc-body">
           <span class="post-meta"><span class="post-cat">${l.room}</span><span>${l.style}</span><span>${l.items.length} products</span></span>
           <b>${l.title}</b><span class="lc-intro">${l.intro}</span>
-          <span class="lc-foot"><span class="lc-thumbs">${items.slice(0, 4).map((p) => `<img src="img/${p.img}.webp" alt="" loading="lazy">`).join('')}</span>
+          <span class="lc-foot"><span class="lc-thumbs">${items.slice(0, 4).map((p) => `<img src="img/${p.img}.webp"${imgSet(p.img, '64px')} alt="" loading="lazy">`).join('')}</span>
             <span>Look total <strong>${price(total, true)}</strong></span></span>
           <span class="link-arrow">Shop This Look ${icon('arrow', 'sm')}</span>
         </span>

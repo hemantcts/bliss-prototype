@@ -13,11 +13,10 @@
 <meta name="theme-color" content="#2b2118">
 <title>Shop the Look | Bliss Bath and Kitchen</title>
 <meta name="description" content="Shop every product in this room, curated by the Bliss Bath and Kitchen design team.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-page="look">
 <div id="site-header"></div>
@@ -48,9 +47,7 @@
 
 <div id="newsletter"></div>
 <div id="site-footer"></div>
-<script src="js/data.js"></script>
-<script src="js/content.js"></script>
-<script src="js/main.js"></script>
+<script src="js/app-content.min.js"></script>
 <script>
   const look = LOOKS.find((l) => l.id === new URLSearchParams(location.search).get('look')) || LOOKS[0];
   const tagged = look.items.map((id) => ({ p: BLISS.byId(id) })).filter((s) => s.p);
@@ -69,7 +66,7 @@
       <h2 class="lp-h">In This Look <span class="muted">(${tagged.length})</span></h2>
       <ul class="look-items">${tagged.map((s) => `
         <li>
-          <a href="product.html" class="li-img"><img src="img/${s.p.img}.webp" alt="" loading="lazy">${BLISS.onSale(s.p) ? '<span class="badge sale">Sale</span>' : ''}</a>
+          <a href="product.html" class="li-img"><img src="img/${s.p.img}.webp"${imgSet(s.p.img, '120px')} alt="" loading="lazy">${BLISS.onSale(s.p) ? '<span class="badge sale">Sale</span>' : ''}</a>
           <span class="li-info"><span class="brand">${s.p.brand}</span><a class="name" href="product.html">${s.p.name}</a><span class="li-price">${priceOf(s.p)}</span></span>
           <span class="li-act"><button class="btn sm" data-add="${s.p.id}" aria-label="Add ${esc(s.p.name)} to cart">${icon('bag', 'sm')}</button><button class="btn ghost sm" data-inquire="${s.p.id}">Inquire</button></span>
         </li>`).join('')}</ul>
@@ -88,7 +85,7 @@
     </div>`;
   document.getElementById('moreRail').innerHTML = look.more.map(BLISS.byId).filter(Boolean).map(productCard).join('');
   document.getElementById('otherLooks').innerHTML = LOOKS.filter((l) => l.id !== look.id).slice(0, 3).map((l) => `
-    <a class="look-card" href="look.html?look=${l.id}"><span class="lc-img"><img src="img/${l.img}.webp" alt="${esc(l.title)}" loading="lazy"></span>
+    <a class="look-card" href="look.html?look=${l.id}"><span class="lc-img"><img src="img/${l.img}.webp"${imgSet(l.img, '(max-width: 680px) 92vw, 33vw')} alt="${esc(l.title)}" loading="lazy"></span>
       <span class="lc-body"><span class="post-meta"><span class="post-cat">${l.room}</span><span>${l.style}</span></span><b>${l.title}</b><span class="link-arrow">Shop This Look ${icon('arrow', 'sm')}</span></span></a>`).join('');
   renderIcons(document.getElementById('look'));
   observeReveal();

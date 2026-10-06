@@ -13,11 +13,10 @@
 <meta name="theme-color" content="#2b2118">
 <title>Victoria + Albert Barcelona 2 Freestanding Bathtub | Bliss Bath and Kitchen</title>
 <meta name="description" content="The Victoria + Albert Barcelona 2 freestanding bathtub in premium cast stone. Deep soaking comfort, multiple finishes, free shipping across Canada &amp; USA.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/bliss.min.css">
+<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*checkout*"}},{"not":{"href_matches":"*order-confirmed*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-page="product">
 <div id="site-header"></div>
@@ -31,10 +30,10 @@
     <section class="pdp">
       <div class="gallery">
         <div class="thumbs" id="thumbs">
-          <button class="on" data-src="img/pd-main.webp" aria-label="View image 1"><img src="img/pd-main.webp" alt=""></button>
-          <button data-src="img/pd-room.webp" aria-label="View image 2"><img loading="lazy" decoding="async" src="img/pd-room.webp" alt=""></button>
+          <button class="on" data-src="img/pd-main.webp" aria-label="View image 1"><img src="img/pd-main.webp" srcset="img/pd-main-600.webp 600w, img/pd-main.webp 1248w" sizes="(max-width: 980px) 100vw, 50vw" alt=""></button>
+          <button data-src="img/pd-room.webp" aria-label="View image 2"><img loading="lazy" decoding="async" src="img/pd-room.webp" srcset="img/pd-room-600.webp 600w, img/pd-room.webp 1116w" sizes="(max-width: 980px) 100vw, 50vw" alt=""></button>
           <button data-src="img/pd-c2.webp" aria-label="View image 3"><img loading="lazy" decoding="async" src="img/pd-c2.webp" alt=""></button>
-          <button data-src="img/pd-blend.webp" aria-label="View image 4"><img loading="lazy" decoding="async" src="img/pd-blend.webp" alt=""></button>
+          <button data-src="img/pd-blend.webp" aria-label="View image 4"><img loading="lazy" decoding="async" src="img/pd-blend.webp" srcset="img/pd-blend-600.webp 600w, img/pd-blend-900.webp 900w, img/pd-blend.webp 1424w" sizes="(max-width: 980px) 100vw, 50vw" alt=""></button>
         </div>
         <div class="stage">
           <img id="stageImg" src="img/pd-main.webp" alt="Victoria + Albert Barcelona 2 freestanding bathtub in black">
@@ -124,7 +123,7 @@
             <div><i data-icon="sparkle"></i><div><h4>Timeless Design</h4><p>A modern silhouette that complements both classic and contemporary interiors.</p></div></div>
             <div><i data-icon="drop"></i><div><h4>Multiple Finishes</h4><p>Available in a range of elegant exterior and interior colour options.</p></div></div>
           </div>
-          <img loading="lazy" decoding="async" src="img/pd-room.webp" alt="Barcelona 2 tub in a warm-toned bathroom">
+          <img loading="lazy" decoding="async" src="img/pd-room.webp" srcset="img/pd-room-600.webp 600w, img/pd-room.webp 1116w" sizes="(max-width: 980px) 100vw, 50vw" alt="Barcelona 2 tub in a warm-toned bathroom">
         </div>
       </div>
 
@@ -200,7 +199,7 @@
 
   <!-- Blend -->
   <section class="blend">
-    <img loading="lazy" decoding="async" src="img/pd-blend.webp" alt="White freestanding tub by floor-to-ceiling windows">
+    <img loading="lazy" decoding="async" src="img/pd-blend.webp" srcset="img/pd-blend-600.webp 600w, img/pd-blend-900.webp 900w, img/pd-blend.webp 1424w" sizes="(max-width: 980px) 100vw, 50vw" alt="White freestanding tub by floor-to-ceiling windows">
     <div class="reveal">
       <span class="eyebrow gold">Designed for Luxury Living</span>
       <h2>The Perfect Blend of Style and Comfort</h2>
@@ -303,7 +302,7 @@
 </main>
 
 <div class="sticky-buy" id="stickyBuy" aria-hidden="true">
-  <img class="sb-thumb" src="img/pd-main.webp" alt="" width="64" height="64">
+  <img class="sb-thumb" src="img/pd-main.webp" srcset="img/pd-main-600.webp 600w, img/pd-main.webp 1248w" sizes="(max-width: 980px) 100vw, 50vw" alt="" width="64" height="64">
   <div class="sb-info">
     <span class="sb-name">Victoria + Albert Barcelona 2 Freestanding Bathtub</span>
     <span class="sb-price notranslate" translate="no"><span class="sale-price" id="sbPrice"></span> <del class="was-price" id="sbWas"></del></span>
@@ -313,8 +312,7 @@
 <div id="newsletter"></div>
 <div id="site-footer"></div>
 
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
+<script src="js/app.min.js"></script>
 <script>
   // Gallery
   const thumbs = [...document.querySelectorAll('#thumbs button')];
