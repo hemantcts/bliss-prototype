@@ -17,7 +17,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="img/hero-1.webp" imagesrcset="img/hero-1-800.webp 800w, img/hero-1.webp 1376w" imagesizes="(max-width: 680px) 800px, 70vw" fetchpriority="high">
-<script>(function(){var d=document.documentElement;try{var p=new URLSearchParams(location.search),q=p.get("logo"),t=p.get("theme"),l=q||localStorage.getItem("bliss_logo")||"a",c=t||localStorage.getItem("bliss_theme")||"brown";if(q)localStorage.setItem("bliss_logo",q);if(t)localStorage.setItem("bliss_theme",t);d.dataset.logo=l==="b"?"b":"a";d.dataset.theme=c==="black"?"black":"brown"}catch(e){d.dataset.logo="a";d.dataset.theme="brown"}})();</script>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/components.css">
 </head>
@@ -124,6 +123,7 @@
         </div>
       </div>
       <div class="rail cat-rail reveal" id="catRail"></div>
+      <div class="row-more"><a class="btn ghost" href="search.html">View All Categories</a></div>
     </div>
   </section>
 
@@ -143,6 +143,7 @@
         <button role="tab" aria-selected="false" data-nn="picks">Designer Picks</button>
       </div>
       <div class="rail nn-rail reveal" id="nnRail"></div>
+      <div class="row-more"><a class="btn ghost" href="search.html?q=new" id="nnAllM">View All New Arrivals</a></div>
     </div>
   </section>
 
@@ -307,7 +308,7 @@
         </div>
       </article>`).join('');
     rail.scrollLeft = 0;
-    const [href, label] = NN_ALL[key]; const all = document.getElementById('nnAll'); all.href = href; all.textContent = label;
+    const [href, label] = NN_ALL[key]; ['nnAll', 'nnAllM'].forEach((id) => { const el = document.getElementById(id); el.href = href; el.textContent = label; });
   }
   document.querySelectorAll('[data-nn]').forEach((b) => b.addEventListener('click', () => {
     document.querySelectorAll('[data-nn]').forEach((x) => x.setAttribute('aria-selected', x === b));

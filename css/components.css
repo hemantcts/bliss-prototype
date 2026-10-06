@@ -737,15 +737,6 @@ body.mega-open::after { opacity: 1; visibility: visible; transition: opacity .25
    ========================================================= */
 body, .site-header, .site-footer, .topbar, .hero, .btn, .room-card, .p-card { transition: background-color .4s ease, color .4s ease, border-color .4s ease; }
 
-.theme-pick {
-  position: fixed; left: 196px; bottom: 16px; z-index: 90; display: flex; align-items: center; gap: 8px;
-  background: rgba(var(--dark-rgb), .94); color: #f1e8da; padding: 6px 12px; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
-}
-.theme-pick button { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, var(--a) 50%, var(--b) 50%); box-shadow: 0 0 0 1px rgba(255,255,255,.35); transition: box-shadow .2s, transform .2s; }
-.theme-pick button:hover { transform: scale(1.1); }
-.theme-pick button[aria-checked="true"] { box-shadow: 0 0 0 2px var(--dark), 0 0 0 3.5px #f1e8da; }
-.theme-pick em { font-style: normal; text-transform: none; letter-spacing: .02em; font-size: 12px; min-width: 52px; color: #d8cdbd; }
-.has-cookie .theme-pick { bottom: 120px; }
 
 /* =========================================================
    Hero slider v3: clean, shorter (no counter / labels / arrows)
@@ -762,9 +753,6 @@ body, .site-header, .site-footer, .topbar, .hero, .btn, .room-card, .p-card { tr
 .hs-mini:hover, .hs-mini:focus-visible { opacity: 1; background: rgba(255,255,255,.12); }
 @media (max-width: 680px) {
   .hero-slider .hero-copy { padding: 140px 0 44px; }
-  .theme-pick { left: 10px; bottom: 10px; padding: 6px 10px; }
-  .theme-pick span { display: none; }
-  .has-cookie .theme-pick { bottom: 250px; }
 }
 @media (max-width: 680px) { .hero-slider .hero-copy { padding: 110px 0 40px; } }
 
@@ -1055,14 +1043,6 @@ body, .site-header, .site-footer, .topbar, .hero, .btn, .room-card, .p-card { tr
   .story-stats b { font-size: 30px; }
   .story-stats div + div { padding-left: 12px; }
 }
-
-/* =========================================================
-   Navy theme (#212D7B) with warm gold
-   ========================================================= */
-
-/* =========================================================
-   Classic: the original Bliss logo on the Night Blue palette
-   ========================================================= */
 
 /* =========================================================
    My Account (WooCommerce myaccount)
@@ -1427,7 +1407,6 @@ img { height: auto; }
   .drawer-foot { padding-bottom: max(22px, env(safe-area-inset-bottom)); }
   .cookie { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
   .toast { bottom: max(16px, env(safe-area-inset-bottom)); width: calc(100% - 32px); justify-content: center; }
-  .theme-pick { transform: scale(.9); transform-origin: left bottom; }
   .search-bar input { font-size: 22px !important; }
   .sr-products { gap: 10px; }
   .faq summary { padding: 16px; min-height: 56px; }
@@ -1444,7 +1423,7 @@ img { height: auto; }
 .sticky-buy .sb-name { display: block; font-size: 13px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sticky-buy .sb-price { font-size: 15px; font-weight: 500; color: var(--ink); }
 .sticky-buy .btn { flex: none; }
-@media (max-width: 980px) { .sticky-buy { display: flex; } body.has-sticky-buy .theme-pick { bottom: 86px; } }
+@media (max-width: 980px) { .sticky-buy { display: flex; }  }
 @media (max-width: 680px) {
   .stage .nav, .stage .zoom { width: 44px; height: 44px; }
   .share a, .share button { min-width: 44px; height: 44px; }
@@ -1485,11 +1464,6 @@ body.has-sticky-buy .toast { bottom: 100px; }
 /* Phones: keep prototype helpers out of the way of real content */
 @media (max-width: 680px) {
   .proto-badge { display: none !important; }
-  .theme-pick { padding: 5px 8px; gap: 6px; left: 8px; bottom: 8px; transform: none; opacity: .92; }
-  .theme-pick em, .theme-pick span { display: none; }
-  .theme-pick button { width: 20px; height: 20px; }
-  body.has-sticky-buy .theme-pick { bottom: 98px; }
-  body.has-cookie .theme-pick { bottom: 250px; }
 }
 @media (max-width: 680px) {
   .cookie-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -1618,18 +1592,11 @@ body.has-sticky-buy .toast { bottom: 100px; }
    Logo A (wordmark) / Logo B (wordmark + tagline)
    ========================================================= */
 .logo { display: block; line-height: 0; }
-.logo-img { display: none; width: auto; }
-:root[data-logo="a"] .logo .logo-a, :root[data-logo="b"] .logo .logo-b { display: block; }
-.site-header .logo-a, .co-header .logo-a { height: 36px; }
-.site-header .logo-b, .co-header .logo-b { height: 52px; }
-.f-brand .logo-a { height: 46px; }
-.f-brand .logo-b { height: 64px; }
-.logo-pick button { width: 30px; height: 26px; border-radius: 4px; background: rgba(255,255,255,.12); color: #f1e8da; font-size: 12px; font-weight: 600; box-shadow: none; }
-.logo-pick button[aria-checked="true"] { background: #f1e8da; color: var(--dark); box-shadow: none; }
+.logo-img { display: block; width: auto; height: 52px; }
+.f-brand .logo-img { height: 62px; }
 @media (max-width: 680px) {
-  .site-header .logo-a { height: 26px; }
-  .site-header .logo-b { height: 40px; }
-  .f-brand .logo-a { height: 36px; } .f-brand .logo-b { height: 50px; }
+  .site-header .logo-img { height: 40px; }
+  .f-brand .logo-img { height: 50px; }
 }
 
 /* =========================================================
@@ -1783,26 +1750,6 @@ body.has-sticky-buy .toast { bottom: 100px; }
 @media (max-width: 980px) { .info-cards { grid-template-columns: 1fr; } .info-card { display: grid; grid-template-columns: 40% 1fr; } .info-card img { height: 100%; aspect-ratio: auto; } }
 @media (max-width: 680px) { .info-card { display: block; } .info-card img { height: auto; aspect-ratio: 2.4; } }
 
-/* =========================================================
-   Colour version B: black with beige (switch: ?theme=black)
-   Same palette as Brown, with the dark brown replaced by black.
-   ========================================================= */
-:root[data-theme="black"] {
-  --ink: #000000;
-  --text: #2b2b2b;
-  --dark: #000000;
-  --dark-2: #1c1c1c;
-  --dark-rgb: 0, 0, 0;
-  --shade-rgb: 0, 0, 0;
-}
-:root[data-theme="black"] .look::after { background: linear-gradient(90deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,.35) 45%, transparent 75%); }
-:root[data-theme="black"] .lightbox { background: rgba(0,0,0,.9); }
-/* switcher: colour swatches + logo buttons */
-.logo-pick .pick-grp { display: flex; gap: 6px; align-items: center; }
-.logo-pick .pick-grp + span { margin-left: 6px; }
-.logo-pick button.sw { width: 22px; height: 22px; border-radius: 50%; background: var(--sw); box-shadow: 0 0 0 1px rgba(255,255,255,.45); padding: 0; }
-.logo-pick button.sw[aria-checked="true"] { background: var(--sw); box-shadow: 0 0 0 2px var(--dark), 0 0 0 3.5px #f1e8da; }
-.logo-pick em { min-width: 0; white-space: nowrap; }
 
 /* Footer social row: Facebook, Instagram, X */
 .f-social { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 40px; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: #bfb3a2; }
@@ -1814,3 +1761,68 @@ body.has-sticky-buy .toast { bottom: 100px; }
 
 /* Outdoor menu image is a cut-out product shot: show it whole */
 .mf-img img[src*="mega-outdoor"] { object-fit: contain; mix-blend-mode: multiply; padding: 6px 0; }
+
+/* =========================================================
+   Mobile homepage polish (phones)
+   ========================================================= */
+.row-more { display: none; }
+@media (max-width: 680px) {
+  /* Shop by space: 2 x 2 grid instead of four tall stacked cards */
+  .rooms { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .room-card .ph { aspect-ratio: 4 / 5; }
+  .room-card .body { padding: 12px 14px; }
+  .room-card h3 { font-size: 14px; letter-spacing: .18em; }
+  /* slider headers: arrows stay up top, "view all" moves under the rail at full width */
+  .row-head { flex-wrap: nowrap; align-items: flex-end; gap: 12px; }
+  .row-actions .btn { display: none; }
+  .row-more { display: block; margin-top: 18px; }
+  .row-more .btn { width: 100%; justify-content: center; }
+  /* New & Noteworthy: all three tabs visible, one-line buttons */
+  .nn-tabs { gap: 0; justify-content: space-between; }
+  .nn-tabs button { font-size: 12.5px; letter-spacing: .1em; padding-left: 4px; padding-right: 4px; }
+  .nn-actions { gap: 8px; }
+  .nn-actions .btn { padding-left: 6px; padding-right: 6px; font-size: 12px; letter-spacing: .1em; white-space: nowrap; }
+  /* hero pause button sits bottom-left so the chat button never covers it */
+  .hs-mini { right: auto; left: var(--gutter); bottom: 16px; }
+  /* journal: swipe through the articles instead of a long stack */
+  .blog-grid { display: grid; grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 84%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-right: calc(-1 * var(--gutter)); padding-right: var(--gutter); }
+  .blog-grid::-webkit-scrollbar { display: none; }
+  .blog-grid .post { scroll-snap-align: start; }
+}
+@media (max-width: 360px) {
+  .room-card h3 { font-size: 13px; letter-spacing: .14em; }
+  .nn-tabs button { font-size: 11.5px; letter-spacing: .06em; }
+}
+
+/* Phones: compact trust strip (2 x 2, titles only) and a shorter collection intro so products appear sooner */
+@media (max-width: 680px) {
+  .trust .wrap { grid-template-columns: 1fr 1fr; }
+  .trust-item { padding: 14px 4px; gap: 10px; }
+  .trust-item + .trust-item { border-top: 0; }
+  .trust-item:nth-child(even) { border-left: 1px solid var(--line); padding-left: 12px; }
+  .trust-item:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .trust-item span { display: none; }
+  .trust-item strong { font-size: 12px; letter-spacing: .1em; line-height: 1.35; }
+  .trust-item .icon { width: 24px; height: 24px; flex: none; }
+  .col-intro { gap: 0; padding-bottom: 24px; }
+  .col-intro img, .col-intro p + p, .col-intro .btn { display: none; }
+}
+
+/* Phones: bigger swipeable Instagram tiles on inner pages; breadcrumbs skip the current page (the title right below already shows it) */
+@media (max-width: 680px) {
+  .ig-band .insta .rail { grid-auto-columns: 44%; gap: 10px; }
+  .ig-band .insta > button { display: none; }
+  .crumbs .cur, .crumbs .sep:has(+ .cur) { display: none; }
+  .tabs button { font-size: 13.5px; letter-spacing: .06em; }
+}
+
+/* Phones: footer link columns become a compact accordion */
+@media (max-width: 680px) {
+  .f-cols.f-one { grid-template-columns: 1fr; gap: 0; }
+  .f-cols.f-one h4 { display: flex; justify-content: space-between; align-items: center; margin: 0; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,.12); cursor: pointer; }
+  .f-cols.f-one h4::after { content: "+"; font-size: 20px; font-weight: 300; color: var(--gold-soft); line-height: 1; }
+  .f-cols.f-one h4.open::after { content: "–"; }
+  .f-cols.f-one h4 + ul { display: none; margin: 4px 0 10px; }
+  .f-cols.f-one h4.open + ul { display: grid; }
+  .f-cols.f-one .f-contact { margin-top: 16px; }
+}

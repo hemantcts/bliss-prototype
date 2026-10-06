@@ -201,7 +201,7 @@ const headerHTML = `
 </div></div>
 <header class="site-header"><div class="wrap">
   <button class="menu-toggle" aria-label="Open menu">${icon('menu')}</button>
-  <a class="logo notranslate" translate="no" href="index.html" aria-label="Bliss Bath and Kitchen home"><img class="logo-img logo-a" src="img/logo-a.webp" alt="Bliss Bath and Kitchen" width="470" height="111" decoding="async"><img class="logo-img logo-b" src="img/logo-b.webp" alt="Bliss Bath and Kitchen" width="478" height="159" decoding="async"></a>
+  <a class="logo notranslate" translate="no" href="index.html" aria-label="Bliss Bath and Kitchen home"><img class="logo-img" src="img/logo.webp" alt="Bliss Bath and Kitchen" width="1056" height="323" decoding="async"></a>
   <nav class="main-nav" aria-label="Main">${NAV.map(navItem).join('')}</nav>
   <div class="header-actions">
     <button aria-label="Search (press /)" data-open-search>${icon('search')}</button>
@@ -247,7 +247,7 @@ const PAGES = [
 ];
 const footerHTML = `
 <footer class="site-footer"><div class="wrap">
-  <div class="f-brand"><a class="logo notranslate" translate="no" href="index.html"><img class="logo-img logo-a" src="img/logo-a-light.webp" alt="Bliss Bath and Kitchen" width="470" height="111" decoding="async"><img class="logo-img logo-b" src="img/logo-b-light.webp" alt="Bliss Bath and Kitchen" width="478" height="159" decoding="async"></a></div>
+  <div class="f-brand"><a class="logo notranslate" translate="no" href="index.html"><img class="logo-img" src="img/logo-light.webp" alt="Bliss Bath and Kitchen" width="1056" height="323" decoding="async"></a></div>
   <div class="f-cols f-one">
     <div>${col('Bathroom Products', [L('Bathroom Faucets'), L('Bathroom Vanities'), L('Bathroom Fixtures'), L('Floor Mounted Tub Fillers'), L('Smart Toilets'), L('Freestanding Tub Fillers'), L('LED Mirrors'), L('LED Medicine Cabinets'), L('Shower Bases'), L('Shower Doors'), L('Shower Kits'), L('Thermostatic Shower Systems'), L('Sliding Shower Doors'), L('Wall Hung Toilets'), L('Towel Warmers')])}</div>
     <div>${col('Bathtubs', LINKS.bathtubs)}${col('Lighting', LINKS.lighting)}</div>
@@ -961,34 +961,21 @@ if (autoSearch !== null) openSearch(autoSearch);
 })();
 
 
-/* ---------- Prototype: colour + logo switcher (Brown / Black · Logo A: wordmark · Logo B: wordmark + tagline) ---------- */
-(function logoPicker() {
-  const root = document.documentElement;
-  const THEMES = { brown: ['Brown', '#2b2118'], black: ['Black', '#000000'] };
-  const LOGOS = { a: 'Wordmark', b: 'With tagline' };
-  const theme = () => (root.dataset.theme === 'black' ? 'black' : 'brown');
-  const logo = () => (root.dataset.logo === 'b' ? 'b' : 'a');
-  const meta = document.querySelector('meta[name="theme-color"]');
-  const box = document.createElement('div');
-  box.className = 'theme-pick logo-pick';
-  box.innerHTML = `<span>Colour</span><div class="pick-grp" role="radiogroup" aria-label="Colour version">${Object.entries(THEMES).map(([k, [n, c]]) => `<button type="button" class="sw" role="radio" style="--sw:${c}" data-theme-set="${k}" title="${n}" aria-label="${n}"></button>`).join('')}</div>`
-    + `<span>Logo</span><div class="pick-grp" role="radiogroup" aria-label="Logo version">${Object.keys(LOGOS).map((k) => `<button type="button" role="radio" data-logo-set="${k}" title="Logo ${k.toUpperCase()}: ${LOGOS[k]}">${k.toUpperCase()}</button>`).join('')}</div><em data-pick-name></em>`;
-  document.body.append(box);
-  const sync = () => {
-    box.querySelectorAll('[data-theme-set]').forEach((x) => x.setAttribute('aria-checked', x.dataset.themeSet === theme()));
-    box.querySelectorAll('[data-logo-set]').forEach((x) => x.setAttribute('aria-checked', x.dataset.logoSet === logo()));
-    box.querySelector('[data-pick-name]').textContent = `${THEMES[theme()][0]} · ${LOGOS[logo()]}`;
-    if (meta) meta.content = THEMES[theme()][1];
-  };
-  sync();
-  box.addEventListener('click', (e) => {
-    const t = e.target.closest('[data-theme-set]'); const l = e.target.closest('[data-logo-set]');
-    if (t) { root.dataset.theme = t.dataset.themeSet; try { localStorage.setItem('bliss_theme', t.dataset.themeSet); } catch {} }
-    if (l) { root.dataset.logo = l.dataset.logoSet; try { localStorage.setItem('bliss_logo', l.dataset.logoSet); } catch {} }
-    if (t || l) sync();
+/* ---------- Footer link columns collapse into an accordion on phones ---------- */
+(function footerAccordion() {
+  const mq = window.matchMedia('(max-width: 680px)');
+  const heads = [...document.querySelectorAll('.site-footer .f-cols h4')];
+  const sync = () => heads.forEach((h) => {
+    if (mq.matches) { h.setAttribute('role', 'button'); h.tabIndex = 0; h.setAttribute('aria-expanded', h.classList.contains('open')); }
+    else { h.removeAttribute('role'); h.removeAttribute('tabindex'); h.removeAttribute('aria-expanded'); }
   });
+  const toggle = (h) => { if (!mq.matches) return; h.classList.toggle('open'); h.setAttribute('aria-expanded', h.classList.contains('open')); };
+  heads.forEach((h) => {
+    h.addEventListener('click', () => toggle(h));
+    h.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(h); } });
+  });
+  sync(); mq.addEventListener('change', sync);
 })();
-
 
 /* ---------- Make an Inquiry (every add-to-cart has one) ---------- */
 (function inquiry() {
