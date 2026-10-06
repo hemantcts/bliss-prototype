@@ -113,8 +113,8 @@ window.badgeOf = badgeOf;
 /* ---------- Header ---------- */
 const NAV = [
   ['Bath', 'collection.html'], ['Kitchen', 'search.html?cat=Kitchen'], ['Appliances', 'search.html?cat=Appliances'],
-  ['Lighting', 'search.html?cat=Lighting'], ['Furniture', 'search.html?cat=Furniture'], ['Brands', 'brands.html'],
-  ['Outdoor', 'search.html?cat=Outdoor'], ['Sale', 'search.html?q=sale'],
+  ['Lighting', 'search.html?cat=Lighting'], ['Furniture', 'search.html?cat=Furniture'], ['Outdoor', 'search.html?cat=Outdoor'],
+  ['Brands', 'brands.html'], ['Sale', 'search.html?q=sale'],
 ];
 const navActive = { collection: 'Bath', product: 'Bath', brands: 'Brands', brand: 'Brands', };
 const navLink = ([n, href]) => `<a href="${href}" class="${n === 'Sale' ? 'sale' : ''}${navActive[PAGE] === n ? ' active' : ''}">${n}</a>`;

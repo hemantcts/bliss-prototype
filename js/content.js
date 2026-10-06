@@ -48,7 +48,7 @@ window.LOOKS = [
 const para = (text) => `<p>${text}</p>`;
 window.POSTS = [
   {
-    slug: 'freestanding-tub-guide', cat: 'Buying Guide', title: 'How to Choose the Right Freestanding Bathtub', img: 'why-tub',
+    slug: 'freestanding-tub-guide', cat: 'Buying Guide', title: 'How to Choose the Right Freestanding Bathtub', img: 'blog-tub',
     date: '2026-09-18', read: 6, excerpt: 'Size, material, drain position and clearance: everything to check before you fall in love with a tub.',
     products: ['va-barcelona-2', 'kohler-veil', 'duravit-luv', 'rohl-tub-filler'],
     body: [
@@ -65,7 +65,7 @@ window.POSTS = [
     ],
   },
   {
-    slug: 'choosing-your-finish', cat: 'Design', title: 'Brass, Nickel or Matte Black? Choosing Your Finish', img: 'brands-faucet',
+    slug: 'choosing-your-finish', cat: 'Design', title: 'Brass, Nickel or Matte Black? Choosing Your Finish', img: 'blog-finish',
     date: '2026-09-04', read: 4, excerpt: 'How to pick a finish that suits your space, and how to coordinate it across faucets, hardware and lighting.',
     products: ['riobel-kitchen-faucet', 'riobel-bath-faucet', 'rohl-tub-filler', 'vc-pendant'],
     body: [
@@ -77,7 +77,7 @@ window.POSTS = [
     ],
   },
   {
-    slug: 'statement-range-kitchen', cat: 'Kitchen', title: 'Planning a Kitchen Around a Statement Range', img: 'cat-appliances',
+    slug: 'statement-range-kitchen', cat: 'Kitchen', title: 'Planning a Kitchen Around a Statement Range', img: 'blog-range',
     date: '2026-08-21', read: 5, excerpt: 'Ventilation, clearances and layout tips for designing around an ILVE, SMEG or Café range.',
     products: ['ilve-majestic-36', 'ilve-nostalgie-40', 'fp-gas-cooktop', 'fp-french-door'],
     body: [
