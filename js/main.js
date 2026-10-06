@@ -169,7 +169,7 @@ const MEGA = {
     megaFeature('cat-kitchen', 'Shop the look', 'The Contemporary Kitchen', 'kitchen/')],
   Appliances: [megaCol('Cooking', LINKS.cooking), megaCol('Refrigeration', LINKS.refrig), megaCol('Ventilation', LINKS.vent),
     megaFeature('mega-appliances', 'Italian excellence', 'ILVE Ranges', sq('ILVE'))],
-  Lighting: [megaCol('Lighting', LINKS.lighting), megaCol('Shop by Finish', [L('Warm Brass', sq('brass')), L('Polished Nickel', sq('nickel')), L('Matte Black', sq('black'))]),
+  Lighting: [megaCol('Lighting', LINKS.lighting), megaCol('Shop by Finish', [L('Brushed Gold', 'lighting/?finish=brushed-gold'), L('Polished Nickel', 'lighting/?finish=polished-nickel'), L('Matte Black', 'lighting/?finish=matte-black')]),
     megaFeature('mega-lighting', 'New arrivals', 'Lighting for Every Room', 'lighting/')],
   Furniture: [megaCol('Furniture', LINKS.furniture), megaCol('Need Help?', [L('Design Services', 'contact.html?topic=design'), L('Visit Our Showroom', 'showroom.html')]),
     megaFeature('mega-furniture', 'Coming soon', 'The Furniture Collection', 'furniture/')],

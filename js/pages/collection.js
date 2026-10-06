@@ -14,35 +14,42 @@
     notice.innerHTML = `We’re adding ${esc(cat.name.toLowerCase())} to our online store. ${near ? `Meanwhile, explore more <a href="${BLISS.catUrl(near.slug)}">${esc(near.name.toLowerCase())}</a>, or ` : ''}<a href="contact.html">contact us</a> for availability and pricing.`;
   }
   const childOf = (p) => { const t = BLISS.catTrail(BLISS.catOf(p)); const i = t.findIndex((c) => c.slug === slug); return i >= 0 && t[i + 1] ? t[i + 1].name : ''; };
-  const val = (p, key) => key === 'price' ? (p.callForPrice ? 'Price on request' : priceBand(p.cad)) : key === 'sale' ? (BLISS.onSale(p) ? 'On Sale' : '') : key === 'category' ? childOf(p) : p[key];
+  const COLOUR_ORDER = ['Brushed Gold', 'Polished Nickel', 'Matte Black', 'White', 'Stone Grey', 'Mushroom'];
+  const colourHex = {};
+  products.forEach((p) => (p.colors || []).forEach((c) => { colourHex[BLISS.colorName(c)] = c; }));
+  const val = (p, key) => key === 'colour' ? (p.colors || []).map(BLISS.colorName) : key === 'price' ? (p.callForPrice ? 'Price on request' : priceBand(p.cad)) : key === 'sale' ? (BLISS.onSale(p) ? 'On Sale' : '') : key === 'category' ? childOf(p) : p[key];
   const priceBand = (p) => p < 2000 ? 'Under $2,000' : p < 4000 ? '$2,000 – $4,000' : p < 6000 ? '$4,000 – $6,000' : 'Over $6,000';
   const uniq = (key) => [...new Set(products.map((p) => p[key]).filter(Boolean))];
+  // does product p match option o of filter key? (list-valued keys such as colour match any)
+  const has = (p, key, o) => { const v = val(p, key); return Array.isArray(v) ? v.includes(o) : v === o; };
   const groups = [
     ['Category', 'category', BLISS.catChildren(slug).map((c) => c.name)],
     ['Offers', 'sale', ['On Sale']],
     ['Price Range (CAD)', 'price', ['Under $2,000', '$2,000 – $4,000', '$4,000 – $6,000', 'Over $6,000', 'Price on request']],
     ['Brand', 'brand', uniq('brand').sort()],
+    ['Colour & Finish', 'colour', COLOUR_ORDER.concat(Object.keys(colourHex).filter((n) => !COLOUR_ORDER.includes(n)))],
     ['Material', 'material', ['Acrylic', 'Stone Resin', 'Cast Iron', 'Solid Surface']],
-    ['Finish', 'finish', ['White', 'Matte', 'Textured', 'Two-Tone']],
+    ['Surface Finish', 'finish', ['White', 'Matte', 'Textured', 'Two-Tone']],
     ['Shape', 'shape', ['Oval', 'Rectangular', 'Round', 'Asymmetrical']],
     ['Size', 'size', ['Small', 'Standard', 'Large']],
-  ].map(([l, k, opts]) => [l, k, opts.filter((o) => products.some((p) => val(p, k) === o))]).filter(([, , opts]) => opts.length);
+  ].map(([l, k, opts]) => [l, k, opts.filter((o) => products.some((p) => has(p, k, o)))]).filter(([, , opts]) => opts.length);
   const sizeLabel = { Small: 'Small (up to 54")', Standard: 'Standard (54" – 60")', Large: 'Large (60"+)' };
   const active = {};
   let sort = 'featured', page = 1, perPage = 12;
 
   document.getElementById('filterGroups').innerHTML = groups.map(([label, key, opts], gi) => `
-    <div class="fgroup${gi > 3 ? ' closed' : ''}">
-      <button type="button" aria-expanded="${gi <= 3}">${label} ${icon('up', 'sm')}</button>
+    <div class="fgroup${gi > 4 ? ' closed' : ''}">
+      <button type="button" aria-expanded="${gi <= 4}">${label} ${icon('up', 'sm')}</button>
       <div class="opts">${opts.map((o) => {
-        const n = products.filter((p) => val(p, key) === o).length;
-        return `<label><input type="checkbox" data-key="${key}" value="${o}"> ${key === 'size' ? sizeLabel[o] : o} (${n})</label>`;
+        const n = products.filter((p) => has(p, key, o)).length;
+        const dot = key === 'colour' && colourHex[o] ? `<span class="sw-dot" style="--c:${colourHex[o]}" aria-hidden="true"></span>` : '';
+        return `<label><input type="checkbox" data-key="${key}" value="${o}"> ${dot}${key === 'size' ? sizeLabel[o] : o} (${n})</label>`;
       }).join('')}</div>
     </div>`).join('');
 
   function render(keepPage) {
     if (!keepPage) page = 1;
-    let list = products.filter((p) => Object.entries(active).every(([k, set]) => !set.size || set.has(val(p, k))));
+    let list = products.filter((p) => Object.entries(active).every(([k, set]) => !set.size || [...set].some((o) => has(p, k, o))));
     // price sorts keep "Price on request" items at the end
     const priced = (p) => (p.callForPrice ? 1 : 0);
     if (sort === 'low') list = [...list].sort((a, b) => priced(a) - priced(b) || a.cad - b.cad);
@@ -149,4 +156,10 @@
     document.getElementById('shop').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
   document.getElementById('perPage')?.addEventListener('change', (e) => { perPage = +e.target.value; render(); });
+  const finishParam = new URLSearchParams(location.search).get('finish');
+  if (finishParam) {
+    const name = Object.keys(colourHex).find((n) => n.toLowerCase().replace(/\s+/g, '-') === finishParam.toLowerCase());
+    const box = name && document.querySelector(`#filters input[data-key="colour"][value="${CSS.escape(name)}"]`);
+    if (box) { box.checked = true; (active.colour ||= new Set()).add(name); box.closest('.fgroup')?.classList.remove('closed'); setTimeout(() => document.dispatchEvent(new Event('change')), 0); }
+  }
   render();

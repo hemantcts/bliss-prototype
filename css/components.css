@@ -2087,3 +2087,6 @@ body.call-pricing .buy-row .call-btn { flex: 1; height: 54px; }
 .p-card .actions { align-items: stretch; }
 .p-card .actions .btn { min-height: 42px; }
 @media (min-width: 681px) { .shop #grid:not(.list) .p-card .actions { grid-template-columns: 1fr; } }
+
+/* Colour & Finish filter swatches */
+.sw-dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(0,0,0,.18); vertical-align: -2px; margin-right: 6px; }
