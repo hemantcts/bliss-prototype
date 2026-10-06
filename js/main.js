@@ -201,7 +201,7 @@ const headerHTML = `
 </div></div>
 <header class="site-header"><div class="wrap">
   <button class="menu-toggle" aria-label="Open menu">${icon('menu')}</button>
-  <a class="logo notranslate" translate="no" href="index.html" aria-label="Bliss Bath and Kitchen home"><img class="logo-img" src="img/logo.webp" alt="Bliss Bath and Kitchen" width="1056" height="323" decoding="async"></a>
+  <a class="logo notranslate" translate="no" href="index.html" aria-label="Bliss Bath and Kitchen home"><img class="logo-img" src="img/logo.webp" alt="Bliss Bath and Kitchen" width="1070" height="337" decoding="async"></a>
   <nav class="main-nav" aria-label="Main">${NAV.map(navItem).join('')}</nav>
   <div class="header-actions">
     <button aria-label="Search (press /)" data-open-search>${icon('search')}</button>
@@ -247,7 +247,7 @@ const PAGES = [
 ];
 const footerHTML = `
 <footer class="site-footer"><div class="wrap">
-  <div class="f-brand"><a class="logo notranslate" translate="no" href="index.html"><img class="logo-img" src="img/logo-light.webp" alt="Bliss Bath and Kitchen" width="1056" height="323" decoding="async"></a></div>
+  <div class="f-brand"><a class="logo notranslate" translate="no" href="index.html"><img class="logo-img" src="img/logo-light.webp" alt="Bliss Bath and Kitchen" width="1070" height="337" decoding="async"></a></div>
   <div class="f-cols f-one">
     <div>${col('Bathroom Products', [L('Bathroom Faucets'), L('Bathroom Vanities'), L('Bathroom Fixtures'), L('Floor Mounted Tub Fillers'), L('Smart Toilets'), L('Freestanding Tub Fillers'), L('LED Mirrors'), L('LED Medicine Cabinets'), L('Shower Bases'), L('Shower Doors'), L('Shower Kits'), L('Thermostatic Shower Systems'), L('Sliding Shower Doors'), L('Wall Hung Toilets'), L('Towel Warmers')])}</div>
     <div>${col('Bathtubs', LINKS.bathtubs)}${col('Lighting', LINKS.lighting)}</div>
