@@ -1874,3 +1874,8 @@ body.has-sticky-buy .toast { bottom: 100px; }
 
 /* Performance: skip rendering off-screen sections until they approach the viewport */
 .cv, .site-footer { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+
+/* Reserve the header's height before main.js mounts it, so the page doesn't jump down (layout shift) */
+#site-header { display: block; height: 118.8px; }
+@media (max-width: 680px) { #site-header { height: 98.8px; } }
+@media (max-width: 350px) { #site-header { height: 116px; } }

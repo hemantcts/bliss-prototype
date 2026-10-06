@@ -58,3 +58,14 @@ This folder is a static, clickable prototype for client approval. Everything bel
 - Privacy policy and Terms wording (legal review), privacy officer name.
 - Real Shop the Look photos (projects / House of Rohl imagery) with the list of products in each, and real blog articles.
 - Real product data, prices, weights (for the 70 lb rule) and lead times.
+
+## Performance (carry over to the WordPress theme)
+
+- **Fonts:** self-host Cormorant Garamond and Jost (variable WOFF2, Latin subset) and preload both; no Google Fonts request. Use `font-display: swap`.
+- **CSS/JS:** enqueue one minified stylesheet and one minified script; load scripts with `defer` or in the footer. Avoid forced layout (reading offsetWidth/getBoundingClientRect) during page load.
+- **Images:** always output `srcset`/`sizes` (`wp_get_attachment_image()` does this), serve WebP/AVIF, `loading="lazy"` below the fold, and `fetchpriority="high"` plus a preload for the hero image. Register image sizes around 600, 900 and 1600 px wide.
+- **No layout shift:** render the header in PHP (not JavaScript) and give every image width/height.
+- **Server:** enable Brotli/Gzip, HTTP/2 or HTTP/3, and long cache headers (1 year, immutable) for versioned CSS, JS, fonts and images; page cache (e.g. LiteSpeed Cache or WP Rocket) for HTML; a CDN (e.g. Cloudflare).
+- **Navigation:** the prototype uses Speculation Rules to prerender internal pages on hover (exclude cart/checkout/account URLs).
+- **Off-screen work:** `content-visibility: auto` on the footer and lower homepage sections.
+

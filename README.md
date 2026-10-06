@@ -17,3 +17,15 @@ Home · Collection · Product (variations, reviews with photo upload, PDF downlo
 - Product photos are AI-upscaled crops from the design mockups; replace with final photography.
 - Prices, products, reviews and articles are sample content.
 - Privacy and Terms pages are drafts pending legal review.
+
+## Build (performance)
+
+Pages load minified bundles, not the source files. After editing anything in `css/` or `js/`, rebuild:
+
+```
+npm install      # first time only (installs esbuild)
+npm run build
+```
+
+This writes `css/bliss.min.css`, `js/app.min.js` and `js/app-content.min.js` (see `tools/build.mjs`). Fonts are self-hosted in `fonts/`. Large photos have `-600`/`-900` copies, which `imgSet()` in `js/main.js` adds as `srcset`.
+
