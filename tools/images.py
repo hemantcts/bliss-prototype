@@ -22,7 +22,7 @@ VARIANT_RE = re.compile(r'-\d{3,4}$')
 
 # default `sizes` for static images, by file-name prefix
 SIZES = {
-    'cat-': '(max-width: 680px) 46vw, 25vw', 'look-': '(max-width: 980px) 100vw, 50vw',
+    'cat-': '(max-width: 680px) 46vw, 25vw', 'look-': '(max-width: 980px) calc(100vw - 36px), 600px',
     'why-tub': '(max-width: 980px) 100vw, 44vw', 'blog-': '(max-width: 680px) 84vw, 33vw',
     'ig-': '(max-width: 680px) 44vw, 16vw', 'pd-': '(max-width: 980px) 100vw, 50vw',
     'col-intro': '(max-width: 980px) 100vw, 55vw', 'story': '(max-width: 980px) 100vw, 50vw',

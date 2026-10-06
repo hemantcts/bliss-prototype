@@ -1886,3 +1886,10 @@ body.has-sticky-buy .toast { bottom: 100px; }
 /* the footer accordion button looks like plain heading text on desktop */
 .f-acc { display: inline; padding: 0; font: inherit; color: inherit; letter-spacing: inherit; text-align: left; cursor: default; }
 @media (max-width: 680px) { .f-acc { cursor: pointer; } }
+
+/* Top bar: make the links and switchers read as links (hover/focus state) */
+.topbar .right a { color: #e9e1d4; transition: color .2s; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.topbar .right a + a::before { display: inline-block; text-decoration: none; color: #e9e1d4; }
+.topbar .right a:hover, .topbar .right a:focus-visible { color: var(--gold-soft); text-decoration-color: var(--gold-soft); }
+.topbar .cur-btn { transition: color .2s; }
+.topbar .cur-btn:hover, .topbar .cur-btn:focus-visible { color: var(--gold-soft); }

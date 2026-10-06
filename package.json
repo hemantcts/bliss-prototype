@@ -4,11 +4,9 @@
   "type": "module",
   "scripts": {
     "build": "node tools/build.mjs",
-    "critical": "node tools/critical.mjs",
     "images": "python tools/images.py"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0",
-    "puppeteer-core": "^25.12.0"
+    "esbuild": "^0.25.0"
   }
 }
