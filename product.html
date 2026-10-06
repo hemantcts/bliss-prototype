@@ -329,6 +329,86 @@
   thumbs.forEach((t, i) => t.addEventListener('click', () => show(i)));
   document.querySelectorAll('[data-gal]').forEach((b) => b.addEventListener('click', () => show(gi + +b.dataset.gal)));
 
+  /* ---------- Product zoom ----------
+     Desktop: hover the main photo to magnify where the cursor is.
+     Everywhere: the zoom button (or a click on the photo) opens a full-screen viewer;
+     tap/click to zoom in, drag to pan, arrows/swipe to change photo, Esc to close. */
+  (function productZoom() {
+    const box = document.querySelector('.stage');
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+    // hover magnifier
+    box.addEventListener('mousemove', (e) => {
+      if (!fine.matches || e.target.closest('button')) { stage.classList.remove('hz'); return; }
+      const r = box.getBoundingClientRect();
+      stage.style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`;
+      stage.classList.add('hz');
+    });
+    box.addEventListener('mouseleave', () => stage.classList.remove('hz'));
+
+    // full-screen viewer
+    const v = document.createElement('div');
+    v.className = 'pz'; v.hidden = true;
+    v.setAttribute('role', 'dialog'); v.setAttribute('aria-modal', 'true'); v.setAttribute('aria-label', 'Product photos');
+    v.innerHTML = `<div class="pz-bar"><span class="pz-count"></span><span class="pz-tip">Tap the photo to zoom</span><button class="pz-x" aria-label="Close">${icon('close')}</button></div>
+      <div class="pz-view"><img alt="" draggable="false"></div>
+      <button class="pz-nav prev" aria-label="Previous photo">${icon('left')}</button><button class="pz-nav next" aria-label="Next photo">${icon('right')}</button>
+      <div class="pz-thumbs">${thumbs.map((t, i) => `<button data-pz="${i}" aria-label="Photo ${i + 1}"><img src="${t.dataset.src}" alt=""></button>`).join('')}</div>`;
+    document.body.append(v);
+    const view = v.querySelector('.pz-view'), img = view.querySelector('img');
+    let at = 0, z = false, tx = 0, ty = 0, drag = null, moved = false, lastFocus = null;
+    const SCALE = 2.5;
+    const apply = () => { img.style.transform = z ? `translate(${tx}px, ${ty}px) scale(${SCALE})` : ''; v.classList.toggle('zoomed', z); };
+    const clamp = () => {
+      const w = img.offsetWidth, h = img.offsetHeight, vw = view.clientWidth, vh = view.clientHeight;
+      const mx = Math.max(0, (w * SCALE - vw) / 2), my = Math.max(0, (h * SCALE - vh) / 2);
+      tx = Math.max(-mx, Math.min(mx, tx)); ty = Math.max(-my, Math.min(my, ty));
+    };
+    const go = (i) => {
+      at = (i + thumbs.length) % thumbs.length; z = false; tx = ty = 0; apply();
+      img.src = thumbs[at].dataset.src; img.alt = `Product photo ${at + 1} of ${thumbs.length}`;
+      v.querySelector('.pz-count').textContent = `${at + 1} / ${thumbs.length}`;
+      v.querySelectorAll('[data-pz]').forEach((b, k) => b.classList.toggle('on', k === at));
+    };
+    const open = () => { lastFocus = document.activeElement; stage.classList.remove('hz'); go(gi); v.hidden = false; document.body.classList.add('consent-open'); v.querySelector('.pz-x').focus(); };
+    const close = () => { v.hidden = true; document.body.classList.remove('consent-open'); show(at); lastFocus?.focus(); };
+    const zoomAt = (cx, cy) => {
+      // zoom towards the tapped point
+      const r = img.getBoundingClientRect();
+      tx = (r.left + r.width / 2 - cx) * (SCALE - 1); ty = (r.top + r.height / 2 - cy) * (SCALE - 1);
+      z = true; clamp(); apply();
+    };
+    box.querySelector('.zoom').addEventListener('click', open);
+    stage.addEventListener('click', open);
+
+    view.addEventListener('pointerdown', (e) => { if (e.target !== img) return; drag = { x: e.clientX, y: e.clientY, tx, ty }; moved = false; img.setPointerCapture(e.pointerId); });
+    view.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 6) moved = true;
+      if (z) { tx = drag.tx + dx; ty = drag.ty + dy; clamp(); apply(); }
+    });
+    view.addEventListener('pointerup', (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x; drag = null;
+      if (!moved) { if (z) { z = false; tx = ty = 0; apply(); } else zoomAt(e.clientX, e.clientY); return; }
+      if (!z && Math.abs(dx) > 50) go(at + (dx < 0 ? 1 : -1)); // swipe when not zoomed
+    });
+    view.addEventListener('pointercancel', () => { drag = null; });
+    v.addEventListener('click', (e) => {
+      if (e.target.closest('.pz-x') || e.target === view) return close();
+      if (e.target.closest('.pz-nav.prev')) go(at - 1);
+      if (e.target.closest('.pz-nav.next')) go(at + 1);
+      const t = e.target.closest('[data-pz]'); if (t) go(+t.dataset.pz);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (v.hidden) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') go(at + 1);
+      if (e.key === 'ArrowLeft') go(at - 1);
+    });
+    window.addEventListener('resize', () => { if (z) { clamp(); apply(); } });
+  })();
+
   /* ---------- Variations (WooCommerce variable product) ----------
      Each option adds to the base (sale) price. Until every required option is chosen we show the
      price range and the button asks for the missing options, exactly like WooCommerce. */
