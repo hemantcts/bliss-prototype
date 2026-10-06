@@ -2,7 +2,7 @@
 //   css/fonts.css + css/style.css + css/components.css -> css/bliss.min.css
 //   js/data.js + js/main.js                    -> js/app.min.js
 //   js/data.js + js/content.js + js/main.js    -> js/app-content.min.js (blog, looks)
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { transform } from 'esbuild';
 
 const read = (f) => readFileSync(new URL(`../${f}`, import.meta.url), 'utf8');
@@ -24,3 +24,7 @@ async function js(out, files) {
 await css('css/bliss.min.css', ['css/fonts.css', 'css/style.css', 'css/components.css']);
 await js('js/app.min.js', ['js/data.js', 'js/main.js']);
 await js('js/app-content.min.js', ['js/data.js', 'js/content.js', 'js/main.js']);
+// page scripts: js/pages/<page>.js -> js/pages/<page>.min.js
+for (const f of readdirSync(new URL('../js/pages/', import.meta.url)).filter((x) => x.endsWith('.js') && !x.endsWith('.min.js'))) {
+  await js(`js/pages/${f.replace(/\.js$/, '.min.js')}`, [`js/pages/${f}`]);
+}

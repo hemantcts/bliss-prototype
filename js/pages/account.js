@@ -1,0 +1,451 @@
+/* account.html: page script (source). Built to js/pages/account.min.js by `npm run build`. */
+/* =====================================================================
+   My Account: mirrors WooCommerce's myaccount endpoints:
+   (logged out) login + register · lost-password · reset-password
+   (logged in)  dashboard · orders · view-order · edit-address · edit-account · customer-logout
+   Prototype only: we store a name and email in the browser, never a password.
+   ===================================================================== */
+const root = document.getElementById('acct');
+const qs = new URLSearchParams(location.search);
+const NEXT = qs.get('next');
+const getUser = () => BLISS.store.get('bliss_user', null);
+const setUser = (u) => { BLISS.store.set('bliss_user', u); syncAccount(); };
+const PROV = { CA: 'AB Alberta|BC British Columbia|MB Manitoba|NB New Brunswick|NL Newfoundland and Labrador|NS Nova Scotia|NT Northwest Territories|NU Nunavut|ON Ontario|PE Prince Edward Island|QC Quebec|SK Saskatchewan|YT Yukon',
+  US: 'AL Alabama|AK Alaska|AZ Arizona|AR Arkansas|CA California|CO Colorado|CT Connecticut|DE Delaware|DC District of Columbia|FL Florida|GA Georgia|HI Hawaii|ID Idaho|IL Illinois|IN Indiana|IA Iowa|KS Kansas|KY Kentucky|LA Louisiana|ME Maine|MD Maryland|MA Massachusetts|MI Michigan|MN Minnesota|MS Mississippi|MO Missouri|MT Montana|NE Nebraska|NV Nevada|NH New Hampshire|NJ New Jersey|NM New Mexico|NY New York|NC North Carolina|ND North Dakota|OH Ohio|OK Oklahoma|OR Oregon|PA Pennsylvania|RI Rhode Island|SC South Carolina|SD South Dakota|TN Tennessee|TX Texas|UT Utah|VT Vermont|VA Virginia|WA Washington|WV West Virginia|WI Wisconsin|WY Wyoming' };
+const regions = (c) => PROV[c].split('|').map((s) => [s.slice(0, 2), s.slice(3)]);
+
+/* ---------- small helpers ---------- */
+const pwField = (name, label, auto, extra = '') => `
+  <label class="field"><span>${label}</span>
+    <span class="pw-wrap"><input type="password" name="${name}" required autocomplete="${auto}" ${extra}>
+      <button type="button" class="pw-toggle" data-pw aria-label="Show password">Show</button></span>
+  </label>`;
+const meter = `<div class="pw-meter" aria-live="polite"><span><i></i><i></i><i></i><i></i></span><small>Use at least 8 characters, with a mix of letters, numbers and symbols.</small></div>`;
+function strength(v) {
+  let s = 0;
+  if (v.length >= 8) s++;
+  if (v.length >= 12) s++;
+  if (/[a-z]/.test(v) && /[A-Z]/.test(v)) s++;
+  if (/\d/.test(v) && /[^A-Za-z0-9]/.test(v)) s++;
+  return Math.min(4, v ? Math.max(1, s) : 0);
+}
+const LABELS = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+function bindMeter(form, name) {
+  const input = form.querySelector(`[name=${name}]`);
+  const m = form.querySelector('.pw-meter');
+  input.addEventListener('input', () => {
+    const s = strength(input.value);
+    m.dataset.s = s;
+    m.querySelector('small').textContent = s ? `${LABELS[s]} password${s < 3 ? '. Add length, numbers or symbols' : ''}` : 'Use at least 8 characters, with a mix of letters, numbers and symbols.';
+  });
+}
+function validate(form) {
+  const bad = [...form.elements].filter((el) => el.willValidate && !el.checkValidity());
+  if (bad.length) { bad[0].focus(); bad[0].reportValidity(); return false; }
+  return true;
+}
+function busy(btn, text) { btn.classList.add('placing'); btn.innerHTML = `<span class="spinner"></span> ${text}`; }
+function setTitle(t, crumb = t) { document.getElementById('acctTitle').textContent = t; document.getElementById('crumb').textContent = crumb; document.title = `${t} | Bliss Bath and Kitchen`; }
+function go(params) { const u = new URL(location.href); u.search = new URLSearchParams(params).toString(); u.hash = ''; history.pushState(null, '', u); route(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+const notice = (type, html) => `<div class="acct-notice ${type}">${icon(type === 'ok' ? 'check' : 'info', 'sm')}<span>${html}</span></div>`;
+
+/* =====================================================================
+   Logged-out screens
+   ===================================================================== */
+function viewAuth(msg = '') {
+  setTitle('My Account', 'Sign in');
+  root.innerHTML = `
+    ${msg}
+    <div class="auth-grid">
+      <section class="auth-card" aria-labelledby="loginH">
+        <h2 id="loginH">Sign In</h2>
+        <p class="muted">Welcome back. Sign in to track orders, reorder and see your saved items.</p>
+        <form class="form" id="loginForm" novalidate>
+          <label class="field"><span>Email address</span><input type="email" name="email" required autocomplete="username email"></label>
+          ${pwField('password', 'Password', 'current-password')}
+          <div class="auth-row">
+            <label class="check"><input type="checkbox" name="remember" checked> Remember me</label>
+            <a href="account.html?view=lost-password" data-go="lost-password" class="auth-link">Lost your password?</a>
+          </div>
+          <button class="btn block" type="submit">Sign In</button>
+        </form>
+        <div class="or">or</div>
+        <div class="social-auth">
+          <button type="button" class="social-btn" data-social="Google"><b class="g-logo">G</b> Continue with Google</button>
+          <button type="button" class="social-btn apple" data-social="Apple"><svg viewBox="0 0 24 24" class="icon sm" aria-hidden="true"><path fill="currentColor" stroke="none" d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.7 0 0-2.5-1-2.5-3.7ZM14.2 5.8c.6-.8 1.1-1.8 1-2.8-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.7-1 2.7 1 .1 2-.5 2.7-1.3Z"/></svg> Continue with Apple</button>
+        </div>
+      </section>
+
+      <section class="auth-card" aria-labelledby="regH">
+        <h2 id="regH">Create an Account</h2>
+        <p class="muted">Faster checkout, order tracking, saved addresses and a wishlist that follows you on every device.</p>
+        <form class="form" id="regForm" novalidate>
+          <div class="form-grid">
+            <label class="field"><span>First name</span><input name="first" required autocomplete="given-name"></label>
+            <label class="field"><span>Last name</span><input name="last" required autocomplete="family-name"></label>
+          </div>
+          <label class="field"><span>Email address</span><input type="email" name="email" required autocomplete="email"></label>
+          ${pwField('password', 'Create password', 'new-password', 'minlength="8"')}
+          ${meter}
+          <label class="check"><input type="checkbox" name="news" checked> Email me about new collections, offers and design inspiration</label>
+          <label class="check"><input type="checkbox" name="trade"> I'm a designer, builder or industry professional <a href="trade.html" class="auth-link">(Trade program)</a></label>
+          <p class="fine-print">Your personal data will be used to support your experience on this website, manage your account and for other purposes described in our <a href="privacy.html">privacy policy</a>.</p>
+          <button class="btn block" type="submit">Create Account</button>
+        </form>
+        <ul class="perks">
+          <li>${icon('box', 'sm')} Track orders and freight deliveries</li>
+          <li>${icon('heart', 'sm')} Save your wishlist across devices</li>
+          <li>${icon('return', 'sm')} Start returns in a few clicks</li>
+        </ul>
+      </section>
+    </div>`;
+
+  const login = document.getElementById('loginForm');
+  login.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!validate(login)) return;
+    const email = login.email.value.trim();
+    const saved = getUser();
+    const first = saved && saved.email === email ? saved.first : email.split('@')[0].replace(/[._-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()).split(' ')[0];
+    busy(login.querySelector('[type=submit]'), 'Signing in…');
+    setTimeout(() => {
+      setUser({ first, last: saved?.last || '', email, since: saved?.since || new Date().toISOString() });
+      if (NEXT) { location.href = NEXT; return; }
+      toast(`Welcome back, ${first}`);
+      go({});
+    }, 700);
+  });
+
+  const reg = document.getElementById('regForm');
+  bindMeter(reg, 'password');
+  reg.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!validate(reg)) return;
+    if (strength(reg.password.value) < 2) { reg.password.focus(); toast('Please choose a stronger password'); return; }
+    busy(reg.querySelector('[type=submit]'), 'Creating account…');
+    setTimeout(() => {
+      setUser({ first: reg.first.value.trim(), last: reg.last.value.trim(), email: reg.email.value.trim(), since: new Date().toISOString(), trade: reg.trade.checked, isNew: true });
+      if (NEXT) { location.href = NEXT; return; }
+      toast('Your account has been created');
+      go({});
+    }, 900);
+  });
+}
+
+function viewLost() {
+  setTitle('Lost Password', 'Lost password');
+  root.innerHTML = `
+    <div class="auth-single">
+      <section class="auth-card">
+        <span class="auth-icon">${icon('lock')}</span>
+        <h2>Forgot your password?</h2>
+        <p class="muted">Enter the email address on your account and we'll send you a link to create a new password.</p>
+        <form class="form" id="lostForm" novalidate>
+          <label class="field"><span>Email address</span><input type="email" name="email" required autocomplete="username email"></label>
+          <button class="btn block" type="submit">Send Reset Link</button>
+        </form>
+        <a href="account.html" data-go="" class="link-arrow auth-back">${icon('left', 'sm')} Back to sign in</a>
+      </section>
+    </div>`;
+  const f = document.getElementById('lostForm');
+  f.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!validate(f)) return;
+    const email = f.email.value.trim();
+    busy(f.querySelector('[type=submit]'), 'Sending…');
+    setTimeout(() => {
+      // Same message whether or not the email exists, so accounts can't be discovered
+      root.querySelector('.auth-card').innerHTML = `
+        <span class="auth-icon ok">${icon('mail')}</span>
+        <h2>Check your email</h2>
+        <p class="muted">If an account exists for <strong>${esc(email)}</strong>, you'll receive a password reset link in the next few minutes. The link expires in 24 hours.</p>
+        <p class="muted" style="font-size:13px">Didn't get it? Check your spam folder, or <button type="button" class="auth-link" data-go="lost-password">try again</button>.</p>
+        <div class="demo-box">${icon('info', 'sm')}<span>Prototype: no email is sent. <a href="account.html?view=reset-password" data-go="reset-password">Open the reset link</a> to see the next screen.</span></div>
+        <a href="account.html" data-go="" class="link-arrow auth-back">${icon('left', 'sm')} Back to sign in</a>`;
+    }, 800);
+  });
+}
+
+function viewReset() {
+  setTitle('Reset Password', 'Reset password');
+  root.innerHTML = `
+    <div class="auth-single">
+      <section class="auth-card">
+        <span class="auth-icon">${icon('shield')}</span>
+        <h2>Create a new password</h2>
+        <p class="muted">Choose a password you haven't used before on this site.</p>
+        <form class="form" id="resetForm" novalidate>
+          ${pwField('password', 'New password', 'new-password', 'minlength="8"')}
+          ${meter}
+          ${pwField('confirm', 'Confirm new password', 'new-password')}
+          <button class="btn block" type="submit">Save Password</button>
+        </form>
+      </section>
+    </div>`;
+  const f = document.getElementById('resetForm');
+  bindMeter(f, 'password');
+  f.addEventListener('submit', (e) => {
+    e.preventDefault();
+    f.confirm.setCustomValidity(f.confirm.value && f.confirm.value !== f.password.value ? 'Passwords don\'t match.' : '');
+    if (!validate(f)) return;
+    if (strength(f.password.value) < 2) { f.password.focus(); toast('Please choose a stronger password'); return; }
+    busy(f.querySelector('[type=submit]'), 'Saving…');
+    setTimeout(() => go({ reset: 'done' }), 800);
+  });
+  f.confirm.addEventListener('input', () => f.confirm.setCustomValidity(''));
+}
+
+/* =====================================================================
+   Logged-in screens
+   ===================================================================== */
+function sampleOrders() {
+  const orders = BLISS.store.get('bliss_orders', null);
+  if (orders) return orders;
+  const mk = (no, date, status, items, ship = null) => ({ no, date, status, items, ship, total: items.reduce((t, [id, q]) => t + BLISS.byId(id).cad * q, 0) });
+  const list = [
+    mk('BL-482917', '2026-09-12', 'Awaiting freight quote', [['va-barcelona-2', 1], ['rohl-tub-filler', 1]]),
+    mk('BL-471204', '2026-08-28', 'Shipped', [['riobel-kitchen-faucet', 1], ['kohler-workstation-sink', 1]], { carrier: 'Canpar', tracking: 'D4210778901' }),
+    mk('BL-455630', '2026-06-03', 'Completed', [['toto-drake', 2], ['riobel-bath-faucet', 2]]),
+  ];
+  try { const last = JSON.parse(sessionStorage.getItem('bliss_order')); if (last && !list.some((o) => o.no === last.no)) list.unshift({ no: last.no, date: last.date.slice(0, 10), status: 'Processing', items: last.items.map((l) => [l.id, l.qty]), total: last.totals.total }); } catch {}
+  return list;
+}
+const STATUS_CLS = { 'Processing': 'st-proc', 'Awaiting freight quote': 'st-quote', 'Shipped': 'st-ship', 'Completed': 'st-done' };
+const statusPill = (s) => `<span class="status ${STATUS_CLS[s] || ''}">${s}</span>`;
+
+function getAddr() {
+  return BLISS.store.get('bliss_addresses', {
+    billing: { first: '', last: '', company: '', country: 'CA', address: '', address2: '', city: '', prov: 'ON', postal: '', phone: '' },
+    shipping: { first: '', last: '', company: '', country: 'CA', address: '', address2: '', city: '', prov: 'ON', postal: '', phone: '' },
+  });
+}
+const addrLines = (a) => a.address ? [`${a.first} ${a.last}`.trim(), a.company, a.address, a.address2, `${a.city} ${a.prov} ${a.postal}`.trim(), a.country === 'US' ? 'United States' : 'Canada', a.phone].filter(Boolean).map(esc).join('<br>') : '';
+
+const ACCT_NAV = [
+  ['dashboard', 'Dashboard', 'grid'], ['orders', 'Orders', 'box'], ['addresses', 'Addresses', 'pin'],
+  ['account-details', 'Account Details', 'user'], ['wishlist', 'Wishlist', 'heart'], ['logout', 'Log Out', 'return'],
+];
+
+function shell(active, inner) {
+  const u = getUser();
+  root.innerHTML = `
+    <div class="acct-grid">
+      <aside class="acct-nav" aria-label="Account">
+        <div class="acct-me"><span class="by-avatar">${esc((u.first || '?')[0].toUpperCase())}</span><span><b>${esc(u.first)} ${esc(u.last || '')}</b><small>${esc(u.email)}</small></span></div>
+        <nav>${ACCT_NAV.map(([k, label, ic]) => k === 'wishlist'
+          ? `<a href="wishlist.html">${icon(ic, 'sm')} ${label} <span class="m-count" data-wish-count hidden></span></a>`
+          : `<a href="account.html?tab=${k}" data-tab="${k}" class="${active === k ? 'on' : ''}" ${active === k ? 'aria-current="page"' : ''}>${icon(ic, 'sm')} ${label}</a>`).join('')}</nav>
+      </aside>
+      <div class="acct-main">${inner}</div>
+    </div>`;
+  syncWish();
+}
+
+function viewDashboard() {
+  const u = getUser();
+  const orders = sampleOrders();
+  const o = orders[0];
+  setTitle('My Account');
+  shell('dashboard', `
+    ${u.isNew ? notice('ok', `Welcome to Bliss Bath and Kitchen, ${esc(u.first)}. Your account is ready.`) : ''}
+    <p class="acct-hello">Hello <strong>${esc(u.first)}</strong> <span class="muted">(not ${esc(u.first)}? <a href="account.html?tab=logout" data-tab="logout">Log out</a>)</span></p>
+    <p class="muted">From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
+    <div class="acct-tiles">
+      <a class="acct-tile" href="account.html?tab=orders" data-tab="orders">${icon('box')}<b>Orders</b><span>${orders.length} orders</span></a>
+      <a class="acct-tile" href="account.html?tab=addresses" data-tab="addresses">${icon('pin')}<b>Addresses</b><span>Billing &amp; shipping</span></a>
+      <a class="acct-tile" href="account.html?tab=account-details" data-tab="account-details">${icon('user')}<b>Account details</b><span>Name, email, password</span></a>
+      <a class="acct-tile" href="wishlist.html">${icon('heart')}<b>Wishlist</b><span>${BLISS.wish.count()} saved</span></a>
+    </div>
+    ${o ? `<div class="acct-card">
+      <div class="acct-card-head"><h3>Latest order</h3><a class="link-arrow" href="account.html?tab=orders" data-tab="orders">All orders ${icon('arrow', 'sm')}</a></div>
+      <div class="latest">
+        <div class="latest-thumbs">${o.items.slice(0, 3).map(([id]) => `<img src="img/${BLISS.byId(id).img}.webp"${imgSet(BLISS.byId(id).img, '96px')} alt="">`).join('')}</div>
+        <div><b>Order ${o.no}</b><span class="muted"> · ${fmt(o.date)}</span><div>${statusPill(o.status)}</div></div>
+        <strong>${price(o.total)}</strong>
+        <a class="btn ghost sm" href="account.html?tab=view-order&order=${o.no}" data-order="${o.no}">View</a>
+      </div></div>` : ''}
+    ${u.trade ? `<div class="acct-card trade-card">${icon('building')}<div><b>Trade account pending</b><p class="muted">Complete your trade application to unlock trade pricing.</p></div><a class="btn sm" href="trade.html#apply">Complete Application</a></div>`
+      : `<div class="acct-card trade-card">${icon('building')}<div><b>Are you in the trade?</b><p class="muted">Designers, builders and contractors get preferred pricing and dedicated support.</p></div><a class="btn ghost sm" href="trade.html">Learn About Trade</a></div>`}`);
+  if (u.isNew) { delete u.isNew; setUser(u); }
+}
+const fmt = (d) => new Date(d + 'T12:00:00').toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
+
+function viewOrders() {
+  const orders = sampleOrders();
+  setTitle('Orders', 'Orders');
+  shell('orders', `
+    <h2 class="acct-h">Orders</h2>
+    <table class="orders-table">
+      <thead><tr><th>Order</th><th>Date</th><th>Status</th><th>Total</th><th><span class="sr">Actions</span></th></tr></thead>
+      <tbody>${orders.map((o) => `<tr>
+        <td data-label="Order"><a href="account.html?tab=view-order&order=${o.no}" data-order="${o.no}"><b>${o.no}</b></a></td>
+        <td data-label="Date">${fmt(o.date)}</td>
+        <td data-label="Status">${statusPill(o.status)}</td>
+        <td data-label="Total">${price(o.total)} <span class="muted">for ${o.items.reduce((t, [, q]) => t + q, 0)} items</span></td>
+        <td class="o-act"><a class="btn ghost sm" href="account.html?tab=view-order&order=${o.no}" data-order="${o.no}">View</a>${o.status === 'Completed' ? `<button class="btn sm" data-reorder="${o.no}">Order Again</button>` : ''}</td>
+      </tr>`).join('')}</tbody>
+    </table>`);
+}
+
+function viewOrder(no) {
+  const o = sampleOrders().find((x) => x.no === no);
+  if (!o) return viewOrders();
+  const a = getAddr().shipping;
+  const steps = ['Processing', 'Awaiting freight quote', 'Shipped', 'Completed'];
+  const at = steps.indexOf(o.status);
+  setTitle(`Order ${o.no}`, `Order ${o.no}`);
+  shell('orders', `
+    <a class="link-arrow auth-back" href="account.html?tab=orders" data-tab="orders" style="margin:0 0 16px">${icon('left', 'sm')} All orders</a>
+    <h2 class="acct-h">Order ${o.no}</h2>
+    <p class="muted">Placed on ${fmt(o.date)} · ${statusPill(o.status)}</p>
+    <div class="timeline">${['Placed', 'Processing', 'Shipped', 'Delivered'].map((s, i) => `<div class="${i <= Math.max(1, at === 3 ? 3 : at) ? 'done' : ''}"><b>${s}</b>${i === 2 && o.ship ? `${o.ship.carrier} · ${o.ship.tracking}` : ''}</div>`).join('')}</div>
+    ${o.status === 'Awaiting freight quote' ? notice('info', 'Your order includes freight items. We\'ll email your freight quote for approval before we process it.') : ''}
+    <div class="acct-card">
+      <ul class="sum-lines">${o.items.map(([id, q]) => { const p = BLISS.byId(id); return `<li class="sum-line"><div class="thumb"><img src="img/${p.img}.webp"${imgSet(p.img, '96px')} alt=""><b>${q}</b></div><div><span class="brand">${p.brand}</span><a class="name" href="product.html">${p.name}</a></div><span>${price(p.cad * q)}</span></li>`; }).join('')}</ul>
+      <div class="sum-row total"><span>Total</span><strong>${price(o.total)}</strong></div>
+    </div>
+    <div class="confirm-grid" style="margin-top:18px">
+      <div class="confirm-box"><h3>Shipping address</h3><p>${addrLines(a) || '<span class="muted">No address saved yet</span>'}</p></div>
+      <div class="confirm-box"><h3>Need help?</h3><p><a class="auth-link" href="returns.html#start">Start a return</a></p><p><a class="auth-link" href="contact.html?topic=order">Ask about this order</a></p><p class="muted">1-855-366-1001</p></div>
+    </div>
+    <div class="hero-cta" style="margin-top:20px"><button class="btn" data-reorder="${o.no}">${icon('bag', 'sm')} Order Again</button></div>`);
+}
+
+function viewAddresses(edit) {
+  const addr = getAddr();
+  if (edit) {
+    const a = addr[edit];
+    setTitle(`${edit === 'billing' ? 'Billing' : 'Shipping'} Address`, 'Addresses');
+    shell('addresses', `
+      <a class="link-arrow auth-back" href="account.html?tab=addresses" data-tab="addresses" style="margin:0 0 16px">${icon('left', 'sm')} Addresses</a>
+      <h2 class="acct-h">${edit === 'billing' ? 'Billing' : 'Shipping'} address</h2>
+      <form class="form" id="addrForm" novalidate>
+        <div class="form-grid">
+          <label class="field"><span>First name</span><input name="first" required value="${esc(a.first)}" autocomplete="given-name"></label>
+          <label class="field"><span>Last name</span><input name="last" required value="${esc(a.last)}" autocomplete="family-name"></label>
+          <label class="field full"><span>Company <em>(optional)</em></span><input name="company" value="${esc(a.company)}" autocomplete="organization"></label>
+          <label class="field full"><span>Country / Region</span><select name="country"><option value="CA"${a.country === 'CA' ? ' selected' : ''}>Canada</option><option value="US"${a.country === 'US' ? ' selected' : ''}>United States</option></select></label>
+          <label class="field full"><span>Street address</span><input name="address" required value="${esc(a.address)}" autocomplete="address-line1"></label>
+          <label class="field full"><span>Apartment, suite, unit <em>(optional)</em></span><input name="address2" value="${esc(a.address2)}" autocomplete="address-line2"></label>
+          <label class="field"><span>City</span><input name="city" required value="${esc(a.city)}" autocomplete="address-level2"></label>
+          <label class="field"><span data-prov-label>${a.country === 'US' ? 'State' : 'Province'}</span><select name="prov" required></select></label>
+          <label class="field"><span data-post-label>${a.country === 'US' ? 'ZIP code' : 'Postal code'}</span><input name="postal" required value="${esc(a.postal)}" autocomplete="postal-code"></label>
+          <label class="field"><span>Phone</span><input type="tel" name="phone" required value="${esc(a.phone)}" autocomplete="tel"></label>
+        </div>
+        <div><button class="btn" type="submit">Save Address</button></div>
+      </form>`);
+    const f = document.getElementById('addrForm');
+    const fill = () => {
+      const c = f.country.value;
+      f.prov.innerHTML = regions(c).map(([k, n]) => `<option value="${k}"${k === a.prov ? ' selected' : ''}>${n}</option>`).join('');
+      root.querySelector('[data-prov-label]').textContent = c === 'US' ? 'State' : 'Province';
+      root.querySelector('[data-post-label]').textContent = c === 'US' ? 'ZIP code' : 'Postal code';
+    };
+    f.country.addEventListener('change', fill); fill();
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!validate(f)) return;
+      addr[edit] = Object.fromEntries(['first', 'last', 'company', 'country', 'address', 'address2', 'city', 'prov', 'postal', 'phone'].map((k) => [k, f[k].value.trim()]));
+      BLISS.store.set('bliss_addresses', addr);
+      toast('Address saved');
+      go({ tab: 'addresses' });
+    });
+    return;
+  }
+  setTitle('Addresses', 'Addresses');
+  shell('addresses', `
+    <h2 class="acct-h">Addresses</h2>
+    <p class="muted">The following addresses will be used on the checkout page by default.</p>
+    <div class="confirm-grid">${['billing', 'shipping'].map((k) => `
+      <div class="confirm-box addr-box"><div class="acct-card-head"><h3>${k === 'billing' ? 'Billing' : 'Shipping'} address</h3><a class="auth-link" href="account.html?tab=addresses&edit=${k}" data-edit="${k}">${addr[k].address ? 'Edit' : 'Add'}</a></div>
+        <p>${addrLines(addr[k]) || '<span class="muted">You have not set up this type of address yet.</span>'}</p></div>`).join('')}
+    </div>`);
+}
+
+function viewDetails() {
+  const u = getUser();
+  setTitle('Account Details', 'Account details');
+  shell('account-details', `
+    <h2 class="acct-h">Account details</h2>
+    <form class="form" id="detailsForm" novalidate>
+      <div class="form-grid">
+        <label class="field"><span>First name</span><input name="first" required value="${esc(u.first)}" autocomplete="given-name"></label>
+        <label class="field"><span>Last name</span><input name="last" value="${esc(u.last || '')}" autocomplete="family-name"></label>
+        <label class="field full"><span>Display name</span><input name="display" value="${esc(u.display || u.first)}"><small class="muted" style="font-size:12px">This is how your name appears in the account section and in reviews.</small></label>
+        <label class="field full"><span>Email address</span><input type="email" name="email" required value="${esc(u.email)}" autocomplete="email"></label>
+      </div>
+      <fieldset class="pw-change">
+        <legend>Password change</legend>
+        ${pwField('current', 'Current password <em>(leave blank to leave unchanged)</em>', 'current-password').replace(' required', '')}
+        ${pwField('password', 'New password <em>(leave blank to leave unchanged)</em>', 'new-password').replace(' required', '')}
+        ${meter}
+        ${pwField('confirm', 'Confirm new password', 'new-password').replace(' required', '')}
+      </fieldset>
+      <div><button class="btn" type="submit">Save Changes</button></div>
+    </form>`);
+  const f = document.getElementById('detailsForm');
+  bindMeter(f, 'password');
+  f.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const changing = f.password.value || f.confirm.value;
+    f.current.setCustomValidity(changing && !f.current.value ? 'Enter your current password to set a new one.' : '');
+    f.confirm.setCustomValidity(changing && f.confirm.value !== f.password.value ? 'Passwords don\'t match.' : '');
+    if (!validate(f)) return;
+    if (changing && strength(f.password.value) < 2) { f.password.focus(); toast('Please choose a stronger password'); return; }
+    setUser({ ...u, first: f.first.value.trim(), last: f.last.value.trim(), display: f.display.value.trim(), email: f.email.value.trim() });
+    ['current', 'password', 'confirm'].forEach((n) => { f[n].value = ''; });
+    toast(changing ? 'Account details and password updated' : 'Account details saved');
+    viewDetails();
+  });
+  ['current', 'confirm'].forEach((n) => f[n].addEventListener('input', () => f[n].setCustomValidity('')));
+}
+
+/* =====================================================================
+   Router + shared events
+   ===================================================================== */
+function route() {
+  const p = new URLSearchParams(location.search);
+  const u = getUser();
+  if (!u) {
+    if (p.get('view') === 'lost-password') return viewLost();
+    if (p.get('view') === 'reset-password') return viewReset();
+    return viewAuth(p.get('reset') === 'done' ? notice('ok', 'Your password has been reset. Please sign in with your new password.') : p.get('bye') ? notice('ok', 'You have been signed out.') : NEXT ? notice('info', 'Sign in or create an account to continue to checkout.') : '');
+  }
+  const tab = p.get('tab') || 'dashboard';
+  if (tab === 'logout') { BLISS.store.set('bliss_user', null); syncAccount(); return go({ bye: 1 }); }
+  if (tab === 'orders') return viewOrders();
+  if (tab === 'view-order') return viewOrder(p.get('order'));
+  if (tab === 'addresses') return viewAddresses(p.get('edit'));
+  if (tab === 'account-details') return viewDetails();
+  return viewDashboard();
+}
+
+root.addEventListener('click', (e) => {
+  const pw = e.target.closest('[data-pw]');
+  if (pw) {
+    const input = pw.previousElementSibling;
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    pw.textContent = show ? 'Hide' : 'Show';
+    pw.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    return;
+  }
+  const g = e.target.closest('[data-go]');
+  if (g) { e.preventDefault(); return go(g.dataset.go ? { view: g.dataset.go } : {}); }
+  const t = e.target.closest('[data-tab]');
+  if (t) { e.preventDefault(); return go({ tab: t.dataset.tab }); }
+  const o = e.target.closest('[data-order]');
+  if (o) { e.preventDefault(); return go({ tab: 'view-order', order: o.dataset.order }); }
+  const ed = e.target.closest('[data-edit]');
+  if (ed) { e.preventDefault(); return go({ tab: 'addresses', edit: ed.dataset.edit }); }
+  const ro = e.target.closest('[data-reorder]');
+  if (ro) {
+    const ord = sampleOrders().find((x) => x.no === ro.dataset.reorder);
+    ord.items.forEach(([id, q]) => BLISS.cart.add(id, q));
+    toast(`Items from ${ord.no} added to your cart`); openCart();
+  }
+  const s = e.target.closest('[data-social]');
+  if (s) toast(`${s.dataset.social} sign-in connects once a social login plugin is set up in WooCommerce`);
+});
+addEventListener('popstate', route);
+route();

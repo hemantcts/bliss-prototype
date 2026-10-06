@@ -67,9 +67,9 @@ window.icon = icon;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 window.esc = esc;
 
-/* Responsive images: large photos also exist as name-600.webp (and name-900.webp); imgSet() adds the srcset
+/* Responsive images: photos also exist as name-400/600/800/1000/1400.webp (tools/images.py); imgSet() adds the srcset
    so phones and small cards download a smaller file. In WordPress, wp_get_attachment_image() does this. */
-const IMG_VARIANTS = {"blog-finish":[1200,600],"blog-range":[1200,600],"blog-tub":[1200,600],"brands-faucet":[972,600],"cat-appliances":[1400,600,900],"cat-bath":[1400,600,900],"cat-home":[1391,600],"cat-kitchen":[1400,600,900],"col-intro":[1800,600,900],"hero-1":[1376,600],"hero-2":[1672,600,900],"hero-3":[1672,600,900],"hero-collection":[1180,600],"hero-home":[1400,600,900],"ig-2":[800,600],"ig-3":[800,600],"look-kitchen":[1800,600,900],"look-retreat":[1500,600,900],"mega-appliances":[900,600],"mega-brands":[900,600],"mega-furniture":[900,600],"mega-lighting":[900,600],"mega-outdoor":[900,600],"pd-blend":[1424,600,900],"pd-main":[1248,600],"pd-room":[1116,600],"showroom-hero":[2048,600,900],"story":[1460,600,900],"why-tub":[1672,600,900]};
+const IMG_VARIANTS = {"blog-finish":[1200,400,560,700,840,1000],"blog-range":[1200,400,560,700,840,1000],"blog-tub":[1200,400,560,700,840,1000],"brands-faucet":[972,400,560,700,840],"cat-appliances":[1400,400,560,700,840,1000],"cat-bath":[1400,400,560,700,840,1000],"cat-home":[1391,400,560,700,840,1000],"cat-kitchen":[1400,400,560,700,840,1000],"col-intro":[1800,400,560,700,840,1000,1400],"hero-1":[1376,400,560,700,840,1000],"hero-2":[1672,400,560,700,840,1000,1400],"hero-3":[1672,400,560,700,840,1000,1400],"hero-collection":[1180,400,560,700,840,1000],"hero-home":[1400,400,560,700,840,1000],"ig-1":[576,400],"ig-2":[800,400,560,700],"ig-3":[800,400,560,700],"ig-6":[580,400],"look-kitchen":[1800,400,560,700,840,1000,1400],"look-retreat":[1500,400,560,700,840,1000],"mega-appliances":[900,400,560,700],"mega-brands":[900,400,560,700],"mega-furniture":[900,400,560,700],"mega-lighting":[900,400,560,700],"mega-outdoor":[900,400,560,700],"nn-faucet-black":[1100,400,560,700,840,1000],"nn-faucet-nickel":[1100,400,560,700,840,1000],"nn-faucet":[1100,400,560,700,840,1000],"nn-toilet":[1100,400,560,700,840,1000],"nn-tub":[1100,400,560,700,840,1000],"pc-bathtubs":[1100,400,560,700,840,1000],"pc-faucets-black":[1100,400,560,700,840,1000],"pc-faucets-nickel":[1100,400,560,700,840,1000],"pc-faucets":[1100,400,560,700,840,1000],"pc-showers-black":[1100,400,560,700,840,1000],"pc-showers-nickel":[1100,400,560,700,840,1000],"pc-showers":[1100,400,560,700,840,1000],"pc-vanities":[1100,400,560,700,840,1000],"pd-blend":[1424,400,560,700,840,1000],"pd-c1":[904,400,560,700],"pd-c2":[908,400,560,700],"pd-c3":[908,400,560,700],"pd-dim":[708,400,560],"pd-main":[1248,400,560,700,840,1000],"pd-room":[1116,400,560,700,840,1000],"plant":[820,400,560,700],"showroom-hero":[2048,400,560,700,840,1000,1400],"story":[1460,400,560,700,840,1000],"tub-01":[684,400,560],"tub-02":[600,400],"tub-03":[600,400],"tub-04":[632,400,560],"tub-05":[684,400,560],"tub-06":[600,400],"tub-07":[600,400],"tub-08":[632,400,560],"tub-09":[684,400,560],"tub-10":[600,400],"tub-11":[600,400],"tub-12":[632,400,560],"why-tub":[1672,400,560,700,840,1000,1400],"ym-1":[688,400,560],"ym-2":[684,400,560],"ym-3":[684,400,560],"ym-4":[680,400,560]};
 const imgSet = (n, sizes = '(max-width: 680px) 92vw, 33vw') => {
   const v = IMG_VARIANTS[n];
   return v ? ` srcset="${v.slice(1).map((w) => `img/${n}-${w}.webp ${w}w`).join(', ')}, img/${n}.webp ${v[0]}w" sizes="${sizes}"` : '';
@@ -180,7 +180,7 @@ const mobileItem = ([n, href]) => MEGA[n]
 const currencyMenu = (id) => `
 <div class="cur" data-cur>
   <button class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="${id}">
-    <span class="cur-flag" data-currency-flag></span><span data-currency-label>${BLISS.currency}</span>${icon('down', 'sm')}
+    <span class="cur-flag" data-currency-flag></span><span class="sr-only">Currency: </span><span data-currency-label>${BLISS.currency}</span>${icon('down', 'sm')}
   </button>
   <ul class="cur-menu" id="${id}" role="listbox" aria-label="Currency">
     <li role="option" data-set-cur="CAD"><span class="cur-flag ca"></span><b>CAD $</b><small>Canadian dollar</small></li>
@@ -194,8 +194,8 @@ const LANGS = [['en', 'EN', 'English'], ['ar', 'AR', 'العربية'], ['zh-CN'
 const curLang = () => { try { return localStorage.getItem('bliss_lang') || 'en'; } catch { return 'en'; } };
 const langMenu = (id) => `
 <div class="cur lang notranslate" data-cur translate="no">
-  <button class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="${id}" aria-label="Language">
-    ${icon('globe', 'sm')}<span data-lang-label>${(LANGS.find((l) => l[0] === curLang()) || LANGS[0])[1]}</span>${icon('down', 'sm')}
+  <button class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="${id}">
+    ${icon('globe', 'sm')}<span class="sr-only">Language: </span><span data-lang-label>${(LANGS.find((l) => l[0] === curLang()) || LANGS[0])[1]}</span>${icon('down', 'sm')}
   </button>
   <ul class="cur-menu lang-menu" id="${id}" role="listbox" aria-label="Language">
     ${LANGS.map(([code, short, name]) => `<li role="option" data-set-lang="${code}" lang="${code}" aria-selected="${code === curLang()}"><b>${short}</b><small>${name}</small></li>`).join('')}
@@ -210,13 +210,13 @@ const headerHTML = `
 </div></div>
 <header class="site-header"><div class="wrap">
   <button class="menu-toggle" aria-label="Open menu">${icon('menu')}</button>
-  <a class="logo notranslate" translate="no" href="index.html" aria-label="Bliss Bath and Kitchen home"><img class="logo-img" src="img/logo.webp" alt="Bliss Bath and Kitchen" width="1070" height="337" decoding="async"></a>
+  <a class="logo notranslate" translate="no" href="index.html" aria-label="Bliss Bath and Kitchen home"><img class="logo-img" src="img/logo-400.webp" srcset="img/logo-260.webp 260w, img/logo-400.webp 400w, img/logo.webp 1070w" sizes="(max-width: 680px) 127px, 165px" alt="Bliss Bath and Kitchen" width="1070" height="337" fetchpriority="high"></a>
   <nav class="main-nav" aria-label="Main">${NAV.map(navItem).join('')}</nav>
   <div class="header-actions">
     <button aria-label="Search (press /)" data-open-search>${icon('search')}</button>
     <a href="account.html" aria-label="My account" class="hide-sm acct-link">${icon('user')}<span class="acct-dot" data-acct-dot hidden></span></a>
     <a href="wishlist.html" aria-label="Wishlist" class="hide-sm">${icon('heart')}<span class="cart-count wish-count" data-wish-count hidden>0</span></a>
-    <button aria-label="Open cart" data-open-cart>${icon('bag')}<span class="cart-count" data-cart>0</span></button>
+    <button data-open-cart>${icon('bag')}<span class="sr-only">Cart, </span><span class="cart-count" data-cart>0</span><span class="sr-only"> items</span></button>
   </div>
 </div></header>
 <div class="mobile-nav"><div class="scrim"></div><nav aria-label="Mobile">
@@ -246,7 +246,7 @@ const newsletterHTML = `
   </form>
 </div></section>`;
 
-const col = (title, items) => `<h4>${title}</h4><ul>${items.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>`;
+const col = (title, items) => `<h2 class="f-h">${title}</h2><ul>${items.map(([t, h]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>`;
 const PAGES = [
   ['Home', 'index.html', 'home'], ['Collection', 'collection.html', 'collection'], ['Product', 'product.html', 'product'],
   ['Search / Shop', 'search.html?q=tub', 'search'], ['Cart', 'cart.html', 'cart'], ['Wishlist', 'wishlist.html', 'wishlist'], ['Login / Register', 'account.html', 'account'], ['Forgot password', 'account.html?view=lost-password', 'account-lost'], ['Checkout', 'checkout.html', 'checkout'],
@@ -256,7 +256,7 @@ const PAGES = [
 ];
 const footerHTML = `
 <footer class="site-footer"><div class="wrap">
-  <div class="f-brand"><a class="logo notranslate" translate="no" href="index.html"><img class="logo-img" src="img/logo-light.webp" alt="Bliss Bath and Kitchen" width="1070" height="337" decoding="async"></a></div>
+  <div class="f-brand"><a class="logo notranslate" translate="no" href="index.html"><img class="logo-img" src="img/logo-light-400.webp" srcset="img/logo-light-260.webp 260w, img/logo-light-400.webp 400w, img/logo-light.webp 1070w" sizes="(max-width: 680px) 159px, 197px" alt="Bliss Bath and Kitchen" width="1070" height="337" loading="lazy" decoding="async"></a></div>
   <div class="f-cols f-one">
     <div>${col('Bathroom Products', [L('Bathroom Faucets'), L('Bathroom Vanities'), L('Bathroom Fixtures'), L('Floor Mounted Tub Fillers'), L('Smart Toilets'), L('Freestanding Tub Fillers'), L('LED Mirrors'), L('LED Medicine Cabinets'), L('Shower Bases'), L('Shower Doors'), L('Shower Kits'), L('Thermostatic Shower Systems'), L('Sliding Shower Doors'), L('Wall Hung Toilets'), L('Towel Warmers')])}</div>
     <div>${col('Bathtubs', LINKS.bathtubs)}${col('Lighting', LINKS.lighting)}</div>
@@ -1008,17 +1008,17 @@ if (autoSearch !== null) openSearch(autoSearch);
 /* ---------- Footer link columns collapse into an accordion on phones ---------- */
 (function footerAccordion() {
   const mq = window.matchMedia('(max-width: 680px)');
-  const heads = [...document.querySelectorAll('.site-footer .f-cols h4')];
-  const sync = () => heads.forEach((h) => {
-    if (mq.matches) { h.setAttribute('role', 'button'); h.tabIndex = 0; h.setAttribute('aria-expanded', h.classList.contains('open')); }
-    else { h.removeAttribute('role'); h.removeAttribute('tabindex'); h.removeAttribute('aria-expanded'); }
+  document.querySelectorAll('.site-footer .f-cols .f-h').forEach((h, i) => {
+    const list = h.nextElementSibling; if (!list) return;
+    list.id = list.id || `fcol${i}`;
+    h.innerHTML = `<button type="button" class="f-acc" aria-expanded="false" aria-controls="${list.id}">${h.innerHTML}</button>`;
+    const btn = h.firstElementChild;
+    btn.addEventListener('click', () => {
+      if (!mq.matches) return;
+      const open = !h.classList.contains('open');
+      h.classList.toggle('open', open); btn.setAttribute('aria-expanded', open);
+    });
   });
-  const toggle = (h) => { if (!mq.matches) return; h.classList.toggle('open'); h.setAttribute('aria-expanded', h.classList.contains('open')); };
-  heads.forEach((h) => {
-    h.addEventListener('click', () => toggle(h));
-    h.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(h); } });
-  });
-  sync(); mq.addEventListener('change', sync);
 })();
 
 /* ---------- Make an Inquiry (every add-to-cart has one) ---------- */

@@ -20,12 +20,15 @@ Home · Collection · Product (variations, reviews with photo upload, PDF downlo
 
 ## Build (performance)
 
-Pages load minified bundles, not the source files. After editing anything in `css/` or `js/`, rebuild:
+Pages load minified bundles and inline critical CSS, not the source files. After editing:
 
 ```
-npm install      # first time only (installs esbuild)
-npm run build
+npm install            # first time only
+python tools/images.py # after adding/replacing photos: responsive copies + srcset
+npm run build          # css/ + js/ sources -> css/bliss.min.css, js/app*.min.js, js/pages/*.min.js
+npm run critical       # with the site served on http://localhost:5173: inlines first-screen CSS in every page
 ```
 
-This writes `css/bliss.min.css`, `js/app.min.js` and `js/app-content.min.js` (see `tools/build.mjs`). Fonts are self-hosted in `fonts/`. Large photos have `-600`/`-900` copies, which `imgSet()` in `js/main.js` adds as `srcset`.
-
+- `css/fonts.css`, `css/style.css`, `css/components.css` are bundled into `css/bliss.min.css` (loaded without blocking; the first-screen rules are inlined between `<!-- critical:start -->` and `<!-- critical:end -->`).
+- `js/data.js` + `js/main.js` (+ `js/content.js` on blog/look pages) become `js/app.min.js` / `js/app-content.min.js`; larger page scripts live in `js/pages/<page>.js`.
+- Photos have `-400/-560/-700/-840/-1000/-1400` copies; `imgSet()` in `js/main.js` adds `srcset` to images rendered from JavaScript.
