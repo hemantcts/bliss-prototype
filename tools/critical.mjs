@@ -39,7 +39,8 @@ function extract(fold) {
     for (const r of rules) {
       if (r instanceof CSSStyleRule) {
         // always keep positioning contexts so absolutely positioned children can't escape to the top of the page
-        if (r.selectorText.startsWith(':root') || /^(html|body|\*)/.test(r.selectorText) || /^(relative|sticky)$/.test(r.style.position) || used(r.selectorText)) out += r.cssText;
+        // #site-header is the placeholder the script replaces (its height prevents a layout shift); .sr-only must never flash visible
+        if (r.selectorText.startsWith(':root') || /^(html|body|\*)/.test(r.selectorText) || /#site-header|\.sr-only/.test(r.selectorText) || /^(relative|sticky)$/.test(r.style.position) || used(r.selectorText)) out += r.cssText;
       }
       else if (r instanceof CSSMediaRule) { const inner = walk(r.cssRules); if (inner) out += `@media ${r.conditionText}{${inner}}`; }
       else if (r instanceof CSSSupportsRule) { const inner = walk(r.cssRules); if (inner) out += `@supports ${r.conditionText}{${inner}}`; }

@@ -88,7 +88,7 @@ def sync_html(variants):
 
         def fix(m):
             tag, name = m.group(0), m.group(1)
-            if name not in variants or 'id="stageImg"' in tag:
+            if name not in variants:
                 return tag
             tag = re.sub(r'\s(?:srcset|sizes)="[^"]*"', '', tag)
             size = next((v for k, v in SIZES.items() if name.startswith(k)), '(max-width: 680px) 92vw, 50vw')
@@ -98,9 +98,13 @@ def sync_html(variants):
             return tag.replace(f'src="img/{name}.webp"', f'src="img/{name}.webp" srcset="{srcset(name, variants[name])}" sizes="{size}"', 1)
 
         s2 = tag_re.sub(fix, s)
-        # hero preload mirrors the first slide
-        s2 = re.sub(r'(<link rel="preload" as="image" href="img/(hero-1)\.webp") imagesrcset="[^"]*" imagesizes="[^"]*"',
-                    lambda m: f'{m.group(1)} imagesrcset="{srcset(m.group(2), variants[m.group(2)])}" imagesizes="(max-width: 680px) 100vw, 70vw"', s2)
+        # image preloads mirror their <img> (keep each page's imagesizes)
+        def fix_preload(m):
+            name = m.group(2)
+            if name not in variants:
+                return m.group(0)
+            return f'{m.group(1)} imagesrcset="{srcset(name, variants[name])}"'
+        s2 = re.sub(r'(<link rel="preload" as="image" href="img/([\w-]+)\.webp") imagesrcset="[^"]*"', fix_preload, s2)
         if s2 != s:
             open(p, 'w', encoding='utf-8').write(s2)
 
